@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('states', function (Blueprint $table) {
+        Schema::create('minor_user', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre')->unique();
+            $table->unsignedBigInteger('guardian_id');
+            $table->foreign('guardian_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('minor_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -23,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('states');
+        Schema::dropIfExists('minor_user');
     }
 };

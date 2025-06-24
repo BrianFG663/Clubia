@@ -6,14 +6,12 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::create('states', function (Blueprint $table) {
+        Schema::create('member_type_user', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre')->unique();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('member_type_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -23,6 +21,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('states');
+        Schema::dropIfExists('member_type_user');
     }
 };

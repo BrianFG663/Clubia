@@ -6,14 +6,12 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
+        public function up(): void
     {
-        Schema::create('states', function (Blueprint $table) {
+        Schema::create('fees', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre')->unique();
+            $table->foreignId('sub_activity_id')->constrained()->onDelete('cascade');
+            $table->decimal('monto');
             $table->timestamps();
         });
     }
@@ -23,6 +21,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('states');
+        Schema::dropIfExists('fees');
     }
 };

@@ -6,5 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Minor extends Model
 {
-    //
+    protected $fillable = [
+        'nombre',
+        'apellido',
+        'dni',
+        'nacimiento',
+        'relacion',
+    ];
 }

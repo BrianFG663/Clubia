@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class PaymentType extends Model
+class Payment_type extends Model
 {
-    protected $fillable = [
+     protected $fillable = [
         'nombre',
     ];
 }

@@ -10,6 +10,6 @@ class Institution extends Model
         'nombre',
         'direccion',
         'telefono',
-        'localidad',
+        'ciudad',
     ];
 }

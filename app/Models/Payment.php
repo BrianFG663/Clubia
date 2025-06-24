@@ -10,6 +10,6 @@ class Payment extends Model
         'payment_type_id',
         'user_id',
         'monto',
-        'fecha',
+        'fecha_pago',
     ];
 }

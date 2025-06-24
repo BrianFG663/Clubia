@@ -10,7 +10,7 @@ class Minor extends Model
         'nombre',
         'apellido',
         'dni',
-        'nacimiento',
+        'fecha_nacimiento',
         'relacion',
     ];
 }

@@ -11,7 +11,8 @@ class Invoice extends Model
         'user_id',
         'institution_id',
         'tipo_factura',
+        'sale_id',
         'monto_total',
-        'fecha',
+        'fecha_factura',
     ];
 }

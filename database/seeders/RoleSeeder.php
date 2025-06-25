@@ -10,14 +10,14 @@ class RolesSeeder extends Seeder
 {
     public function run(): void
     {
+        // Crear o conseguir el rol admin
         $admin = Role::firstOrCreate(['name' => 'admin']);
-
-        // Obtener todos los permisos existentes generados por Shield
+        // Obtener todos los permisos existentes (generados o definidos por Shield)
         $allPermissions = Permission::all();
-
-        // Asignar todos los permisos al rol admin 
+        // Sincronizar (asignar) todos los permisos al rol admin
         $admin->syncPermissions($allPermissions);
     }
+
 }
 
     

@@ -13,8 +13,8 @@ class StateSeeder extends Seeder
      */
     public function run(): void
     {
-        State::firstOrCreate(['name' => 'Activo']);
-        State::firstOrCreate(['name' => 'Inactivo']);
-
+        State::firstOrCreate(['nombre' => 'Activo']);
+        State::firstOrCreate(['nombre' => 'Inactivo']);
     }
+
 }

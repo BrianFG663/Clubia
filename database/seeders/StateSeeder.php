@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use NunoMaduro\Collision\Adapters\Phpunit\State;
 
 class StateSeeder extends Seeder
 {
@@ -12,6 +13,8 @@ class StateSeeder extends Seeder
      */
     public function run(): void
     {
-        State::factory()->count(2)->create();
+        State::firstOrCreate(['name' => 'Activo']);
+        State::firstOrCreate(['name' => 'Inactivo']);
+
     }
 }

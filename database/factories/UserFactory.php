@@ -31,7 +31,7 @@ class UserFactory extends Factory
             'fecha_nacimiento' => $this->faker->date('Y-m-d', '2005-01-01'),
             'direccion' => $this->faker->streetAddress(),
             'ciudad' => $this->faker->city(),
-            'telefono' => $this->faker->unique()->optional()->phoneNumber(),
+            'telefono' => $this->faker->unique()->phoneNumber(),
             'email' => $this->faker->unique()->safeEmail(),
             'password' => Hash::make('12345678'),
             'email_verified_at' => now(),

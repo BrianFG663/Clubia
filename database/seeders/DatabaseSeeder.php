@@ -19,7 +19,10 @@ class DatabaseSeeder extends Seeder
         ShieldSeeder::class,       
         RolesSeeder::class,    
         UserSeeder::class,   
-        PaymentTypeSeeder::class,     
+        PaymentTypeSeeder::class,    
+        CategorySeeder::class,
+        InstitutionSeeder::class,
+        SupplierSeeder::class,
         ]);
     }
 }

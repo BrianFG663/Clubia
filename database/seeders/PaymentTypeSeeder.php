@@ -16,7 +16,7 @@ class PaymentTypeSeeder extends Seeder
          $tipos = ['Efectivo','Tarjeta de crédito','Tarjeta de débito','Transferencia bancaria','Pago online',];
 
         foreach ($tipos as $nombre) {
-            Payment_type::firstOrCreate(['nombre' => $nombre]);
+            Payment_Type::firstOrCreate(['nombre' => $nombre]);
         }
     }
 }

@@ -21,7 +21,7 @@ class Product extends Model
         return $this->hasOne(Category::class);
     }
 
-    public function sale_details(): HasMany
+    public function saleDetails(): HasMany
     {
         return $this->hasMany(SaleDetail::class);
     }

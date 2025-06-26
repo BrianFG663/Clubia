@@ -19,7 +19,7 @@ class Institution extends Model
         return $this->hasMany(Activity::class);
     }
 
-    public function member_types(): HasMany
+    public function memberTypes(): HasMany
     {
         return $this->hasMany(MemberType::class);
     }

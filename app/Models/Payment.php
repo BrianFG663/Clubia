@@ -21,7 +21,7 @@ class Payment extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function payment_type(): BelongsTo
+    public function paymentType(): BelongsTo
     {
         return $this->belongsTo(PaymentType::class);
     }

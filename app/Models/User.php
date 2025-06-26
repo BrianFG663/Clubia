@@ -84,12 +84,12 @@ class User extends Authenticatable implements HasName
         return $this->hasMany(Sale::class);
     }
 
-    public function member_types(): BelongsToMany
+    public function memberTypes(): BelongsToMany
     {
-        return $this->belongsToMany(Member_type::class);
+        return $this->belongsToMany(MemberType::class);
     }
 
-    public function sub_activities(): BelongsToMany
+    public function subActivities(): BelongsToMany
     {
         return $this->belongsToMany(SubActivity::class);
     }

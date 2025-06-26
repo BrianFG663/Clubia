@@ -29,4 +29,5 @@ class Sub_activity extends Model
     {
         return $this->hasMany(Fee::class);
     }
+
 }

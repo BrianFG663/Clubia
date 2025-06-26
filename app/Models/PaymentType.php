@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Payment_type extends Model
+class PaymentType extends Model
 {
      protected $fillable = [
         'nombre',

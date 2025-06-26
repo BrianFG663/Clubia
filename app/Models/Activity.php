@@ -14,9 +14,9 @@ class Activity extends Model
         'descripcion',
     ];
 
-    public function sub_activities(): HasMany
+    public function subActivities(): HasMany
     {
-        return $this->hasMany(Sub_activity::class);
+        return $this->hasMany(SubActivity::class);
     }
 
     public function institution(): HasOne

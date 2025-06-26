@@ -91,7 +91,7 @@ class User extends Authenticatable implements HasName
 
     public function sub_activities(): BelongsToMany
     {
-        return $this->belongsToMany(Sub_activity::class);
+        return $this->belongsToMany(SubActivity::class);
     }
 
     public function minors(): HasMany

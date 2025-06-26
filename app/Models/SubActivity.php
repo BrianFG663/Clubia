@@ -3,13 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Sub_activity extends Model
+class SubActivity extends Model
 {
-    protected $fillable = [
+        protected $fillable = [
         'activity_id',
         'nombre',
         'descripcion',
@@ -29,5 +29,4 @@ class Sub_activity extends Model
     {
         return $this->hasMany(Fee::class);
     }
-
 }

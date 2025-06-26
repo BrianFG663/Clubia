@@ -23,6 +23,6 @@ class Product extends Model
 
     public function sale_details(): HasMany
     {
-        return $this->hasMany(Sale_detail::class);
+        return $this->hasMany(SaleDetail::class);
     }
 }

@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Sale_detail extends Model
+class SaleDetail extends Model
 {
-    protected $fillable = [
+        protected $fillable = [
         'sale_id',
         'product_id',
         'cantidad',

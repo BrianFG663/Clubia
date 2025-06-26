@@ -22,7 +22,7 @@ class Order extends Model
 
     public function orederDetails(): HasMany
     {
-        return $this->hasMany(Order_detail::class);
+        return $this->hasMany(OrderDetail::class);
     }
 
     public function supplier(): BelongsTo

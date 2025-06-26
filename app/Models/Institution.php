@@ -21,7 +21,7 @@ class Institution extends Model
 
     public function member_types(): HasMany
     {
-        return $this->hasMany(Member_type::class);
+        return $this->hasMany(MemberType::class);
     }
 
     public function invoices(): HasMany

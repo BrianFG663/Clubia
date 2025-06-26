@@ -12,9 +12,9 @@ class Fee extends Model
         'monto',
     ];
 
-    public function sub_activity(): HasOne
+    public function subActivity(): HasOne
     {
-        return $this->hasOne(Sub_activity::class);
+        return $this->hasOne(SubActivity::class);
     }
 
 }

@@ -23,7 +23,7 @@ class Payment extends Model
 
     public function payment_type(): BelongsTo
     {
-        return $this->belongsTo(Payment_type::class);
+        return $this->belongsTo(PaymentType::class);
     }
 
 

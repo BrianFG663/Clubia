@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class Member_type extends Model
+class MemberType extends Model
 {
-    protected $fillable = [
+        protected $fillable = [
         'institution_id',
         'nombre',
         'arancel',

@@ -56,5 +56,8 @@ class UserSeeder extends Seeder
             $user = User::create($data);
             $user->assignRole($superAdminRole);
         }
+
+        User::factory(5)->create();
+
     }
 }

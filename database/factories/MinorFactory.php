@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -22,6 +23,8 @@ class MinorFactory extends Factory
             'dni' => $this->faker->unique()->numberBetween(20000000, 45000000),
             'fecha_nacimiento' => $this->faker->date('Y-m-d', '-10 years'), 
             'relacion' => $this->faker->randomElement(['Padre', 'Madre', 'Abuelo', 'Tia']), 
+            'user_id' => User::inRandomOrder()->first()->id,
+
         ];
     }
 }

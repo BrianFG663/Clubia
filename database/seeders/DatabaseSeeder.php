@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\MemberType;
 use App\Models\Payment_type;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -24,6 +25,8 @@ class DatabaseSeeder extends Seeder
         InstitutionSeeder::class,
         SupplierSeeder::class,
         MinorSeeder::class,
+        MemberTypeSeeder::class,
+        MemberTypeUserSeeder::class,
         ]);
     }
 }

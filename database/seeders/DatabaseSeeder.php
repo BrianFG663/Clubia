@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
         CategorySeeder::class,
         InstitutionSeeder::class,
         SupplierSeeder::class,
+        MinorSeeder::class,
         ]);
     }
 }

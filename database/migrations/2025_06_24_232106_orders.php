@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('supplier_id')->constrained()->onDelete('cascade');
-            $table->decimal('fecha');
+            $table->date('fecha');
             $table->decimal('total');
             $table->timestamps();
         });

@@ -10,8 +10,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
+use Filament\Models\Contracts\HasName;
 
-class User extends Authenticatable
+class User extends Authenticatable implements HasName
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
@@ -58,6 +59,11 @@ class User extends Authenticatable
         ];
     }
 
+    public function getFilamentName(): string
+    {
+        return $this->nombre . ' ' . $this->apellido;
+    }
+
     public function orders(): HasMany
     {
         return $this->hasMany(Order::class);
@@ -78,14 +84,14 @@ class User extends Authenticatable
         return $this->hasMany(Sale::class);
     }
 
-    public function member_types(): BelongsToMany
+    public function memberTypes(): BelongsToMany
     {
-        return $this->belongsToMany(Member_type::class);
+        return $this->belongsToMany(MemberType::class);
     }
 
-    public function sub_activities(): BelongsToMany
+    public function subActivities(): BelongsToMany
     {
-        return $this->belongsToMany(Sub_activity::class);
+        return $this->belongsToMany(SubActivity::class);
     }
 
     public function minors(): HasMany

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Fee extends Model
 {
@@ -10,4 +11,10 @@ class Fee extends Model
         'sub_activity_id',
         'monto',
     ];
+
+    public function subActivity(): HasOne
+    {
+        return $this->hasOne(SubActivity::class);
+    }
+
 }

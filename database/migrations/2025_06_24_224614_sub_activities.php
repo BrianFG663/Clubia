@@ -12,6 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('nombre')->unique();
             $table->string('descripcion');
+            $table->decimal('monto');
             $table->foreignId('activity_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

@@ -15,15 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('nombre');
             $table->string('apellido');
-            $table->string('dni')->unique();
             $table->string('email')->unique();
-            $table->foreignId('state_id')->constrained()->onDelete('cascade');
-            $table->date('fecha_nacimiento');
-            $table->string('direccion');
-            $table->string('ciudad');
-            $table->string('telefono')->unique()->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->foreignId('partner_id')->nullable()->constrained()->onDelete('cascade');
             $table->rememberToken();
             $table->timestamps();
         });

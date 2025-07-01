@@ -11,9 +11,9 @@ return new class extends Migration
      */
         public function up(): void
     {
-        Schema::create('sub_activity_user', function (Blueprint $table) {
+        Schema::create('partner_sub_activity', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('partner_id')->constrained()->onDelete('cascade');
             $table->foreignId('sub_activity')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

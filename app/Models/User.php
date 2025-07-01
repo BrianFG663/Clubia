@@ -11,6 +11,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 use Filament\Models\Contracts\HasName;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class User extends Authenticatable implements HasName
 {
@@ -26,14 +27,9 @@ class User extends Authenticatable implements HasName
     protected $fillable = [
         'nombre',
         'apellido',
-        'dni',
-        'state_id',
-        'fecha_nacimiento',
-        'direccion',
-        'ciudad',
-        'telefono',
         'email',
         'password',
+        'partner_id'
     ];
 
     /**
@@ -69,38 +65,16 @@ class User extends Authenticatable implements HasName
         return $this->hasMany(Order::class);
     }
 
-    public function payments(): HasMany
-    {
-        return $this->hasMany(Payment::class);
-    }
-
-    public function invoices(): HasMany
-    {
-        return $this->hasMany(Invoice::class);
-    }
-
     public function sales(): HasMany
     {
         return $this->hasMany(Sale::class);
     }
 
-    public function memberTypes(): BelongsToMany
+     public function partner(): HasOne
     {
-        return $this->belongsToMany(MemberType::class);
+        return $this->hasOne(Partner::class);
     }
 
-    public function subActivities(): BelongsToMany
-    {
-        return $this->belongsToMany(SubActivity::class);
-    }
 
-    public function minors(): HasMany
-    {
-        return $this->hasMany(Minor::class);
-    }
 
-    public function state(): BelongsTo
-    {
-        return $this->belongsTo(State::class);
-    }
 }

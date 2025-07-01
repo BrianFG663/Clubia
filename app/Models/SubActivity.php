@@ -18,9 +18,9 @@ class SubActivity extends Model
         'descripcion',
     ];
 
-    public function users(): BelongsToMany
+    public function partners(): BelongsToMany
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(Partner::class);
     }
 
     public function activity(): BelongsTo
@@ -28,8 +28,4 @@ class SubActivity extends Model
         return $this->belongsTo(Activity::class);
     }
 
-    public function fee(): HasMany
-    {
-        return $this->hasMany(Fee::class);
-    }
 }

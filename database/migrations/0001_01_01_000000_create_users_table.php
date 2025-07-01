@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('apellido');
             $table->string('dni')->unique();
             $table->string('email')->unique();
-            $table->foreignId('state_id')->constrained()->onDelete('cascade');
+            $table->foreignId('state_id')->constrained()->onDelete('cascade')->default(1);
             $table->date('fecha_nacimiento');
             $table->string('direccion');
             $table->string('ciudad');

@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Filament\Resources\UserResource\Pages;
+namespace App\Filament\Resources\MinorResource\Pages;
 
-use App\Filament\Resources\UserResource;
+use App\Filament\Resources\MinorResource;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
 
-class CreateUser extends CreateRecord
+class CreateMinor extends CreateRecord
 {
-    protected static string $resource = UserResource::class;
+    protected static string $resource = MinorResource::class;
 
     public function getTitle(): string
     {
-        return 'Crear un socio nuevo.';
+        return 'Nuevo Socio Menor';
     }
 
     protected function getRedirectUrl(): string
@@ -24,7 +24,7 @@ class CreateUser extends CreateRecord
     protected function getSavedNotification(): ?Notification
     {
         return Notification::make()
-            ->title('Socio creado correctamente.')
+            ->title('Socio menor correctamente.')
             ->success();
     }
 
@@ -32,7 +32,7 @@ class CreateUser extends CreateRecord
     {
         return [
             Action::make('submit')
-                ->label('Guardar socio')
+                ->label('Guardar menor')
                 ->submit('form'),
 
             Action::make('submitAndCreateAnother')
@@ -46,19 +46,15 @@ class CreateUser extends CreateRecord
         ];
     }
 
-    // Este método guarda el registro y redirige a crear otro nuevo
     public function submitAndCreateAnother()
     {
-        // Guardamos el formulario
         $this->submit();
 
-        // Notificación opcional
         Notification::make()
-            ->title('Socio creado correctamente. Ahora puede crear otro.')
+            ->title('Socio menor creado correctamente. Ahora puede crear otro.')
             ->success()
             ->send();
 
-        // Redirige a la página de creación nuevamente para crear otro
         $this->redirect($this->getRedirectUrl('create'));
     }
 }

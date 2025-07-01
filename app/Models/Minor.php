@@ -13,6 +13,7 @@ class Minor extends Model
     protected $fillable = [
         'nombre',
         'apellido',
+        'user_id',
         'dni',
         'fecha_nacimiento',
         'relacion',

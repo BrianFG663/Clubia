@@ -26,4 +26,6 @@ class Activity extends Model
     {
         return $this->hasOne(Institution::class);
     }
+
+   
 }

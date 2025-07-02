@@ -13,7 +13,7 @@ class Invoice extends Model
     Use HasFactory;
     
     protected $fillable = [
-        'user_id',
+        'partner_id',
         'institution_id',
         'tipo_factura',
         'sale_id',
@@ -21,9 +21,9 @@ class Invoice extends Model
         'fecha_factura',
     ];
 
-    public function user(): BelongsTo
+    public function partner(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Partner::class);
     }
 
     public function institution(): HasOne

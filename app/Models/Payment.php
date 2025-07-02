@@ -14,14 +14,14 @@ class Payment extends Model
     
     protected $fillable = [
         'payment_type_id',
-        'user_id',
+        'partner_id',
         'monto',
         'fecha_pago',
     ];
 
-    public function user(): BelongsTo
+    public function partner(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Partner::class);
     }
 
     public function paymentType(): BelongsTo

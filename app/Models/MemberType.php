@@ -17,9 +17,9 @@ class MemberType extends Model
         'arancel',
     ];
 
-    public function users(): BelongsToMany
+    public function partners(): BelongsToMany
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(Partner::class);
     }
 
     public function institution(): HasOne

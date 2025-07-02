@@ -14,8 +14,8 @@ class State extends Model
         'nombre',
     ];
 
-    public function users(): HasMany
+    public function partners(): HasMany
     {
-        return $this->hasMany(User::class);
+        return $this->hasMany(Partner::class);
     }
 }

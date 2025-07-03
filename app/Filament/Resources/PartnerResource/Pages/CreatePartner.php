@@ -1,19 +1,20 @@
 <?php
 
-namespace App\Filament\Resources\UserResource\Pages;
+namespace App\Filament\Resources\PartnerResource\Pages;
 
-use App\Filament\Resources\UserResource;
+use App\Filament\Resources\PartnerResource;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
 
-class CreateUser extends CreateRecord
+
+class CreatePartner extends CreateRecord
 {
-    protected static string $resource = UserResource::class;
+    protected static string $resource = PartnerResource::class;
 
     public function getTitle(): string
     {
-        return 'Crear un empleado nuevo.';
+        return 'Creae nuevo socio';
     }
 
     protected function getRedirectUrl(): string
@@ -48,6 +49,7 @@ class CreateUser extends CreateRecord
 
     public function submitAndCreateAnother()
     {
+        // Guardamos el formulario
         $this->submit();
 
         Notification::make()

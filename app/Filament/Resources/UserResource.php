@@ -21,7 +21,7 @@ class UserResource extends Resource implements HasShieldPermissions
 
 
     protected static ?string $model = User::class;
-    protected static ?string $navigationLabel = 'Socios';
+    protected static ?string $navigationLabel = 'Empleados de la institucion';
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
 
@@ -65,11 +65,7 @@ class UserResource extends Resource implements HasShieldPermissions
             ->columns([
                 Tables\Columns\TextColumn::make('nombre')->searchable(),
                 Tables\Columns\TextColumn::make('apellido')->searchable(),
-                Tables\Columns\TextColumn::make('dni'),
                 Tables\Columns\TextColumn::make('email'),
-                Tables\Columns\TextColumn::make('state.nombre')
-                    ->label('Estado')
-                    ->searchable(),
             ])
             ->filters([])
             ->actions([

@@ -10,19 +10,19 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Partner extends Model
 {
     protected $fillable = [
-            'nombre',
-            'apellido',
-            'dni',
-            'state_id',
-            'fecha_nacimiento',
-            'direccion',
-            'ciudad',
-            'telefono',
-            'email',
-            'menor',
-            'jefe_grupo',
-            'responsable_id'
-        ];
+        'nombre',
+        'apellido',
+        'dni',
+        'state_id',
+        'fecha_nacimiento',
+        'direccion',
+        'ciudad',
+        'telefono',
+        'email',
+        'menor',
+        'jefe_grupo',
+        'responsable_id'
+    ];
 
     public function invoices(): HasMany
     {
@@ -37,7 +37,7 @@ class Partner extends Model
     {
         return $this->hasMany(Payment::class);
     }
-     public function state(): BelongsTo
+    public function state(): BelongsTo
     {
         return $this->belongsTo(State::class);
     }
@@ -49,5 +49,15 @@ class Partner extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function responsable(): BelongsTo
+    {
+        return $this->belongsTo(Partner::class);
+    }
+
+    public function familyGroup(): HasMany
+    {
+        return $this->hasMany(Partner::class);
     }
 }

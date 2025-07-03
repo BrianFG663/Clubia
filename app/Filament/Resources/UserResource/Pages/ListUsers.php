@@ -14,13 +14,13 @@ class ListUsers extends ListRecords
     {
         return [
             Actions\CreateAction::make()
-            ->label('Crear Socio')
+            ->label('Crear Empleado')
         ];
     }
 
         public function getTitle(): string
     {
-        return 'Socios registrados';
+        return 'Empleados registrados';
     }
 
 }

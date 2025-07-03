@@ -74,7 +74,4 @@ class User extends Authenticatable implements HasName
     {
         return $this->hasOne(Partner::class);
     }
-
-
-
 }

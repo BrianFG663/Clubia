@@ -9,3 +9,4 @@ php artisan shield:generate --resource=PartnerResource
 php artisan shield:generate --resource=ActivityResource
 php artisan shield:generate --resource=InstitutionResource
 php artisan shield:generate --resource=SubActivityResource
+php artisan shield:generate --resource=MemberTypeResource

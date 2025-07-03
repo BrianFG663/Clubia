@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('institutions', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
-            $table->string('telefono');
+            $table->string('telefono')->unique();
             $table->string('ciudad');
-            $table->string('direccion')->unique();
+            $table->string('direccion');
             $table->timestamps();
         });
     }

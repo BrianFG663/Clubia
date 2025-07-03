@@ -6,4 +6,3 @@ Ejecutar seeder: php artisan db:seed
 permisos super-admin
 php artisan shield:generate --resource=UserResource
 php artisan shield:generate --resource=PartnerResource
-

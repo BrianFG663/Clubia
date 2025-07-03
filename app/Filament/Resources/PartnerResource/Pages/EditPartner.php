@@ -11,6 +11,11 @@ class EditPartner extends EditRecord
 {
     protected static string $resource = PartnerResource::class;
 
+    public function getTitle(): string
+    {
+        return 'Editar socio: ' . $this->record->nombre . ' ' . $this->record->apellido;
+    }
+
     protected function getHeaderActions(): array
     {
         return [
@@ -32,5 +37,10 @@ class EditPartner extends EditRecord
                 ->label('Cancelar')
                 ->url($this->getResource()::getUrl('index')),
         ];
+    }
+
+    protected function getRedirectUrl(): string
+    {
+        return static::getResource()::getUrl('index');
     }
 }

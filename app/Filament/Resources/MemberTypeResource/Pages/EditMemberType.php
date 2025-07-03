@@ -1,34 +1,26 @@
 <?php
 
-namespace App\Filament\Resources\UserResource\Pages;
+namespace App\Filament\Resources\MemberTypeResource\Pages;
 
-use App\Filament\Resources\UserResource;
+use App\Filament\Resources\MemberTypeResource;
 use Filament\Actions\DeleteAction;
+use Filament\Notifications\Notification;
 use Filament\Actions\Action;
 use Filament\Resources\Pages\EditRecord;
-use Filament\Notifications\Notification;
 
-class EditUser extends EditRecord
+class EditMemberType extends EditRecord
 {
-    protected static string $resource = UserResource::class;
-
-    public bool $isActive;
-
-    public function mount($record): void
-    {
-        parent::mount($record);
-        $this->isActive = $this->record->state_id == 1;
-    }
+    protected static string $resource = MemberTypeResource::class;
 
     public function getTitle(): string
     {
-        return 'Editar Empleado: ' . $this->record->nombre . ' ' . $this->record->apellido;
+        return 'Editar tipo de socio: ' . $this->record->nombre;
     }
 
     protected function getSavedNotification(): ?Notification
     {
         return Notification::make()
-            ->title('Empleado editado correctamente')
+            ->title('Tipo de socio editado correctamente')
             ->success();
     }
 
@@ -36,10 +28,10 @@ class EditUser extends EditRecord
     {
         return [
             DeleteAction::make()
-                ->label('Eliminar Empleado')
-                ->modalHeading('¿Eliminar Empleado?')
+                ->label('Eliminar tipo de socio')
+                ->modalHeading('¿Eliminar tipo de socio?')
                 ->modalDescription('¡Esta accion no tiene vuelta atras!')
-                ->successNotificationTitle('Empleado eliminado correctamente.'),
+                ->successNotificationTitle('Tipo de socio eliminado correctamente.'),
         ];
     }
 

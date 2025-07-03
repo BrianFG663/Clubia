@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Institution extends Model
 {
     use HasFactory;
-    
+
     protected $fillable = [
         'nombre',
         'direccion',
@@ -22,7 +22,7 @@ class Institution extends Model
         return $this->hasMany(Activity::class);
     }
 
-    public function memberTypes(): HasMany
+    public function memberTypes()
     {
         return $this->hasMany(MemberType::class);
     }
@@ -31,6 +31,4 @@ class Institution extends Model
     {
         return $this->hasMany(Invoice::class);
     }
-
-
 }

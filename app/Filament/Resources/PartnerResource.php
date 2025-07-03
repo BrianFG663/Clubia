@@ -19,7 +19,7 @@ class PartnerResource extends Resource
 {
     protected static ?string $model = Partner::class;
     protected static ?string $navigationLabel = 'Socios';
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-identification';
 
     public static function form(Form $form): Form
     {
@@ -27,15 +27,22 @@ class PartnerResource extends Resource
         return $form->schema([
             Forms\Components\TextInput::make('nombre')->required(),
             Forms\Components\TextInput::make('apellido')->required(),
-            Forms\Components\TextInput::make('dni')->required()
+            Forms\Components\TextInput::make('dni')
+                ->label('DNI')
+                ->required()
                 ->rule(function (callable $get) {
                     return function (string $attribute, $value, \Closure $fail) use ($get) {
-                        $responsable = \App\Models\Partner::where('dni', $value)->first();
-                        if ($responsable) {
-                            $fail('Documento ya registrado como socio.');
+                        $idActual = $get('id');
+                        $dniExistente = \App\Models\Partner::where('dni', $value)
+                            ->when($idActual, fn($query) => $query->where('id', '!=', $idActual))
+                            ->exists();
+
+                        if ($dniExistente) {
+                            $fail('El DNI ya está registrado por otro socio.');
                         }
                     };
                 }),
+
 
             Forms\Components\Select::make('state_id')
                 ->label('Estado')
@@ -49,18 +56,26 @@ class PartnerResource extends Resource
             Forms\Components\TextInput::make('telefono')->required()
                 ->rule(function (callable $get) {
                     return function (string $attribute, $value, \Closure $fail) use ($get) {
-                        $responsable = \App\Models\Partner::where('telefono', $value)->first();
-                        if ($responsable) {
-                            $fail('Numero celular ya vinculado a otro socio.');
+                        $idActual = $get('id');
+                        $telefonoExistente = \App\Models\Partner::where('telefono', $value)
+                            ->when($idActual, fn($query) => $query->where('id', '!=', $idActual))
+                            ->exists();
+
+                        if ($telefonoExistente) {
+                            $fail('Telefono ya vinculado con otro socio.');
                         }
                     };
                 }),
-            Forms\Components\TextInput::make('email')->email()->required()
+            Forms\Components\TextInput::make('email')->required()
                 ->rule(function (callable $get) {
                     return function (string $attribute, $value, \Closure $fail) use ($get) {
-                        $responsable = \App\Models\Partner::where('email', $value)->first();
-                        if ($responsable) {
-                            $fail('Correo electronico ya vinculado a otro socio.');
+                        $idActual = $get('id');
+                        $emailExistente = \App\Models\Partner::where('email', $value)
+                            ->when($idActual, fn($query) => $query->where('id', '!=', $idActual))
+                            ->exists();
+
+                        if ($emailExistente) {
+                            $fail('Correo electronico ya vinculado con otro socio.');
                         }
                     };
                 }),
@@ -81,7 +96,7 @@ class PartnerResource extends Resource
                         }
                         $responsable = \App\Models\Partner::where('dni', $value)->first();
                         if (!$responsable) {
-                            $fail('No existe un partner con ese DNI.');
+                            $fail('No existe un socio con ese DNI.');
                         }
                     };
                 })

@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Filament\Resources\UserResource\Pages;
+namespace App\Filament\Resources\ActivityResource\Pages;
 
-use App\Filament\Resources\UserResource;
+use App\Filament\Resources\ActivityResource;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
 
-class CreateUser extends CreateRecord
+class CreateActivity extends CreateRecord
 {
-    protected static string $resource = UserResource::class;
+    protected static string $resource = ActivityResource::class;
 
     public function getTitle(): string
     {
-        return 'Crear un empleado nuevo.';
+        return 'Crear un actividad nueva.';
     }
 
     protected function getRedirectUrl(): string
@@ -24,7 +24,7 @@ class CreateUser extends CreateRecord
     protected function getSavedNotification(): ?Notification
     {
         return Notification::make()
-            ->title('Empleado creado correctamente.')
+            ->title('Actividad creada correctamente.')
             ->success();
     }
 
@@ -32,11 +32,11 @@ class CreateUser extends CreateRecord
     {
         return [
             Action::make('submit')
-                ->label('Guardar empleado')
+                ->label('Guardar actividad')
                 ->submit('form'),
 
             Action::make('submitAndCreateAnother')
-                ->label('Guardar y crear otro')
+                ->label('Guardar y crear otra')
                 ->submit('form')
                 ->action(fn () => $this->submitAndCreateAnother()),
 
@@ -51,16 +51,10 @@ class CreateUser extends CreateRecord
         $this->submit();
 
         Notification::make()
-            ->title('Empleado creado correctamente.')
+            ->title('Actividad creada correctamente.')
             ->success()
             ->send();
 
         $this->redirect($this->getRedirectUrl('create'));
-    }
-
-    protected function afterCreate(): void
-    {
-        $user = $this->record;
-        $user->assignRole('admin');
     }
 }

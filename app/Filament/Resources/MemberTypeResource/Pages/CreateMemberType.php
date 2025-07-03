@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Filament\Resources\UserResource\Pages;
+namespace App\Filament\Resources\MemberTypeResource\Pages;
 
-use App\Filament\Resources\UserResource;
+use App\Filament\Resources\MemberTypeResource;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
 
-class CreateUser extends CreateRecord
+class CreateMemberType extends CreateRecord
 {
-    protected static string $resource = UserResource::class;
+    protected static string $resource = MemberTypeResource::class;
 
     public function getTitle(): string
     {
-        return 'Crear un empleado nuevo.';
+        return 'Crear un tipo de socio nuevo.';
     }
 
     protected function getRedirectUrl(): string
@@ -24,7 +24,7 @@ class CreateUser extends CreateRecord
     protected function getSavedNotification(): ?Notification
     {
         return Notification::make()
-            ->title('Empleado creado correctamente.')
+            ->title('Tipo de socio creado correctamente.')
             ->success();
     }
 
@@ -32,7 +32,7 @@ class CreateUser extends CreateRecord
     {
         return [
             Action::make('submit')
-                ->label('Guardar empleado')
+                ->label('Guardar tipo de socio')
                 ->submit('form'),
 
             Action::make('submitAndCreateAnother')
@@ -51,16 +51,10 @@ class CreateUser extends CreateRecord
         $this->submit();
 
         Notification::make()
-            ->title('Empleado creado correctamente.')
+            ->title('Tipo de socio creado correctamente.')
             ->success()
             ->send();
 
         $this->redirect($this->getRedirectUrl('create'));
-    }
-
-    protected function afterCreate(): void
-    {
-        $user = $this->record;
-        $user->assignRole('admin');
     }
 }

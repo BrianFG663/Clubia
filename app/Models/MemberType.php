@@ -9,9 +9,9 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class MemberType extends Model
 {
-    use HasFactory; 
-    
-        protected $fillable = [
+    use HasFactory;
+
+    protected $fillable = [
         'institution_id',
         'nombre',
         'arancel',
@@ -22,8 +22,8 @@ class MemberType extends Model
         return $this->belongsToMany(Partner::class);
     }
 
-    public function institution(): HasOne
+    public function institution()
     {
-        return $this->hasOne(Institution::class);
+        return $this->belongsTo(Institution::class);
     }
 }

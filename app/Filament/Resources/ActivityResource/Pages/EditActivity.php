@@ -1,34 +1,26 @@
 <?php
 
-namespace App\Filament\Resources\UserResource\Pages;
+namespace App\Filament\Resources\ActivityResource\Pages;
 
-use App\Filament\Resources\UserResource;
+use App\Filament\Resources\ActivityResource;
 use Filament\Actions\DeleteAction;
-use Filament\Actions\Action;
-use Filament\Resources\Pages\EditRecord;
 use Filament\Notifications\Notification;
+use Filament\Resources\Pages\EditRecord;
+use Filament\Actions\Action;
 
-class EditUser extends EditRecord
+class EditActivity extends EditRecord
 {
-    protected static string $resource = UserResource::class;
-
-    public bool $isActive;
-
-    public function mount($record): void
-    {
-        parent::mount($record);
-        $this->isActive = $this->record->state_id == 1;
-    }
+    protected static string $resource = ActivityResource::class;
 
     public function getTitle(): string
     {
-        return 'Editar Empleado: ' . $this->record->nombre . ' ' . $this->record->apellido;
+        return 'Editar actividad: ' . $this->record->nombre;
     }
 
     protected function getSavedNotification(): ?Notification
     {
         return Notification::make()
-            ->title('Empleado editado correctamente')
+            ->title('Actividad editada correctamente')
             ->success();
     }
 
@@ -36,10 +28,10 @@ class EditUser extends EditRecord
     {
         return [
             DeleteAction::make()
-                ->label('Eliminar Empleado')
-                ->modalHeading('¿Eliminar Empleado?')
+                ->label('Eliminar actividad')
+                ->modalHeading('¿Eliminar actividad?')
                 ->modalDescription('¡Esta accion no tiene vuelta atras!')
-                ->successNotificationTitle('Empleado eliminado correctamente.'),
+                ->successNotificationTitle('Actividad eliminada correctamente.'),
         ];
     }
 

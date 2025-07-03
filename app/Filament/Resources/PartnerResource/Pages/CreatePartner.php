@@ -1,19 +1,20 @@
 <?php
 
-namespace App\Filament\Resources\MinorResource\Pages;
+namespace App\Filament\Resources\PartnerResource\Pages;
 
-use App\Filament\Resources\MinorResource;
+use App\Filament\Resources\PartnerResource;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
 
-class CreateMinor extends CreateRecord
+
+class CreatePartner extends CreateRecord
 {
-    protected static string $resource = MinorResource::class;
+    protected static string $resource = PartnerResource::class;
 
     public function getTitle(): string
     {
-        return 'Nuevo Socio Menor';
+        return 'Creae nuevo socio';
     }
 
     protected function getRedirectUrl(): string
@@ -24,7 +25,7 @@ class CreateMinor extends CreateRecord
     protected function getSavedNotification(): ?Notification
     {
         return Notification::make()
-            ->title('Socio menor correctamente.')
+            ->title('Empleado creado correctamente.')
             ->success();
     }
 
@@ -32,7 +33,7 @@ class CreateMinor extends CreateRecord
     {
         return [
             Action::make('submit')
-                ->label('Guardar menor')
+                ->label('Guardar empleado')
                 ->submit('form'),
 
             Action::make('submitAndCreateAnother')
@@ -48,10 +49,11 @@ class CreateMinor extends CreateRecord
 
     public function submitAndCreateAnother()
     {
+        // Guardamos el formulario
         $this->submit();
 
         Notification::make()
-            ->title('Socio menor creado correctamente. Ahora puede crear otro.')
+            ->title('Empleado creado correctamente. Ahora puede crear otro.')
             ->success()
             ->send();
 

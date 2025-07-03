@@ -23,9 +23,10 @@ return new class extends Migration
             $table->string('ciudad');
             $table->string('telefono')->unique()->nullable();
             $table->timestamp('email_verified_at')->nullable();
-            $table->boolean('menor');
-            $table->boolean('jefe_grupo');
-            $table->integer('responsable_id');
+            $table->boolean('menor')->default(0);
+            $table->boolean('jefe_grupo')->default(0);
+            $table->unsignedBigInteger('responsable_id')->nullable();
+            $table->foreign('responsable_id')->references('id')->on('partners')->onDelete('set null');
             $table->rememberToken();
             $table->timestamps();
         });

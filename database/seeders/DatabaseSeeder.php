@@ -25,19 +25,17 @@ class DatabaseSeeder extends Seeder
         CategorySeeder::class,
         InstitutionSeeder::class,
         SupplierSeeder::class,
-        MinorSeeder::class,
-        MemberTypeSeeder::class,
-        MemberTypeUserSeeder::class,
+       /* MemberTypeSeeder::class, */
+       /* MemberTypeUserSeeder::class,*/
         ActivitySeeder::class,
         SubActivitySeeder::class,
-        SubActivityUserSeeder::class,
-        FeeSeeder::class,
+       /* SubActivityUserSeeder::class, */
         SaleSeeder::class,
         ProductSeeder::class,
         SaleDetailSeeder::class,
-        InvoiceSeeder::class,
-        PaymentSeeder::class,
-        PaymentInvoiceSeeder::class,
+       /* InvoiceSeeder::class, */
+       /* PaymentSeeder::class, */
+       /* PaymentInvoiceSeeder::class, */
         OrderSeeder::class,
         OrderDetailSeeder::class,
     ]);

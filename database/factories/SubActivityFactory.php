@@ -21,6 +21,7 @@ class SubActivityFactory extends Factory
             'nombre' => $this->faker->unique()->words(2, true), 
             'descripcion' => $this->faker->sentence(),         
             'activity_id' => Activity::inRandomOrder()->first()?->id,
+            'monto' => $this->faker->randomFloat(2, 1000, 5000), 
             'created_at' => now(),
             'updated_at' => now(),
         ];

@@ -21,7 +21,7 @@ class UserResource extends Resource implements HasShieldPermissions
 
 
     protected static ?string $model = User::class;
-    protected static ?string $navigationLabel = 'Socios';
+    protected static ?string $navigationLabel = 'Empleados de la institucion';
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
 
@@ -31,59 +31,6 @@ class UserResource extends Resource implements HasShieldPermissions
             ->schema([
                 Forms\Components\TextInput::make('nombre')->required(),
                 Forms\Components\TextInput::make('apellido')->required(),
-                Forms\Components\TextInput::make('dni')
-                    ->label('DNI')
-                    ->required()
-                    ->rule(function (callable $get) {
-                        return function (string $attribute, $value, \Closure $fail) use ($get) {
-                            $recordId = $get('id');
-
-                            $dniEnUsers = \App\Models\User::where('dni', $value)
-                                ->when($recordId, fn($query) => $query->where('id', '!=', $recordId))
-                                ->exists();
-
-                            $dniEnMinors = \App\Models\Minor::where('dni', $value)->exists();
-
-                            if ($dniEnUsers || $dniEnMinors) {
-                                $fail('El DNI ya está registrado por otro usuario o menor.');
-                            }
-                        };
-                    }),
-                Forms\Components\DatePicker::make('fecha_nacimiento')
-                    ->label('Fecha de nacimiento')
-                    ->required()
-                    ->rule(function (callable $get) {
-                        return function (string $attribute, $value, \Closure $fail) {
-                            if (!$value) {
-                                return; // si no hay valor, pasa required lo controla
-                            }
-
-                            $fecha = Carbon::parse($value)->timezone('America/Argentina/Buenos_Aires');
-                            $mayorEdadLimite = Carbon::now('America/Argentina/Buenos_Aires')->subYears(18);
-
-                            if ($fecha->greaterThan($mayorEdadLimite)) {
-                                $fail('El usuario debe ser mayor de edad (18 años o más).');
-                            }
-                        };
-                    }),
-                Forms\Components\TextInput::make('direccion'),
-                Forms\Components\TextInput::make('ciudad'),
-                Forms\Components\TextInput::make('telefono')
-                    ->label('Teléfono')
-                    ->required()
-                    ->rule(function (callable $get) {
-                        return function (string $attribute, $value, \Closure $fail) use ($get) {
-                            $recordId = $get('id');
-
-                            $telefonoDuplicado = \App\Models\User::where('telefono', $value)
-                                ->when($recordId, fn($query) => $query->where('id', '!=', $recordId))
-                                ->exists();
-
-                            if ($telefonoDuplicado) {
-                                $fail('El teléfono ya está registrado por otro usuario.');
-                            }
-                        };
-                    }),
                 Forms\Components\TextInput::make('email')
                     ->label('Email')
                     ->email()
@@ -118,11 +65,7 @@ class UserResource extends Resource implements HasShieldPermissions
             ->columns([
                 Tables\Columns\TextColumn::make('nombre')->searchable(),
                 Tables\Columns\TextColumn::make('apellido')->searchable(),
-                Tables\Columns\TextColumn::make('dni'),
                 Tables\Columns\TextColumn::make('email'),
-                Tables\Columns\TextColumn::make('state.nombre')
-                    ->label('Estado')
-                    ->searchable(),
             ])
             ->filters([])
             ->actions([

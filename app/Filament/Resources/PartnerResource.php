@@ -1,0 +1,208 @@
+<?php
+
+namespace App\Filament\Resources;
+
+use App\Filament\Resources\PartnerResource\Pages;
+use App\Filament\Resources\PartnerResource\RelationManagers;
+use App\Models\Partner;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Carbon;
+use Illuminate\Validation\ValidationException;
+
+class PartnerResource extends Resource
+{
+    protected static ?string $model = Partner::class;
+    protected static ?string $navigationLabel = 'Socios';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    public static function form(Form $form): Form
+    {
+
+        return $form->schema([
+            Forms\Components\TextInput::make('nombre')->required(),
+            Forms\Components\TextInput::make('apellido')->required(),
+            Forms\Components\TextInput::make('dni')->required()
+                ->rule(function (callable $get) {
+                    return function (string $attribute, $value, \Closure $fail) use ($get) {
+                        $responsable = \App\Models\Partner::where('dni', $value)->first();
+                        if ($responsable) {
+                            $fail('Documento ya registrado como socio.');
+                        }
+                    };
+                }),
+
+            Forms\Components\Select::make('state_id')
+                ->label('Estado')
+                ->relationship('state', 'nombre')
+                ->required()
+                ->searchable(false)
+                ->preload(false),
+
+            Forms\Components\TextInput::make('direccion')->required(),
+            Forms\Components\TextInput::make('ciudad')->required(),
+            Forms\Components\TextInput::make('telefono')->required()
+                ->rule(function (callable $get) {
+                    return function (string $attribute, $value, \Closure $fail) use ($get) {
+                        $responsable = \App\Models\Partner::where('telefono', $value)->first();
+                        if ($responsable) {
+                            $fail('Numero celular ya vinculado a otro socio.');
+                        }
+                    };
+                }),
+            Forms\Components\TextInput::make('email')->email()->required()
+                ->rule(function (callable $get) {
+                    return function (string $attribute, $value, \Closure $fail) use ($get) {
+                        $responsable = \App\Models\Partner::where('email', $value)->first();
+                        if ($responsable) {
+                            $fail('Correo electronico ya vinculado a otro socio.');
+                        }
+                    };
+                }),
+
+            Forms\Components\DatePicker::make('fecha_nacimiento')
+                ->label('Fecha de nacimiento')
+                ->required()
+                ->reactive(),
+
+            Forms\Components\TextInput::make('dni_responsable')
+                ->label('DNI del Responsable')
+                ->dehydrated(false)
+                ->reactive()
+                ->rule(function (callable $get) {
+                    return function (string $attribute, $value, \Closure $fail) use ($get) {
+                        if (!$value) {
+                            return;
+                        }
+                        $responsable = \App\Models\Partner::where('dni', $value)->first();
+                        if (!$responsable) {
+                            $fail('No existe un partner con ese DNI.');
+                        }
+                    };
+                })
+                ->afterStateUpdated(function ($state, callable $set) {
+                    if (!$state) {
+                        $set('responsable_id', null);
+                        return;
+                    }
+
+                    $responsable = \App\Models\Partner::where('dni', $state)->first();
+
+                    if ($responsable) {
+                        if ($responsable->responsable_id) {
+                            $set('responsable_id', $responsable->responsable_id);
+                        } else {
+                            $set('responsable_id', $responsable->id);
+                        }
+
+                        if (!$responsable->jefe_grupo) {
+                            $responsable->jefe_grupo = true;
+                            $responsable->save();
+                        }
+                    } else {
+                        $set('responsable_id', null);
+                    }
+                })
+                ->helperText(function ($state) {
+                    if (!$state) {
+                        return null;
+                    }
+
+                    $responsable = \App\Models\Partner::where('dni', $state)->first();
+
+                    if ($responsable) {
+                        if ($responsable->responsable_id) {
+                            $respRelacionado = \App\Models\Partner::find($responsable->responsable_id);
+                            if ($respRelacionado) {
+                                return "¡ATENCION! esta persona esta en un grupo familiar a cargo de {$respRelacionado->nombre} {$respRelacionado->apellido}, sera agregado a ese grupo familiar";
+                            }
+                        }
+                        return "¡ATENCION! Esta persona estara a cargo de: {$responsable->nombre} {$responsable->apellido}";
+                    }
+
+                    return null;
+                }),
+
+            Forms\Components\Hidden::make('responsable_id')
+                ->dehydrated()
+                ->required(false),
+
+
+        ]);
+    }
+
+    public static function mutateFormDataBeforeCreate(array $data): array
+    {
+        if (!empty($data['responsable_id'])) {
+            $responsable = \App\Models\Partner::find($data['responsable_id']);
+
+            if ($responsable && !$responsable->jefe_grupo) {
+                $responsable->jefe_grupo = true;
+                $responsable->save();
+            }
+        }
+
+        return $data;
+    }
+
+
+    public static function table(Table $table): Table
+    {
+        return $table->columns([
+            Tables\Columns\TextColumn::make('nombre')
+                ->label('nombre')
+                ->searchable()
+                ->sortable(),
+
+            Tables\Columns\TextColumn::make('apellido')
+                ->label('apellido')
+                ->searchable()
+                ->sortable(),
+
+            Tables\Columns\TextColumn::make('dni')
+                ->label('DNI'),
+
+            Tables\Columns\TextColumn::make('direccion')
+                ->label('Dirección'),
+
+            Tables\Columns\TextColumn::make('telefono')
+                ->label('Teléfono'),
+
+            Tables\Columns\IconColumn::make('menor')
+                ->label('Menor de Edad')
+                ->boolean()
+                ->extraAttributes(['class' => 'text-center']),
+
+            Tables\Columns\TextColumn::make('responsable')
+                ->label('Responsable')
+                ->getStateUsing(function ($record) {
+                    return $record->responsable
+                        ? $record->responsable->nombre . ' ' . $record->responsable->apellido
+                        : '-';
+                }),
+
+        ]);
+    }
+
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListPartners::route('/'),
+            'create' => Pages\CreatePartner::route('/create'),
+            'edit' => Pages\EditPartner::route('/{record}/edit'),
+        ];
+    }
+}

@@ -13,7 +13,7 @@ class CreateUser extends CreateRecord
 
     public function getTitle(): string
     {
-        return 'Crear un socio nuevo.';
+        return 'Crear un empleado nuevo.';
     }
 
     protected function getRedirectUrl(): string
@@ -24,7 +24,7 @@ class CreateUser extends CreateRecord
     protected function getSavedNotification(): ?Notification
     {
         return Notification::make()
-            ->title('Socio creado correctamente.')
+            ->title('Empleado creado correctamente.')
             ->success();
     }
 
@@ -32,7 +32,7 @@ class CreateUser extends CreateRecord
     {
         return [
             Action::make('submit')
-                ->label('Guardar socio')
+                ->label('Guardar empleado')
                 ->submit('form'),
 
             Action::make('submitAndCreateAnother')
@@ -46,19 +46,15 @@ class CreateUser extends CreateRecord
         ];
     }
 
-    // Este método guarda el registro y redirige a crear otro nuevo
     public function submitAndCreateAnother()
     {
-        // Guardamos el formulario
         $this->submit();
 
-        // Notificación opcional
         Notification::make()
-            ->title('Socio creado correctamente. Ahora puede crear otro.')
+            ->title('Empleado creado correctamente. Ahora puede crear otro.')
             ->success()
             ->send();
 
-        // Redirige a la página de creación nuevamente para crear otro
         $this->redirect($this->getRedirectUrl('create'));
     }
 }

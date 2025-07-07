@@ -18,16 +18,22 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Filament\Navigation\NavigationItem;
 
 class AdminPanelProvider extends PanelProvider
 {
+
+
     public function panel(Panel $panel): Panel
     {
         return $panel
             ->default()
             ->id('admin')
             ->path('admin')
-            ->login()
+            ->brandLogo(fn() => view('filament.components.logo'))
+
+
+            ->login(\App\Filament\Pages\Auth\Login::class)
             ->colors([
                 'primary' => Color::Red,
             ])
@@ -40,6 +46,17 @@ class AdminPanelProvider extends PanelProvider
             ->widgets([
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
+            ])
+            ->navigationItems([
+                NavigationItem::make('Ventas')
+                    ->url('/mi-app/ventas') // Ruta Laravel o externa
+                    ->icon('heroicon-o-currency-dollar')
+                    ->sort(100), // Cambiá el orden si querés
+
+                NavigationItem::make('Reportes')
+                    ->url('/mi-app/ventasa') // Ruta con nombre
+                    ->icon('heroicon-o-chart-bar')
+                    ->sort(101),
             ])
             ->middleware([
                 EncryptCookies::class,

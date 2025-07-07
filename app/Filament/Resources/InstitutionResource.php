@@ -16,8 +16,11 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class InstitutionResource extends Resource
 {
     protected static ?string $model = Institution::class;
+        protected static ?string $navigationGroup = '🏛️Administración institucional';
+
     protected static ?string $navigationIcon = 'heroicon-o-building-library';
     protected static ?string $navigationLabel = 'Instituciones';
+    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {
@@ -70,7 +73,8 @@ class InstitutionResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                ->label('Modificar'),
             ]);
     }
 

@@ -22,7 +22,9 @@ class UserResource extends Resource implements HasShieldPermissions
 
     protected static ?string $model = User::class;
     protected static ?string $navigationLabel = 'Empleados de la institucion';
+    protected static ?string $navigationGroup = '🏛️Administración institucional';
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
+    protected static ?int $navigationSort = 2;
 
 
     public static function form(Form $form): Form
@@ -69,7 +71,8 @@ class UserResource extends Resource implements HasShieldPermissions
             ])
             ->filters([])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                ->label('Modificar'),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

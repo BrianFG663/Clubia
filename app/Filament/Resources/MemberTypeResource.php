@@ -19,6 +19,8 @@ class MemberTypeResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-adjustments-horizontal';
     protected static ?string $navigationLabel = 'Tipos de socio';
+        protected static ?string $navigationGroup = '👥Socios';
+    protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form
     {
@@ -38,8 +40,12 @@ class MemberTypeResource extends Resource
                         };
                     }),
 
-                Forms\Components\TextInput::make('arancel')->required()
-                    ->label('Precio del arancel'),
+                Forms\Components\TextInput::make('arancel')
+                    ->label('Precio del arancel')
+                    ->required()
+                    ->numeric()
+                    ->maxValue(2147483647),
+
 
                 Forms\Components\Select::make('institution_id')
                     ->label('Seleccione institucion')

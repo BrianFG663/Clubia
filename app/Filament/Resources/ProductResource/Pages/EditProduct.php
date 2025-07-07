@@ -1,26 +1,26 @@
 <?php
 
-namespace App\Filament\Resources\SubActivityResource\Pages;
+namespace App\Filament\Resources\ProductResource\Pages;
 
-use App\Filament\Resources\SubActivityResource;
+use App\Filament\Resources\ProductResource;
 use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
 
-class EditSubActivity extends EditRecord
+class EditProduct extends EditRecord
 {
-    protected static string $resource = SubActivityResource::class;
+    protected static string $resource = ProductResource::class;
 
-     public function getTitle(): string
+    public function getTitle(): string
     {
-        return 'Editar sub-actividad: ' . $this->record->nombre;
+        return 'Editar producto: ' . $this->record->nombre;
     }
 
     protected function getSavedNotification(): ?Notification
     {
         return Notification::make()
-            ->title('Sub-ctividad editada correctamente')
+            ->title('Producto editada correctamente')
             ->success();
     }
 
@@ -28,10 +28,10 @@ class EditSubActivity extends EditRecord
     {
         return [
             DeleteAction::make()
-                ->label('Eliminar sub-actividad')
-                ->modalHeading('¿Eliminar sub-actividad?')
+                ->label('Eliminar producto')
+                ->modalHeading('¿Eliminar producto?')
                 ->modalDescription('¡Esta accion no tiene vuelta atras!')
-                ->successNotificationTitle('Sub-Actividad eliminada correctamente.'),
+                ->successNotificationTitle('Producto eliminada correctamente.'),
         ];
     }
 

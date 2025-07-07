@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Filament\Resources\SubActivityResource\Pages;
+namespace App\Filament\Resources\ProductResource\Pages;
 
-use App\Filament\Resources\SubActivityResource;
+use App\Filament\Resources\ProductResource;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
 
-class CreateSubActivity extends CreateRecord
+class CreateProduct extends CreateRecord
 {
-    protected static string $resource = SubActivityResource::class;
+    protected static string $resource = ProductResource::class;
 
     public function getTitle(): string
     {
-        return 'Crear un Sub-actividad nueva.';
+        return 'Crear un producto nuevo.';
     }
 
     protected function getRedirectUrl(): string
@@ -24,7 +24,7 @@ class CreateSubActivity extends CreateRecord
     protected function getSavedNotification(): ?Notification
     {
         return Notification::make()
-            ->title('Sub-actividad creada correctamente.')
+            ->title('Producto creada correctamente.')
             ->success();
     }
 
@@ -32,7 +32,7 @@ class CreateSubActivity extends CreateRecord
     {
         return [
             Action::make('submit')
-                ->label('Guardar actividad')
+                ->label('Guardar producto')
                 ->submit('form'),
 
             Action::make('submitAndCreateAnother')
@@ -51,7 +51,7 @@ class CreateSubActivity extends CreateRecord
         $this->submit();
 
         Notification::make()
-            ->title('Sub-actividad creada correctamente.')
+            ->title('Producto creado correctamente.')
             ->success()
             ->send();
 

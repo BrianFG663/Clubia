@@ -17,7 +17,11 @@ class SubActivityResource extends Resource
 {
     protected static ?string $model = SubActivity::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-sparkles';
+    protected static ?int $navigationSort = 6;
+            protected static ?string $navigationGroup = '📅Actividades';
+
+    protected static ?string $navigationLabel = 'Sub-activivdades';
 
     public static function form(Form $form): Form
     {
@@ -25,21 +29,25 @@ class SubActivityResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('nombre')->required()
                     ->required()
-                        ->rule(function (callable $get) {
-                            return function (string $attribute, $value, \Closure $fail) use ($get) {
-                                $idActual = $get('id');
+                    ->rule(function (callable $get) {
+                        return function (string $attribute, $value, \Closure $fail) use ($get) {
+                            $idActual = $get('id');
 
-                                $nombreExistente = \App\Models\SubActivity::where('nombre', $value)
-                                    ->when($idActual, fn($query) => $query->where('id', '!=', $idActual))
-                                    ->exists();
+                            $nombreExistente = \App\Models\SubActivity::where('nombre', $value)
+                                ->when($idActual, fn($query) => $query->where('id', '!=', $idActual))
+                                ->exists();
 
-                                if ($nombreExistente) {
-                                    $fail('Nombre ya vinculado con otra Sub-Actividad.');
-                                }
-                            };
-                        }),
-                Forms\Components\TextInput::make('descripción')->required(),
-                Forms\Components\TextInput::make('monto')->required(),
+                            if ($nombreExistente) {
+                                $fail('Nombre ya vinculado con otra Sub-Actividad.');
+                            }
+                        };
+                    }),
+                Forms\Components\TextInput::make('descripcion')->required(),
+                Forms\Components\TextInput::make('monto')
+                    ->required()
+                    ->numeric()
+                    ->maxValue(2147483647)
+
 
             ]);
     }
@@ -48,13 +56,33 @@ class SubActivityResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('nombre')
+                    ->label('nombre')
+                    ->searchable()
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('descripcion')
+                    ->label('descripcion')
+                    ->searchable()
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('monto')
+                    ->label('Precio del arancel')
+                    ->formatStateUsing(fn($state) => '$' . number_format($state, 2, ',', '.'))
+                    ->searchable()
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('activity.nombre')
+                    ->label('Actividad')
+                    ->sortable()
+                    ->searchable(),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                ->label('Modificar'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

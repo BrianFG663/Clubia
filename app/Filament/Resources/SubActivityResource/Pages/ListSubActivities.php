@@ -13,7 +13,13 @@ class ListSubActivities extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+            ->label('Crear Sub-actividad')
         ];
+    }
+
+    public function getTitle(): string
+    {
+        return 'Sub-actividades registradas';
     }
 }

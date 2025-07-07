@@ -4,13 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Activity extends Model
 {
-    Use HasFactory; 
-    
+    use HasFactory;
+
     protected $fillable = [
         'nombre',
         'institution_id',
@@ -22,10 +23,8 @@ class Activity extends Model
         return $this->hasMany(SubActivity::class);
     }
 
-    public function institution(): HasOne
+    public function institution(): BelongsTo
     {
-        return $this->hasOne(Institution::class);
+        return $this->belongsTo(Institution::class);
     }
-
-   
 }

@@ -16,6 +16,7 @@ class SubActivity extends Model
         'activity_id',
         'nombre',
         'descripcion',
+        'monto'
     ];
 
     public function partners(): BelongsToMany

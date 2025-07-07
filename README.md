@@ -10,3 +10,5 @@ php artisan shield:generate --resource=ActivityResource
 php artisan shield:generate --resource=InstitutionResource
 php artisan shield:generate --resource=SubActivityResource
 php artisan shield:generate --resource=MemberTypeResource
+php artisan shield:generate --resource=ProductResource
+php artisan shield:generate --resource=CategoryResource

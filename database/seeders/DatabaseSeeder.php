@@ -20,22 +20,23 @@ class DatabaseSeeder extends Seeder
         StateSeeder::class,  
         ShieldSeeder::class,       
         RolesSeeder::class,    
-        UserSeeder::class,   
+        UserSeeder::class, 
+        PartnerSeeder::class,  
         PaymentTypeSeeder::class,    
         CategorySeeder::class,
         InstitutionSeeder::class,
         SupplierSeeder::class,
-       /* MemberTypeSeeder::class, */
-       /* MemberTypeUserSeeder::class,*/
+        MemberTypeSeeder::class,
+        MemberTypePartnerSeeder::class,
         ActivitySeeder::class,
         SubActivitySeeder::class,
-       /* SubActivityUserSeeder::class, */
+        PartnerSubActivitySeeder::class,
         SaleSeeder::class,
         ProductSeeder::class,
         SaleDetailSeeder::class,
-       /* InvoiceSeeder::class, */
-       /* PaymentSeeder::class, */
-       /* PaymentInvoiceSeeder::class, */
+        PaymentSeeder::class,
+        InvoiceSeeder::class,  
+        PaymentInvoiceSeeder::class, 
         OrderSeeder::class,
         OrderDetailSeeder::class,
     ]);

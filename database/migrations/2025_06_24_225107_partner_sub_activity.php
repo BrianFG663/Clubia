@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('partner_sub_activity', function (Blueprint $table) {
             $table->id();
             $table->foreignId('partner_id')->constrained()->onDelete('cascade');
-            $table->foreignId('sub_activity')->constrained()->onDelete('cascade');
+            $table->foreignId('sub_activity_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Partner;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Payment;
 use App\Models\User;
@@ -20,12 +21,10 @@ class PaymentFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => User::inRandomOrder()->value('id'),
-            'payment_type_id' => PaymentType::inRandomOrder()->value('id'),
-            'monto' => $this->faker->randomFloat(2, 100, 1000), 
-            'fecha_pago' => $this->faker->date(),
-            'created_at' => now(),
-            'updated_at' => now(),
+            'partner_id' => Partner::inRandomOrder()->first()->id,
+            'payment_type_id' => PaymentType::inRandomOrder()->first()->id,
+            'monto' => $this->faker->randomFloat(2, 100, 10000), 
+            'fecha_pago' => $this->faker->dateTimeBetween('-1 year', 'now')->format('Y-m-d'),
         ];
     }
 }

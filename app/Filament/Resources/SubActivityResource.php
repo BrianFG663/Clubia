@@ -6,6 +6,7 @@ use App\Filament\Resources\SubActivityResource\Pages;
 use App\Filament\Resources\SubActivityResource\RelationManagers;
 use App\Models\SubActivity;
 use Filament\Forms;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -19,7 +20,7 @@ class SubActivityResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-sparkles';
     protected static ?int $navigationSort = 6;
-            protected static ?string $navigationGroup = '📅Actividades';
+            protected static ?string $navigationGroup = '📅Administracion de Actividades';
 
     protected static ?string $navigationLabel = 'Sub-activivdades';
 
@@ -29,6 +30,10 @@ class SubActivityResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('nombre')->required()
                     ->required()
+                    ->afterStateHydrated(function (TextInput $component, $state) {
+                        $component->state(ucwords(strtolower($state)));
+                    })
+                    ->dehydrateStateUsing(fn($state) => ucwords(strtolower($state)))
                     ->rule(function (callable $get) {
                         return function (string $attribute, $value, \Closure $fail) use ($get) {
                             $idActual = $get('id');
@@ -42,7 +47,12 @@ class SubActivityResource extends Resource
                             }
                         };
                     }),
-                Forms\Components\TextInput::make('descripcion')->required(),
+                Forms\Components\TextInput::make('descripcion')
+                ->required()
+                ->afterStateHydrated(function (TextInput $component, $state) {
+                        $component->state(ucwords(strtolower($state)));
+                    })
+                    ->dehydrateStateUsing(fn($state) => ucwords(strtolower($state))),
                 Forms\Components\TextInput::make('monto')
                     ->required()
                     ->numeric()
@@ -59,23 +69,27 @@ class SubActivityResource extends Resource
                 Tables\Columns\TextColumn::make('nombre')
                     ->label('nombre')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->alignCenter(),
 
                 Tables\Columns\TextColumn::make('descripcion')
                     ->label('descripcion')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->alignCenter(),
 
                 Tables\Columns\TextColumn::make('monto')
                     ->label('Precio del arancel')
                     ->formatStateUsing(fn($state) => '$' . number_format($state, 2, ',', '.'))
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->alignCenter(),
 
                 Tables\Columns\TextColumn::make('activity.nombre')
                     ->label('Actividad')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->alignCenter(),
             ])
             ->filters([
                 //
@@ -86,8 +100,11 @@ class SubActivityResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->label('Eliminar seleccionados')
+                        ->icon('heroicon-o-trash'),
+                ])
+                ->label('Acciones en grupo'),
             ]);
     }
 

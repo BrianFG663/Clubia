@@ -6,6 +6,7 @@ use App\Filament\Resources\InstitutionResource\Pages;
 use App\Filament\Resources\InstitutionResource\RelationManagers;
 use App\Models\Institution;
 use Filament\Forms;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -16,7 +17,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class InstitutionResource extends Resource
 {
     protected static ?string $model = Institution::class;
-        protected static ?string $navigationGroup = '🏛️Administración institucional';
+    protected static ?string $navigationGroup = '🏛️Administración Institucional';
 
     protected static ?string $navigationIcon = 'heroicon-o-building-library';
     protected static ?string $navigationLabel = 'Instituciones';
@@ -26,9 +27,21 @@ class InstitutionResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('nombre')->required(),
-                Forms\Components\TextInput::make('ciudad')->required(),
-                Forms\Components\TextInput::make('direccion')->required(),
+                Forms\Components\TextInput::make('nombre')->required()
+                    ->afterStateHydrated(function (TextInput $component, $state) {
+                        $component->state(ucwords(strtolower($state)));
+                    })
+                    ->dehydrateStateUsing(fn($state) => ucwords(strtolower($state))),
+                Forms\Components\TextInput::make('ciudad')->required()
+                    ->afterStateHydrated(function (TextInput $component, $state) {
+                        $component->state(ucwords(strtolower($state)));
+                    })
+                    ->dehydrateStateUsing(fn($state) => ucwords(strtolower($state))),
+                Forms\Components\TextInput::make('direccion')->required()
+                    ->afterStateHydrated(function (TextInput $component, $state) {
+                        $component->state(ucwords(strtolower($state)));
+                    })
+                    ->dehydrateStateUsing(fn($state) => ucwords(strtolower($state))),
                 Forms\Components\TextInput::make('telefono')
                     ->required()
                     ->rule(function (callable $get) {
@@ -53,20 +66,24 @@ class InstitutionResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('nombre')
-                ->label('nombre')
-                ->searchable(),
+                    ->label('nombre')
+                    ->searchable()
+                    ->alignCenter(),
 
                 Tables\Columns\TextColumn::make('ciudad')
-                ->label('ciudad')
-                ->searchable(),
+                    ->label('ciudad')
+                    ->searchable()
+                    ->alignCenter(),
 
                 Tables\Columns\TextColumn::make('direccion')
-                ->label('direccion')
-                ->searchable(),
+                    ->label('direccion')
+                    ->searchable()
+                    ->alignCenter(),
 
                 Tables\Columns\TextColumn::make('telefono')
-                ->label('telefono')
-                ->searchable(),
+                    ->label('telefono')
+                    ->searchable()
+                    ->alignCenter(),
                 //
             ])
             ->filters([
@@ -74,7 +91,15 @@ class InstitutionResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                ->label('Modificar'),
+                    ->label('Modificar'),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->label('Eliminar seleccionados')
+                        ->icon('heroicon-o-trash'),
+                ])
+                ->label('Acciones en grupo'),
             ]);
     }
 

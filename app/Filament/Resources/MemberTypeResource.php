@@ -19,7 +19,7 @@ class MemberTypeResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-adjustments-horizontal';
     protected static ?string $navigationLabel = 'Tipos de socio';
-        protected static ?string $navigationGroup = '👥Socios';
+        protected static ?string $navigationGroup = '👥Administracion de Socios';
     protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form
@@ -64,18 +64,21 @@ class MemberTypeResource extends Resource
                 Tables\Columns\TextColumn::make('nombre')
                     ->label('Nombre')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->alignCenter(),
 
                 Tables\Columns\TextColumn::make('arancel')
                     ->label('Precio del arancel')
                     ->formatStateUsing(fn($state) => '$' . number_format($state, 2, ',', '.'))
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->alignCenter(),
 
                 Tables\Columns\TextColumn::make('institution.nombre')
                     ->label('Institucion')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->alignCenter(),
 
             ])
 
@@ -83,12 +86,16 @@ class MemberTypeResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->label('Modificar'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->label('Eliminar seleccionados')
+                        ->icon('heroicon-o-trash'),
+                ])
+                ->label('Acciones en grupo'),
             ]);
     }
 

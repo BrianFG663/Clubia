@@ -6,6 +6,7 @@ use App\Filament\Resources\PartnerResource\Pages;
 use App\Filament\Resources\PartnerResource\RelationManagers;
 use App\Models\Partner;
 use Filament\Forms;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -19,7 +20,7 @@ class PartnerResource extends Resource
 {
     protected static ?string $model = Partner::class;
     protected static ?string $navigationLabel = 'Socios';
-    protected static ?string $navigationGroup = '👥Socios';
+        protected static ?string $navigationGroup = '👥Administracion de Socios';
 
     protected static ?string $navigationIcon = 'heroicon-o-identification';
     protected static ?int $navigationSort = 3;
@@ -28,8 +29,16 @@ class PartnerResource extends Resource
     {
 
         return $form->schema([
-            Forms\Components\TextInput::make('nombre')->required(),
-            Forms\Components\TextInput::make('apellido')->required(),
+            Forms\Components\TextInput::make('nombre')->required()
+                ->afterStateHydrated(function (TextInput $component, $state) {
+                    $component->state(ucfirst(strtolower($state)));
+                })
+                ->dehydrateStateUsing(fn($state) => ucfirst(strtolower($state))),
+            Forms\Components\TextInput::make('apellido')->required()
+                ->afterStateHydrated(function (TextInput $component, $state) {
+                    $component->state(ucfirst(strtolower($state)));
+                })
+                ->dehydrateStateUsing(fn($state) => ucfirst(strtolower($state))),
             Forms\Components\TextInput::make('dni')
                 ->label('DNI')
                 ->required()
@@ -44,18 +53,35 @@ class PartnerResource extends Resource
                             $fail('El DNI ya está registrado por otro socio.');
                         }
                     };
+                })
+                ->rule(function (callable $get) {
+                    return function (string $attribute, $value, \Closure $fail) {
+                        $length = strlen((string) $value);
+
+                        if ($length < 7) {
+                            $fail('El numero ingresado debe tener al menos 7 dígitos (X.XXX.XXX).');
+                        }
+
+                        if ($length > 8) {
+                            $fail('El numero ingresado no puede tener más de 8 dígitos (XX.XXX.XXX).');
+                        }
+                    };
                 }),
 
 
-            Forms\Components\Select::make('state_id')
-                ->label('Estado')
-                ->relationship('state', 'nombre')
-                ->required()
-                ->searchable(false)
-                ->preload(false),
+            Forms\Components\Hidden::make('state_id')
+                ->default(1),
 
-            Forms\Components\TextInput::make('direccion')->required(),
-            Forms\Components\TextInput::make('ciudad')->required(),
+            Forms\Components\TextInput::make('direccion')->required()
+                ->afterStateHydrated(function (TextInput $component, $state) {
+                    $component->state(ucwords(strtolower($state)));
+                })
+                ->dehydrateStateUsing(fn($state) => ucwords(strtolower($state))),
+            Forms\Components\TextInput::make('ciudad')->required()
+                ->afterStateHydrated(function (TextInput $component, $state) {
+                    $component->state(ucwords(strtolower($state)));
+                })
+                ->dehydrateStateUsing(fn($state) => ucwords(strtolower($state))),
             Forms\Components\TextInput::make('telefono')->required()
                 ->rule(function (callable $get) {
                     return function (string $attribute, $value, \Closure $fail) use ($get) {
@@ -89,8 +115,9 @@ class PartnerResource extends Resource
                 ->reactive(),
 
             Forms\Components\TextInput::make('dni_responsable')
-                ->label('DNI del Responsable')
+                ->label('DNI del responsable del grupo familiar (en caso de querer ingresar a uno)')
                 ->dehydrated(false)
+                ->columnSpan(2)
                 ->reactive()
                 ->rule(function (callable $get) {
                     return function (string $attribute, $value, \Closure $fail) use ($get) {
@@ -183,18 +210,21 @@ class PartnerResource extends Resource
                 ->sortable(),
 
             Tables\Columns\TextColumn::make('dni')
-                ->label('DNI'),
+                ->label('Numero de documento')
+                ->alignCenter(),
 
             Tables\Columns\TextColumn::make('direccion')
-                ->label('Dirección'),
+                ->label('Dirección')
+                ->alignCenter(),
 
             Tables\Columns\TextColumn::make('telefono')
-                ->label('Teléfono'),
+                ->label('Teléfono')
+                ->alignCenter(),
 
             Tables\Columns\IconColumn::make('menor')
                 ->label('Menor de Edad')
                 ->boolean()
-                ->extraAttributes(['class' => 'text-center']),
+                ->alignCenter(),
 
             Tables\Columns\TextColumn::make('responsable')
                 ->label('Responsable')
@@ -203,11 +233,22 @@ class PartnerResource extends Resource
                         ? $record->responsable->nombre . ' ' . $record->responsable->apellido
                         : '-';
                 })
+                ->alignCenter(),
         ])
             ->actions([
                 Tables\Actions\EditAction::make()
                     ->label('Modificar'),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->label('Eliminar seleccionados')
+                        ->icon('heroicon-o-trash'),
+                ])
+                ->label('Acciones en grupo'),
             ]);
+
+            
     }
 
 

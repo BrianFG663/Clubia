@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Hash;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
+use Filament\Forms\Components\TextInput;
 use Illuminate\Support\Carbon;
 
 class UserResource extends Resource implements HasShieldPermissions
@@ -22,7 +23,7 @@ class UserResource extends Resource implements HasShieldPermissions
 
     protected static ?string $model = User::class;
     protected static ?string $navigationLabel = 'Empleados de la institucion';
-    protected static ?string $navigationGroup = '🏛️Administración institucional';
+    protected static ?string $navigationGroup = '🏛️Administración Institucional';
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
     protected static ?int $navigationSort = 2;
 
@@ -31,8 +32,16 @@ class UserResource extends Resource implements HasShieldPermissions
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('nombre')->required(),
-                Forms\Components\TextInput::make('apellido')->required(),
+                Forms\Components\TextInput::make('nombre')->required()
+                ->afterStateHydrated(function (TextInput $component, $state) {
+                    $component->state(ucfirst(strtolower($state)));
+                })
+                ->dehydrateStateUsing(fn($state) => ucfirst(strtolower($state))),
+                Forms\Components\TextInput::make('apellido')->required()
+                ->afterStateHydrated(function (TextInput $component, $state) {
+                    $component->state(ucfirst(strtolower($state)));
+                })
+                ->dehydrateStateUsing(fn($state) => ucfirst(strtolower($state))),
                 Forms\Components\TextInput::make('email')
                     ->label('Email')
                     ->email()
@@ -65,17 +74,28 @@ class UserResource extends Resource implements HasShieldPermissions
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('nombre')->searchable(),
-                Tables\Columns\TextColumn::make('apellido')->searchable(),
-                Tables\Columns\TextColumn::make('email'),
+                Tables\Columns\TextColumn::make('nombre')
+                ->searchable()
+                ->alignCenter(),
+                Tables\Columns\TextColumn::make('apellido')
+                ->searchable()
+                ->alignCenter(), 
+                Tables\Columns\TextColumn::make('email')
+                ->alignCenter(),
             ])
+            
             ->filters([])
             ->actions([
                 Tables\Actions\EditAction::make()
                 ->label('Modificar'),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->label('Eliminar seleccionados')
+                        ->icon('heroicon-o-trash'),
+                ])
+                ->label('Acciones en grupo'),
             ]);
     }
 

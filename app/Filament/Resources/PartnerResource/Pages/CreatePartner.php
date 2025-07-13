@@ -14,7 +14,7 @@ class CreatePartner extends CreateRecord
 
     public function getTitle(): string
     {
-        return 'Creae nuevo socio';
+        return 'Crear nuevo socio';
     }
 
     protected function getRedirectUrl(): string
@@ -25,7 +25,7 @@ class CreatePartner extends CreateRecord
     protected function getSavedNotification(): ?Notification
     {
         return Notification::make()
-            ->title('Empleado creado correctamente.')
+            ->title('Socio creado correctamente.')
             ->success();
     }
 
@@ -33,7 +33,7 @@ class CreatePartner extends CreateRecord
     {
         return [
             Action::make('submit')
-                ->label('Guardar empleado')
+                ->label('Guardar socio')
                 ->submit('form'),
 
             Action::make('submitAndCreateAnother')
@@ -53,7 +53,7 @@ class CreatePartner extends CreateRecord
         $this->submit();
 
         Notification::make()
-            ->title('Empleado creado correctamente. Ahora puede crear otro.')
+            ->title('Socio creado correctamente. Ahora puede crear otro.')
             ->success()
             ->send();
 

@@ -6,6 +6,7 @@ use App\Filament\Resources\ActivityResource\Pages;
 use App\Filament\Resources\ActivityResource\RelationManagers;
 use App\Models\Activity;
 use Filament\Forms;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -19,7 +20,7 @@ class ActivityResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-bolt';
     protected static ?string $navigationLabel = 'Actividades';
-        protected static ?string $navigationGroup = '📅Actividades';
+    protected static ?string $navigationGroup = '📅Administracion de Actividades';
     protected static ?int $navigationSort = 5;
 
     public static function form(Form $form): Form
@@ -27,6 +28,10 @@ class ActivityResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('nombre')->required()
+                    ->afterStateHydrated(function (TextInput $component, $state) {
+                        $component->state(ucwords(strtolower($state)));
+                    })
+                    ->dehydrateStateUsing(fn($state) => ucwords(strtolower($state)))
                     ->rule(function (callable $get) {
                         return function (string $attribute, $value, \Closure $fail) use ($get) {
                             $idActual = $get('id');
@@ -40,7 +45,12 @@ class ActivityResource extends Resource
                         };
                     }),
 
-                Forms\Components\TextInput::make('descripcion')->required(),
+                Forms\Components\TextInput::make('descripcion')
+                    ->required()
+                    ->afterStateHydrated(function (TextInput $component, $state) {
+                        $component->state(ucwords(strtolower($state)));
+                    })
+                    ->dehydrateStateUsing(fn($state) => ucwords(strtolower($state))),
 
                 Forms\Components\Select::make('institution_id')
                     ->label('Seleccione institucion')
@@ -59,29 +69,35 @@ class ActivityResource extends Resource
                 Tables\Columns\TextColumn::make('nombre')
                     ->label('nombre')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->alignCenter(),
 
                 Tables\Columns\TextColumn::make('descripcion')
                     ->label('descripcion')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->alignCenter(),
 
                 Tables\Columns\TextColumn::make('institution.nombre')
                     ->label('Institucion')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->alignCenter(),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                ->label('Modificar'),
+                    ->label('Modificar'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->label('Eliminar seleccionados')
+                        ->icon('heroicon-o-trash'),
+                ])
+                ->label('Acciones en grupo'),
             ]);
     }
 

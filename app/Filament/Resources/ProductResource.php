@@ -6,6 +6,7 @@ use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\RelationManagers;
 use App\Models\Product;
 use Filament\Forms;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -19,7 +20,7 @@ class ProductResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-cube';
         protected static ?string $navigationLabel = 'Productos';
-        protected static ?string $navigationGroup = '🛒Ventas';
+        protected static ?string $navigationGroup = '🛒Administracion de Ventas';
 
     protected static ?int $navigationSort = 6;
 
@@ -28,6 +29,10 @@ class ProductResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('nombre')->required()
+                ->afterStateHydrated(function (TextInput $component, $state) {
+                    $component->state(ucwords(strtolower($state)));
+                })
+                ->dehydrateStateUsing(fn($state) => ucwords(strtolower($state)))
                     ->rule(function (callable $get) {
                         return function (string $attribute, $value, \Closure $fail) use ($get) {
                             $idActual = $get('id');
@@ -41,7 +46,11 @@ class ProductResource extends Resource
                         };
                     }),
 
-                Forms\Components\TextInput::make('descripcion')->required(),
+                Forms\Components\TextInput::make('descripcion')->required()
+                ->afterStateHydrated(function (TextInput $component, $state) {
+                    $component->state(ucwords(strtolower($state)));
+                })
+                ->dehydrateStateUsing(fn($state) => ucwords(strtolower($state))),
 
                 Forms\Components\Select::make('category_id')
                     ->label('Seleccione categoria')
@@ -66,23 +75,27 @@ class ProductResource extends Resource
                 Tables\Columns\TextColumn::make('nombre')
                     ->label('nombre')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->alignCenter(),
 
                 Tables\Columns\TextColumn::make('descripcion')
                     ->label('descripcion')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->alignCenter(),
 
                 Tables\Columns\TextColumn::make('category.nombre')
                     ->label('categoria')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->alignCenter(),
 
                 Tables\Columns\TextColumn::make('precio')
                     ->label('Precio del producto')
                     ->formatStateUsing(fn($state) => '$' . number_format($state, 2, ',', '.'))
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->alignCenter(),
             ])
             ->filters([
                 //
@@ -93,8 +106,11 @@ class ProductResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->label('Eliminar seleccionados')
+                        ->icon('heroicon-o-trash'),
+                ])
+                ->label('Acciones en grupo'),
             ]);
     }
 

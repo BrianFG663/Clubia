@@ -5,8 +5,11 @@ namespace App\Filament\Resources\RoleResource\Pages;
 use App\Filament\Resources\RoleResource;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Actions;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Support\Arr;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\Action;
 use Illuminate\Support\Collection;
 
 class EditRole extends EditRecord
@@ -15,10 +18,39 @@ class EditRole extends EditRecord
 
     public Collection $permissions;
 
-    protected function getActions(): array
+
+    protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            DeleteAction::make()
+                ->label('Eliminar rol')
+                ->modalHeading('¿Eliminar rol?')
+                ->modalDescription('¡Esta accion no tiene vuelta atras!')
+                ->successNotificationTitle('Rol eliminada correctamente.'),
+        ];
+    }
+
+    public function getTitle(): string
+    {
+        return 'Editar rol ' . $this->record->name;
+    }
+
+    protected function getSavedNotification(): ?Notification
+    {
+        return Notification::make()
+            ->title('Rol editada correctamente')
+            ->success();
+    }
+
+    protected function getFormActions(): array
+    {
+        return [
+            Action::make('save')
+                ->label('Actualizar datos')
+                ->submit('save'),
+            Action::make('cancel')
+                ->label('Cancelar')
+                ->url($this->getResource()::getUrl('index')),
         ];
     }
 

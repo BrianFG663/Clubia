@@ -14,10 +14,12 @@ use Filament\Support\Colors\Color;
 use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
+use Filament\Support\Enums\Theme;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Filament\Navigation\NavigationItem;
 use App\Filament\Pages\Dashboard as CustomDashboard;
 
 class AdminPanelProvider extends PanelProvider
@@ -26,12 +28,18 @@ class AdminPanelProvider extends PanelProvider
     {
         return $panel
             ->default()
+            ->darkMode(true, true)
             ->id('admin')
             ->path('admin')
             ->login()
             ->colors([
-                'primary' => Color::Red,
-            ])
+            'primary' => Color::hex('#c28840'),
+            'success' => Color::Green,
+            'danger'  => Color::Rose,
+            'warning' => Color::Amber,
+            'info'    => Color::Blue,
+            'gray'    => Color::Gray,
+        ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([

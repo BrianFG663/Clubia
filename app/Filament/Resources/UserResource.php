@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
+use Spatie\Permission\Models\Role;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -27,21 +28,30 @@ class UserResource extends Resource implements HasShieldPermissions
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
     protected static ?int $navigationSort = 2;
 
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) User::count();
+    }
+
+    public static function getNavigationBadgeColor(): string | array | null
+    {
+        return 'primary'; // Podés usar 'success', 'warning', 'danger', etc.
+    }
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('nombre')->required()
-                ->afterStateHydrated(function (TextInput $component, $state) {
-                    $component->state(ucfirst(strtolower($state)));
-                })
-                ->dehydrateStateUsing(fn($state) => ucfirst(strtolower($state))),
+                    ->afterStateHydrated(function (TextInput $component, $state) {
+                        $component->state(ucfirst(strtolower($state)));
+                    })
+                    ->dehydrateStateUsing(fn($state) => ucfirst(strtolower($state))),
                 Forms\Components\TextInput::make('apellido')->required()
-                ->afterStateHydrated(function (TextInput $component, $state) {
-                    $component->state(ucfirst(strtolower($state)));
-                })
-                ->dehydrateStateUsing(fn($state) => ucfirst(strtolower($state))),
+                    ->afterStateHydrated(function (TextInput $component, $state) {
+                        $component->state(ucfirst(strtolower($state)));
+                    })
+                    ->dehydrateStateUsing(fn($state) => ucfirst(strtolower($state))),
                 Forms\Components\TextInput::make('email')
                     ->label('Email')
                     ->email()
@@ -67,6 +77,20 @@ class UserResource extends Resource implements HasShieldPermissions
                 Forms\Components\Hidden::make('state_id')
                     ->default(1)
                     ->dehydrated(true),
+
+                Forms\Components\Select::make('add_role')
+                    ->label('Agregar rol')
+                    ->options(Role::all()->pluck('name', 'id'))
+                    ->native(false),
+
+                Forms\Components\Select::make('remove_role')
+                    ->label('Eliminar rol')
+                    ->options(fn($record) => $record?->roles?->pluck('name', 'id') ?? [])
+                    ->searchable()
+                    ->native(false)
+                    ->visible(fn(string $operation) => $operation === 'edit'),
+
+
             ]);
     }
 
@@ -75,19 +99,21 @@ class UserResource extends Resource implements HasShieldPermissions
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('nombre')
-                ->searchable()
-                ->alignCenter(),
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('apellido')
-                ->searchable()
-                ->alignCenter(), 
-                Tables\Columns\TextColumn::make('email')
-                ->alignCenter(),
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('email'),
+                Tables\Columns\TextColumn::make('roles')
+                    ->label('Roles')
+                    ->getStateUsing(fn($record) => $record->getRoleNames()->join(', '))
+                    ->badge()
+                    ->color('primary'),
             ])
-            
+
             ->filters([])
             ->actions([
                 Tables\Actions\EditAction::make()
-                ->label('Modificar'),
+                    ->label('Modificar'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -95,7 +121,7 @@ class UserResource extends Resource implements HasShieldPermissions
                         ->label('Eliminar seleccionados')
                         ->icon('heroicon-o-trash'),
                 ])
-                ->label('Acciones en grupo'),
+                    ->label('Acciones en grupo'),
             ]);
     }
 

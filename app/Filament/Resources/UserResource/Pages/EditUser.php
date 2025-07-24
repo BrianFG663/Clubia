@@ -59,4 +59,32 @@ class EditUser extends EditRecord
     {
         return static::getResource()::getUrl('index');
     }
+
+    protected function afterSave(): void
+    {
+        $addRoleId = $this->form->getState()['add_role'] ?? null;
+        $removeRoleId = $this->form->getState()['remove_role'] ?? null;
+
+        if ($addRoleId) {
+            $role = \Spatie\Permission\Models\Role::find($addRoleId);
+            if ($role && !$this->record->hasRole($role)) {
+                $this->record->assignRole($role);
+            }
+        }
+
+        if ($removeRoleId) {
+            $role = \Spatie\Permission\Models\Role::find($removeRoleId);
+            if ($role && $this->record->hasRole($role)) {
+                $this->record->removeRole($role);
+            }
+        }
+    }
+
+    protected function mutateFormDataBeforeFill(array $data): array
+    {
+        $data['add_role'] = null;
+        $data['remove_role'] = null;
+
+        return $data;
+    }
 }

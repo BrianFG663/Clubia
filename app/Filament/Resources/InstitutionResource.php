@@ -23,6 +23,16 @@ class InstitutionResource extends Resource
     protected static ?string $navigationLabel = 'Instituciones';
     protected static ?int $navigationSort = 1;
 
+     public static function getNavigationBadge(): ?string
+    {
+        return (string) Institution::count();
+    }
+
+    public static function getNavigationBadgeColor(): string | array | null
+    {
+        return 'primary';
+    }
+
     public static function form(Form $form): Form
     {
         return $form

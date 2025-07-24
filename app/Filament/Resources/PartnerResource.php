@@ -20,10 +20,20 @@ class PartnerResource extends Resource
 {
     protected static ?string $model = Partner::class;
     protected static ?string $navigationLabel = 'Socios';
-        protected static ?string $navigationGroup = '👥Administracion de Socios';
+    protected static ?string $navigationGroup = '👥Administracion de Socios';
 
     protected static ?string $navigationIcon = 'heroicon-o-identification';
     protected static ?int $navigationSort = 3;
+
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) Partner::count();
+    }
+
+    public static function getNavigationBadgeColor(): string | array | null
+    {
+        return 'primary'; // Podés usar 'success', 'warning', 'danger', etc.
+    }
 
     public static function form(Form $form): Form
     {
@@ -245,10 +255,8 @@ class PartnerResource extends Resource
                         ->label('Eliminar seleccionados')
                         ->icon('heroicon-o-trash'),
                 ])
-                ->label('Acciones en grupo'),
+                    ->label('Acciones en grupo'),
             ]);
-
-            
     }
 
 

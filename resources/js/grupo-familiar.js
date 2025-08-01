@@ -205,7 +205,11 @@ window.agregarIntegrante = function (responsable_id) {
                                         imageWidth: 100,
                                         imageHeight: 100,
                                         imageUrl: "/images/alertas/check.png",
-                                    });
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            location.reload();
+                                        }
+                                    })
                                 }
                             });
                     });

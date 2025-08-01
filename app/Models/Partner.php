@@ -56,11 +56,11 @@ class Partner extends Model
 
     public function responsable(): BelongsTo
     {
-        return $this->belongsTo(Partner::class);
+        return $this->belongsTo(Partner::class, 'responsable_id'); 
     }
 
-    public function familyGroup(): HasMany
+    public function familyMembers(): HasMany
     {
-        return $this->hasMany(Partner::class);
+        return $this->hasMany(Partner::class, 'responsable_id');
     }
 }

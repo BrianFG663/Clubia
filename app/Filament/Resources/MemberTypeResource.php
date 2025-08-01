@@ -20,7 +20,7 @@ class MemberTypeResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-adjustments-horizontal';
     protected static ?string $navigationLabel = 'Tipos de socio';
         protected static ?string $navigationGroup = '👥Administracion de Socios';
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 5;
 
     public static function form(Form $form): Form
     {

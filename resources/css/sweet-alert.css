@@ -1,0 +1,66 @@
+
+/*sweet alert*/
+
+.swal2-popup {
+    background-color: #374151 !important; 
+    color: #fff !important;              
+    border-radius: 10px !important;       
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5) !important;
+}
+
+
+.swal2-confirm {
+    background-color: transparent !important; 
+    color: white !important;
+    border:1px solid #4caf50 !important;
+    padding: 8px 20px !important;
+    font-weight: 100 !important;
+    border-radius: 5px !important;
+}
+
+.swal2-confirm:hover {
+    background-color: #4caf4f46 !important; 
+}
+
+.swal2-cancel {
+    background-color: transparent !important; 
+    color: white !important;
+    border: 1px solid #e74c3c !important;
+    padding: 8px 20px !important;
+    font-weight: bold !important;
+    border-radius: 5px !important;
+}
+
+.swal2-cancel:hover {
+    background-color: rgba(211, 47, 47, 0.397) !important;
+}
+
+.swal2-input {
+    background-color: transparent !important;
+    border: 1px solid #c28840 !important;
+    color: #fff; 
+    box-shadow: none !important;
+    border-radius: 2px;
+}
+
+.swal2-validation-message {
+    background-color: #374151;
+    color: #ffffff; 
+    padding: 8px 12px;
+    border-radius: 4px;
+    margin-top: 10px;
+}
+
+/* quitar flechas input number */
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    appearance: none; 
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+

@@ -1,0 +1,238 @@
+function calcularEdad(fechaNacimiento) {
+    const hoy = new Date();
+    const nacimiento = new Date(fechaNacimiento);
+    let edad = hoy.getFullYear() - nacimiento.getFullYear();
+    const mes = hoy.getMonth() - nacimiento.getMonth();
+
+    if (mes < 0 || (mes === 0 && hoy.getDate() < nacimiento.getDate())) {
+        edad--;
+    }
+
+    return edad;
+}
+
+window.detalleFamilia = function (id) {
+    const familiaresDiv = document.querySelector(".familiares");
+    const jefeId = id;
+
+    familiaresDiv.classList.remove("hidden");
+    familiaresDiv.classList.add("mostrar");
+
+    fetch("/detalles-familiares", {
+        method: "POST",
+        credentials: "same-origin",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": document
+                .querySelector('meta[name="csrf-token"]')
+                .getAttribute("content"),
+        },
+        body: JSON.stringify({ id: jefeId }),
+    })
+        .then((res) => res.json())
+        .then((data) => {
+            if (data.mensaje == true) {
+                const familiares = data.familia
+                    .map(
+                        (f) => `
+                <tr>
+                    <td class="nombre">${f.nombre} ${f.apellido}</td>
+                    <td>${f.dni}</td>
+                    <td class="email">${f.email}</td>
+                    <td>${f.telefono}</td>
+                    <td class="email">${f.direccion}</td>
+                    <td>${calcularEdad(f.fecha_nacimiento)}</td>
+                    <td class="botones"><button onclick="eliminarIntegrante(${
+                        f.id
+                    })"><i class="fas fa-trash"></i></button></td>
+                </tr>`
+                    )
+                    .join("");
+
+                document.getElementById("contenedor-informacion").innerHTML = `
+                    <h2 class="titulo-informacion">Detalles miembros familia ${data.jefe.apellido}</h2>
+                    <div class="informacion">
+                        <div>
+                            <div class="alto-inf"></div>
+                            <table class="tabla-inf table-auto w-full">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre completo</th>
+                                        <th>DNI</th>
+                                        <th>E-mail</th>
+                                        <th>Telefono</th>
+                                        <th>Direccion</th>
+                                        <th>Edad
+                                        </th>
+                                        <th class="botones" colspan="1">Eliminar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${familiares}
+                                </tbody>
+                            </table>
+                            <div class="bajo-inf"></div>
+                        </div>
+                    </div>`;
+            } else {
+                document.getElementById(
+                    "contenedor-informacion"
+                ).innerHTML = `<div class="mensaje">No hay familiares inscriptos en este grupo.</div>`;
+            }
+        });
+};
+
+window.eliminarIntegrante = function (id) {
+    const familiarId = id;
+
+    Swal.fire({
+        imageWidth: 100,
+        imageHeight: 100,
+        imageUrl: "/images/alertas/advertencia.png",
+        text: "¿Desea eliminar este integrante del grupo familiar?",
+        showCancelButton: true,
+        cancelButtonText: "CANCELAR",
+        confirmButtonText: "CONFIRMAR",
+        confirmButtonColor: "#e74938",
+        cancelButtonColor: "#ffd087",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            console.log(id);
+            fetch("/detalles-familiares/eliminar-integrante", {
+                method: "PATCH",
+                credentials: "same-origin",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": document
+                        .querySelector('meta[name="csrf-token"]')
+                        .getAttribute("content"),
+                },
+                body: JSON.stringify({ id: familiarId }),
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    if (data.mensaje == true) {
+                        Swal.fire({
+                            text: "Integrante eliminado del grupo familiar",
+                            showConfirmButton: false,
+                            timer: 2000,
+                            backdrop: false,
+                            imageWidth: 100,
+                            imageHeight: 100,
+                            imageUrl: "/images/alertas/check.png",
+                        });
+                        setTimeout(() => {
+                            detalleFamilia(data.responsable);
+                        }, 2000);
+                    }
+                });
+        }
+    });
+};
+
+window.agregarIntegrante = function (responsable_id) {
+    Swal.fire({
+        text: "Buscar socio para agregar al grupo familiar.",
+        backdrop: false,
+        input: "text",
+        inputPlaceholder: "Ingrese numero de documento",
+        showCancelButton: true,
+        confirmButtonColor: "#ff7c019a",
+        confirmButtonText: "Buscar",
+        cancelButtonColor: "#ff2b06",
+        cancelButtonText: "Cancelar",
+        didOpen: () => {
+            const input = Swal.getInput();
+            input.type = "number";
+            input.min = 0;
+        },
+        inputValidator: (value) => {
+            if (!value) {
+                return "Debe ingresar un número.";
+            }
+        },
+    }).then((result) => {
+        const dni = result.value;
+        fetch("/detalles-familiares/buscar-integrante", {
+            method: "POST",
+            credentials: "same-origin",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": document
+                    .querySelector('meta[name="csrf-token"]')
+                    .getAttribute("content"),
+            },
+            body: JSON.stringify({ dni: dni }),
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(data);
+                if (data.mensaje == true) {
+                    Swal.fire({
+                        imageWidth: 100,
+                        imageHeight: 100,
+                        imageUrl: "/images/html/lupa.png",
+                        title: "Socio encontrado",
+                        text: `¿Desea agregar a ${data.integrante.nombre} ${data.integrante.apellido} al grupo familiar?`,
+                        showCancelButton: true,
+                        cancelButtonText: "CANCELAR",
+                        confirmButtonText: "CONFIRMAR",
+                        confirmButtonColor: "#e74938",
+                        cancelButtonColor: "#ffd087",
+                    }).then((result) => {
+                        fetch("/detalles-familiares/agregar-integrante", {
+                            method: "PATCH",
+                            credentials: "same-origin",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "X-CSRF-TOKEN": document
+                                    .querySelector('meta[name="csrf-token"]')
+                                    .getAttribute("content"),
+                            },
+                            body: JSON.stringify({
+                                dni: dni,
+                                responsable_id: responsable_id,
+                            }),
+                        })
+                            .then((res) => res.json())
+                            .then((data) => {
+                                if (data.mensaje == true) {
+                                    Swal.fire({
+                                        text: "Integrante agregado correctamenter al grupo grupo familiar",
+                                        showConfirmButton: true,
+                                        confirmButtonText: "ACEPTAR",
+                                        backdrop: false,
+                                        imageWidth: 100,
+                                        imageHeight: 100,
+                                        imageUrl: "/images/alertas/check.png",
+                                    });
+                                }
+                            });
+                    });
+                } else {
+                    Swal.fire({
+                        text: "El documento ingresado no corresponde a un socio",
+                        showConfirmButton: true,
+                        confirmButtonText: "ACEPTAR",
+                        backdrop: false,
+                        imageWidth: 100,
+                        imageHeight: 100,
+                        imageUrl: "/images/alertas/advertencia.png",
+                    });
+                }
+            });
+    });
+};
+
+document.addEventListener("DOMContentLoaded", () => {
+    const familiaresDiv = document.getElementById("familiares");
+    const cerrarBtn = document.getElementById("cerrar-alerta");
+
+    if (cerrarBtn) {
+        cerrarBtn.addEventListener("click", () => {
+            familiaresDiv.classList.remove("mostrar");
+            familiaresDiv.classList.add("hidden");
+            document.getElementById("contenedor-informacion").innerHTML = "";
+        });
+    }
+});

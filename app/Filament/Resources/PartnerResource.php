@@ -123,19 +123,41 @@ class PartnerResource extends Resource
                 ->required()
                 ->reactive(),
 
+            Forms\Components\Select::make('memberTypes')
+                ->label('Seleccione tipo de socio')
+                ->multiple()
+                ->relationship('memberTypes', 'nombre')
+                ->required()
+                ->preload()
+                ->searchable(),
+
+
             Forms\Components\TextInput::make('dni_responsable')
                 ->label('DNI del responsable del grupo familiar (en caso de querer ingresar a uno)')
                 ->dehydrated(false)
-                ->columnSpan(2)
                 ->reactive()
                 ->rule(function (callable $get) {
-                    return function (string $attribute, $value, \Closure $fail) use ($get) {
+                    return function (string $attribute, $value, \Closure $fail) {
                         if (!$value) {
                             return;
                         }
+
                         $responsable = \App\Models\Partner::where('dni', $value)->first();
+
                         if (!$responsable) {
                             $fail('No existe un socio con ese DNI.');
+                            return;
+                        }
+
+                        if ($responsable->fecha_nacimiento) {
+                            $edad = \Carbon\Carbon::parse($responsable->fecha_nacimiento)->age;
+
+                            if ($edad < 18) {
+                                $fail('El socio con ese DNI es menor de edad y no puede ser responsable.');
+                                return;
+                            }
+                        } else {
+                            $fail('No se puede verificar la edad del socio (fecha de nacimiento faltante).');
                         }
                     };
                 })
@@ -169,19 +191,27 @@ class PartnerResource extends Resource
 
                     $responsable = \App\Models\Partner::where('dni', $state)->first();
 
-                    if ($responsable) {
-                        if ($responsable->responsable_id) {
-                            $respRelacionado = \App\Models\Partner::find($responsable->responsable_id);
-                            if ($respRelacionado) {
-                                return "¡ATENCION! esta persona esta en un grupo familiar a cargo de {$respRelacionado->nombre} {$respRelacionado->apellido}, sera agregado a ese grupo familiar";
-                            }
-                        }
-                        return "¡ATENCION! Esta persona estara a cargo de: {$responsable->nombre} {$responsable->apellido}";
+                    if (!$responsable) {
+                        return null;
                     }
 
-                    return null;
-                }),
+                    if ($responsable->fecha_nacimiento) {
+                        $edad = \Carbon\Carbon::parse($responsable->fecha_nacimiento)->age;
 
+                        if ($edad < 18) {
+                            return "¡ATENCIÓN! El socio con ese DNI es menor de edad y no puede ser responsable.";
+                        }
+                    }
+
+                    if ($responsable->responsable_id) {
+                        $respRelacionado = \App\Models\Partner::find($responsable->responsable_id);
+                        if ($respRelacionado) {
+                            return "¡ATENCIÓN! Esta persona está en un grupo familiar a cargo de {$respRelacionado->nombre} {$respRelacionado->apellido}, será agregado a ese grupo familiar.";
+                        }
+                    }
+
+                    return "¡ATENCIÓN! Esta persona estará a cargo de: {$responsable->nombre} {$responsable->apellido}";
+                }),
             Forms\Components\Hidden::make('responsable_id')
                 ->dehydrated()
                 ->required(false),
@@ -230,10 +260,12 @@ class PartnerResource extends Resource
                 ->label('Teléfono')
                 ->alignCenter(),
 
-            Tables\Columns\IconColumn::make('menor')
-                ->label('Menor de Edad')
-                ->boolean()
+            Tables\Columns\TextColumn::make('state.nombre')
+                ->label('Estado')
+                ->sortable()
+                ->color(fn($record) => optional($record->state)->id == 1 ? 'success' : 'danger')
                 ->alignCenter(),
+
 
             Tables\Columns\TextColumn::make('responsable')
                 ->label('Responsable')

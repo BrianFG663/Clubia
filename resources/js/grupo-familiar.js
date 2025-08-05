@@ -42,9 +42,8 @@ window.detalleFamilia = function (id) {
                     <td>${f.telefono}</td>
                     <td class="email">${f.direccion}</td>
                     <td>${calcularEdad(f.fecha_nacimiento)}</td>
-                    <td class="botones"><button onclick="eliminarIntegrante(${
-                        f.id
-                    })"><i class="fas fa-trash"></i></button></td>
+                    <td class="botones"><button onclick="eliminarIntegrante(${f.id
+                            })"><i class="fas fa-trash"></i></button></td>
                 </tr>`
                     )
                     .join("");
@@ -132,7 +131,7 @@ window.eliminarIntegrante = function (id) {
 
 window.agregarIntegrante = function (responsable_id) {
     Swal.fire({
-        text: "Buscar socio para agregar al grupo familiar.",
+        text: "Buscar socio para agregar al grupo familiar",
         backdrop: false,
         input: "text",
         inputPlaceholder: "Ingrese numero de documento",
@@ -180,40 +179,46 @@ window.agregarIntegrante = function (responsable_id) {
                         confirmButtonColor: "#e74938",
                         cancelButtonColor: "#ffd087",
                     }).then((result) => {
-                        fetch("/detalles-familiares/agregar-integrante", {
-                            method: "PATCH",
-                            credentials: "same-origin",
-                            headers: {
-                                "Content-Type": "application/json",
-                                "X-CSRF-TOKEN": document
-                                    .querySelector('meta[name="csrf-token"]')
-                                    .getAttribute("content"),
-                            },
-                            body: JSON.stringify({
-                                dni: dni,
-                                responsable_id: responsable_id,
-                            }),
-                        })
-                            .then((res) => res.json())
-                            .then((data) => {
-                                if (data.mensaje == true) {
-                                    Swal.fire({
-                                        text: "Integrante agregado correctamenter al grupo grupo familiar",
-                                        showConfirmButton: true,
-                                        confirmButtonText: "ACEPTAR",
-                                        backdrop: false,
-                                        imageWidth: 100,
-                                        imageHeight: 100,
-                                        imageUrl: "/images/alertas/check.png",
-                                    }).then((result) => {
-                                        if (result.isConfirmed) {
-                                            location.reload();
-                                        }
-                                    })
-                                }
-                            });
+                        if (result.isConfirmed) {
+                            fetch("/detalles-familiares/agregar-integrante", {
+                                method: "PATCH",
+                                credentials: "same-origin",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    "X-CSRF-TOKEN": document
+                                        .querySelector('meta[name="csrf-token"]')
+                                        .getAttribute("content"),
+                                },
+                                body: JSON.stringify({
+                                    dni: dni,
+                                    responsable_id: responsable_id,
+                                }),
+                            })
+                                .then((res) => res.json())
+                                .then((data) => {
+                                    console.log(data);
+                                    if (data.mensaje == true) {
+                                        Swal.fire({
+                                            text: "Integrante agregado correctamenter al grupo grupo familiar",
+                                            showConfirmButton: true,
+                                            confirmButtonText: "ACEPTAR",
+                                            backdrop: false,
+                                            imageWidth: 100,
+                                            imageHeight: 100,
+                                            imageUrl: "/images/alertas/check.png",
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                location.reload();
+                                            }
+                                        })
+                                    }
+                                });
+                        }
+
                     });
-                } else {
+                }
+                if (data.mensaje == false && dni != undefined) {
+                    console.log(dni)
                     Swal.fire({
                         text: "El documento ingresado no corresponde a un socio",
                         showConfirmButton: true,
@@ -224,6 +229,7 @@ window.agregarIntegrante = function (responsable_id) {
                         imageUrl: "/images/alertas/advertencia.png",
                     });
                 }
+
             });
     });
 };

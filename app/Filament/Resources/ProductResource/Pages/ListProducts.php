@@ -14,7 +14,7 @@ class ListProducts extends ListRecords
     {
         return [
             Actions\CreateAction::make()
-                ->label('Crear Producto para la venta')
+                ->label('Subir Producto para la venta')
         ];
     }
 

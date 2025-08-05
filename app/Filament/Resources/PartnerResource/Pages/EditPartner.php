@@ -24,6 +24,18 @@ class EditPartner extends EditRecord
                 ->modalHeading('¿Eliminar Socio?')
                 ->modalDescription('¡Esta accion no tiene vuelta atras!')
                 ->successNotificationTitle('Socio eliminado correctamente.'),
+
+            Action::make('toggleStatus')
+                ->label(fn($record) => $record->state_id == 1 ? 'Pasar a inactivo' : 'Pasar a activo')
+                ->color(fn($record) => $record->state_id == 1 ? 'danger' : 'success')
+                ->action(function ($record) {
+                    $record->state_id = $record->state_id == 1 ? 2 : 1;
+                    $record->save();
+                    \Filament\Notifications\Notification::make()
+                        ->title('Estado actualizado correctamente.')
+                        ->success()
+                        ->send();
+                }),
         ];
     }
 
@@ -36,8 +48,11 @@ class EditPartner extends EditRecord
             Action::make('cancel')
                 ->label('Cancelar')
                 ->url($this->getResource()::getUrl('index')),
+
         ];
     }
+
+
 
     protected function getRedirectUrl(): string
     {

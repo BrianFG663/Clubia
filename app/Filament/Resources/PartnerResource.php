@@ -123,10 +123,18 @@ class PartnerResource extends Resource
                 ->required()
                 ->reactive(),
 
+            Forms\Components\Select::make('memberTypes')
+                ->label('Seleccione tipo de socio')
+                ->multiple()
+                ->relationship('memberTypes', 'nombre')
+                ->required()
+                ->preload()
+                ->searchable(),
+
+
             Forms\Components\TextInput::make('dni_responsable')
                 ->label('DNI del responsable del grupo familiar (en caso de querer ingresar a uno)')
                 ->dehydrated(false)
-                ->columnSpan(2)
                 ->reactive()
                 ->rule(function (callable $get) {
                     return function (string $attribute, $value, \Closure $fail) {
@@ -252,10 +260,12 @@ class PartnerResource extends Resource
                 ->label('Teléfono')
                 ->alignCenter(),
 
-            Tables\Columns\IconColumn::make('menor')
-                ->label('Menor de Edad')
-                ->boolean()
+            Tables\Columns\TextColumn::make('state.nombre')
+                ->label('Estado')
+                ->sortable()
+                ->color(fn($record) => optional($record->state)->id == 1 ? 'success' : 'danger')
                 ->alignCenter(),
+
 
             Tables\Columns\TextColumn::make('responsable')
                 ->label('Responsable')

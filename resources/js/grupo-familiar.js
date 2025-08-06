@@ -115,7 +115,6 @@ window.eliminarIntegrante = function (id) {
                             text: "Integrante eliminado del grupo familiar",
                             showConfirmButton: false,
                             timer: 2000,
-                            backdrop: false,
                             imageWidth: 100,
                             imageHeight: 100,
                             imageUrl: "/images/alertas/check.png",
@@ -132,7 +131,6 @@ window.eliminarIntegrante = function (id) {
 window.agregarIntegrante = function (responsable_id) {
     Swal.fire({
         text: "Buscar socio para agregar al grupo familiar",
-        backdrop: false,
         input: "text",
         inputPlaceholder: "Ingrese numero de documento",
         showCancelButton: true,
@@ -202,7 +200,6 @@ window.agregarIntegrante = function (responsable_id) {
                                             text: "Integrante agregado correctamenter al grupo grupo familiar",
                                             showConfirmButton: true,
                                             confirmButtonText: "ACEPTAR",
-                                            backdrop: false,
                                             imageWidth: 100,
                                             imageHeight: 100,
                                             imageUrl: "/images/alertas/check.png",
@@ -223,7 +220,6 @@ window.agregarIntegrante = function (responsable_id) {
                         text: "El documento ingresado no corresponde a un socio",
                         showConfirmButton: true,
                         confirmButtonText: "ACEPTAR",
-                        backdrop: false,
                         imageWidth: 100,
                         imageHeight: 100,
                         imageUrl: "/images/alertas/advertencia.png",

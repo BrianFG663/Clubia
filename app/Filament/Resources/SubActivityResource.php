@@ -53,10 +53,18 @@ class SubActivityResource extends Resource
                         $component->state(ucwords(strtolower($state)));
                     })
                     ->dehydrateStateUsing(fn($state) => ucwords(strtolower($state))),
+
                 Forms\Components\TextInput::make('monto')
                     ->required()
                     ->numeric()
-                    ->maxValue(2147483647)
+                    ->maxValue(2147483647),
+
+                Forms\Components\Select::make('activity_id')
+                    ->label('Seleccione Actividad')
+                    ->relationship('Activity', 'nombre')
+                    ->required()
+                    ->searchable(false)
+                    ->preload(false)
 
 
             ]);

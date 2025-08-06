@@ -12,7 +12,7 @@ class grupoFamiliar extends Page
     protected static ?string $navigationIcon = 'heroicon-o-users';
     protected static ?string $navigationGroup = '👥Administracion de Socios';
     protected static ?string $navigationLabel = 'Grupos familiares';
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 5;
     protected static string $view = 'filament.pages.grupo-familiar';
 
     public function getTitle(): string

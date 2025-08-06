@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Partner;
+use App\Models\SubActivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -29,24 +30,26 @@ class PartnerController extends Controller
             $integrante->responsable_id = NULL;
             $integrante->save();
             return response()->json(['mensaje' => true, 'responsable' => $responsable]);
-        }else{
+        } else {
             return response()->json(['mensaje' => false]);
         }
     }
 
-    public function buscarIntegrante(Request $request){
+    public function buscarIntegrante(Request $request)
+    {
 
         $integrante = Partner::firstWhere('dni', $request->dni);
         Log::info('Datos del request:', $request->all());
 
-        if($integrante){
+        if ($integrante) {
             return response()->json(['mensaje' => true, 'integrante' => $integrante]);
-        }else{
+        } else {
             return response()->json(['mensaje' => false]);
         }
     }
 
-    public function agregarIntegranteGrupoFamiliar(Request $request){
+    public function agregarIntegranteGrupoFamiliar(Request $request)
+    {
 
         $integrante = Partner::firstWhere('dni', $request->dni);
 
@@ -54,8 +57,32 @@ class PartnerController extends Controller
             $integrante->responsable_id = $request->responsable_id;
             $integrante->save();
             return response()->json(['mensaje' => true]);
-        }else{
+        } else {
             return response()->json(['mensaje' => false]);
         }
+    }
+
+    public function validarInscripcionSubActividad(Request $request)
+    {
+        Log::info('Datos del request:', $request->all());
+
+        $integrante = Partner::firstWhere('dni', $request->dni);
+        $subActividad = SubActivity::find($request->subActividad);
+
+
+        if ($integrante) {
+            return response()->json(['mensaje' => true, 'integrante' => $integrante, 'subActividad' => $subActividad]);
+        } else {
+            return response()->json(['mensaje' => false]);
+        }
+    }
+
+    public function inscribirSocioSubActividad(Request $request)
+    {
+
+        $integrante = Partner::firstWhere('dni', $request->dni);
+        $integrante->subActivities()->syncWithoutDetaching($request->subActividad);
+
+        return redirect()->back();
     }
 }

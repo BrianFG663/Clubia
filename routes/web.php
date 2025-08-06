@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\SaleController;
 use App\Models\Partner;
@@ -23,3 +24,8 @@ Route::POST('/detalles-familiares/buscar-integrante', [PartnerController::class,
 Route::PATCH('/detalles-familiares/agregar-integrante', [PartnerController::class, 'agregarIntegranteGrupoFamiliar'])->name('agregar.integrante'); //ruta agregar integrante al grupo familiar
 //
 
+//Rutas para actividades y subactividades
+Route::post('/inscripcion/subactividad', [ActivityController::class, 'subActividades'])->name('subactividades');
+Route::post('/inscripcion/validar', [PartnerController::class, 'validarInscripcionSubActividad'])->name('validar.inscripcion');
+Route::post('/inscripcion/registrar', [PartnerController::class, 'inscribirSocioSubActividad'])->name('registrar.inscripcion'); //ruta registrar inscripcion a subactividad
+//

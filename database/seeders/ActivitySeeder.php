@@ -13,6 +13,6 @@ class ActivitySeeder extends Seeder
      */
     public function run(): void
     {
-        Activity::factory(5)->create();
+        Activity::factory(15)->create();
     }
 }

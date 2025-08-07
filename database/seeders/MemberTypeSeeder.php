@@ -13,6 +13,6 @@ class MemberTypeSeeder extends Seeder
      */
     public function run(): void
     {
-        MemberType::factory(5)->create();
+        MemberType::factory(10)->create();
     }
 }

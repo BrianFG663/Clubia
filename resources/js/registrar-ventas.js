@@ -23,26 +23,24 @@ input.addEventListener("input", function () {
                     data.slice(0, 3).forEach((producto) => {
                         const contenedor = document.createElement("div");
                         contenedor.className =
-                            "articulo w-full bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 p-2 flex justify-between items-center gap-3";
-                        contenedor.style.marginBottom = "0px";
+                            "articulo";
 
                         const info = document.createElement("div");
-                        info.className = "flex flex-col flex-grow pr-3";
 
                         const titulo = document.createElement("h3");
                         titulo.className =
-                            "titulo-articulo font-medium text-base text-gray-800 dark:text-gray-200 mb-0.5 truncate";
+                            "titulo-articulo";
                         titulo.textContent = producto.nombre;
 
                         const descripcion = document.createElement("p");
                         descripcion.className =
-                            "descripcion-articulo text-xs text-gray-500 dark:text-gray-400 truncate";
+                            "descripcion-articulo";
                         descripcion.textContent =
                             producto.descripcion ?? "Sin descripcion";
 
                         const precio = document.createElement("span");
                         precio.className =
-                            "precio-articulo font-semibold text-primary-600 dark:text-primary-400 whitespace-nowrap text-sm";
+                            "precio-articulo";
                         precio.textContent =
                             producto.precio !== undefined
                                 ? `$${parseFloat(producto.precio)}`
@@ -158,25 +156,25 @@ function renderizarCarrito() {
         contador++;
         const li = document.createElement("div");
         li.innerHTML = `
-            <div class="articulos p-4 rounded-md bg-gray-100 dark:bg-gray-700">
-                <h3 class="titulo-articulo font-semibold text-lg text-gray-900 dark:text-white">
+            <div class="articulos">
+                <h3 class="titulo-articulo">
                     ${producto.nombre}
                 </h3>
-                <p class="descripcion-articulo text-sm text-gray-600 dark:text-gray-200">
+                <p class="descripcion-articulo">
                     ${producto.descripcion || "Sin descripción"}
                 </p>
-                <div class="acciones-articulo flex justify-between items-center mt-2">
+                <div class="acciones-articulo">
                     <span class="precio-articulo font-bold text-primary-400">
                         $${producto.precio}
                     </span>
                     <div class="botones-articulo flex items-center gap-2">
-                        <div class="precio mt-2 text-sm text-gray-700 dark:text-gray-300">TOTAL: $${(parseFloat(producto.precio) * producto.cantidad).toFixed(2)}</div>
-                        <button class="btn-quitar bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded" data-id="${producto.id}">−</button>
-                        <span class="cantidad-articulo min-w-[2rem] text-center px-2 py-1 rounded bg-white text-black dark:bg-gray-700 dark:text-white">
+                        <div class="precio">TOTAL: $${(parseFloat(producto.precio) * producto.cantidad).toFixed(2)}</div>
+                        <button class="btn-quitar" data-id="${producto.id}">−</button>
+                        <span class="cantidad-articulo">
                             ${producto.cantidad}
                         </span>
-                        <button class="btn-agregar px-2 py-1 rounded" data-id="${producto.id}">+</button>
-                        <button class="btn-eliminar px-2 py-1 rounded" data-id="${producto.id}"><i class="fas fa-trash"></i></button>                   
+                        <button class="btn-agregar" data-id="${producto.id}">+</button>
+                        <button class="btn-eliminar" data-id="${producto.id}"><i class="fas fa-trash"></i></button>                   
                     </div>
                 </div>
             </div>

@@ -5,6 +5,7 @@
     @vite('resources/css/sweet-alert.css')
     @vite('resources/js/grupo-familiar.js')
     <div class="contenedor">
+        <div id="overlay" class="modal-overlay hidden"></div>
         <div class="familiares" id="familiares">
             <button id="cerrar-alerta"><i class="fa-solid fa-xmark" ></i></button>
             <div id="contenedor-informacion">

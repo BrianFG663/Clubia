@@ -64,3 +64,11 @@ input[type=number] {
     appearance: textfield;
 }
 
+.swal2-container {
+  background-color: rgba(0, 0, 0, 0.7) !important;
+  backdrop-filter: blur(2px) !important;
+}
+
+body.swal2-shown > *:not(.swal2-container) {
+  pointer-events: none !important;
+}

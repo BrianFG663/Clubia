@@ -18,12 +18,16 @@
     border-top-right-radius: 10px;
 }
 
-/* ---------- TABLA ---------- */
+/* ---------- TABLA CON SCROLL RESPONSIVE ---------- */
+.tabla-container {
+    overflow-x: auto;
+}
+
 .tabla {
     width: 100%;
     border-collapse: collapse;
     background-color: #111827;
-    min-width: 600px;
+    min-width: 600px; /* evita que se rompa en móvil */
 }
 
 .tabla th,
@@ -43,8 +47,23 @@
     cursor: pointer;
 }
 
+/* ---------- BOTONES ---------- */
 .botones {
     width: 10%;
+}
+
+.btn-ver {
+    color: white;
+    padding: 0.35rem 0.75rem;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: background-color 0.2s ease;
+    border: none;
+}
+
+.btn-ver:hover {
+    color: #c28840;
+    cursor: pointer;
 }
 
 i {
@@ -60,13 +79,13 @@ i:hover {
     width: 25%;
 }
 
-/* ---------- MODAL DETALLE (familiares) ---------- */
-.familiares {
+/* ---------- MODAL DETALLE (detalle-socios) ---------- */
+.detalle-socios {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 60%;
+    width: 50%;
     max-height: 70vh;
     overflow-y: auto;
     background-color: #111827;
@@ -79,7 +98,7 @@ i:hover {
     z-index: 1000;
 }
 
-.familiares.mostrar {
+.detalle-socios.mostrar {
     display: block;
 }
 
@@ -90,13 +109,13 @@ i:hover {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(6px);
     z-index: 900;
 }
 
 /* Botón cerrar modal */
-#cerrar-alerta {
+#cerrar-detalle {
     position: absolute;
     top: 0.5rem;
     right: 0.5rem;
@@ -108,16 +127,15 @@ i:hover {
     transition: color 0.2s ease;
 }
 
-#cerrar-alerta:hover {
+#cerrar-detalle:hover {
     color: #c28840;
 }
 
-/* Contenido dentro del modal */
-#contenedor-informacion {
-    height: 95%;
+.hidden {
+    display: none !important;
 }
 
-/* Paginación */
+/* ---------- PAGINACIÓN ---------- */
 .bajo {
     border: 1px solid #1c202a;
     height: 15%;
@@ -137,7 +155,7 @@ i:hover {
         padding: 0.5rem;
     }
 
-    .familiares {
+    .detalle-socios {
         width: 90%;
         top: 10%;
         left: 5%;
@@ -152,7 +170,7 @@ i:hover {
         padding: 0.5rem;
     }
 
-    #cerrar-alerta {
+    #cerrar-detalle {
         font-size: 5vw;
     }
 }

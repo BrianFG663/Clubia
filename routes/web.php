@@ -29,4 +29,7 @@ Route::PATCH('/detalles-familiares/agregar-integrante', [PartnerController::clas
 Route::post('/inscripcion/subactividad', [ActivityController::class, 'subActividades'])->name('subactividades');
 Route::post('/inscripcion/validar', [PartnerController::class, 'validarInscripcionSubActividad'])->name('validar.inscripcion');
 Route::post('/inscripcion/registrar', [PartnerController::class, 'inscribirSocioSubActividad'])->name('registrar.inscripcion'); //ruta registrar inscripcion a subactividad
-//
+
+//Rutas para panel subactividades
+Route::post('/panel-subactividades', [SubActividadController::class, 'traerSocios'])->name('panel-subactividades.socios');//ruta para traer socios de sub actividades
+Route::PATCH('subactividades/baja-socio', [SubActividadController::class, 'bajaSocio'])->name('eliminar.socio'); //ruta eliminar socio

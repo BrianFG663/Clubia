@@ -13,4 +13,6 @@ php artisan shield:generate --resource=ProductResource
 php artisan shield:generate --resource=CategoryResource
 php artisan shield:generate --resource=SaleResource
 
+
+
 Ejecutar seeder: php artisan db:seed

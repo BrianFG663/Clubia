@@ -13,10 +13,8 @@ function calcularEdad(fechaNacimiento) {
 
 window.detalleFamilia = function (id) {
     const familiaresDiv = document.querySelector(".familiares");
+    const overlay = document.getElementById("overlay");
     const jefeId = id;
-
-    familiaresDiv.classList.remove("hidden");
-    familiaresDiv.classList.add("mostrar");
 
     fetch("/detalles-familiares", {
         method: "POST",
@@ -53,7 +51,7 @@ window.detalleFamilia = function (id) {
                     <div class="informacion">
                         <div>
                             <div class="alto-inf"></div>
-                            <table class="tabla-inf table-auto w-full">
+                            <table class="tabla table-auto w-full">
                                 <thead>
                                     <tr>
                                         <th>Nombre completo</th>
@@ -78,7 +76,14 @@ window.detalleFamilia = function (id) {
                     "contenedor-informacion"
                 ).innerHTML = `<div class="mensaje">No hay familiares inscriptos en este grupo.</div>`;
             }
+             // Mostrar modal y overlay juntos
+            familiaresDiv.classList.remove("hidden");
+            familiaresDiv.classList.add("mostrar");
+            overlay.classList.remove("hidden");
+            overlay.classList.add("mostrar");
         });
+
+       
 };
 
 window.eliminarIntegrante = function (id) {
@@ -89,7 +94,6 @@ window.eliminarIntegrante = function (id) {
         imageHeight: 100,
         imageUrl: "/images/alertas/advertencia.png",
         text: "¿Desea eliminar este integrante del grupo familiar?",
-        showCancelButton: true,
         cancelButtonText: "CANCELAR",
         confirmButtonText: "CONFIRMAR",
         confirmButtonColor: "#e74938",
@@ -115,6 +119,8 @@ window.eliminarIntegrante = function (id) {
                             text: "Integrante eliminado del grupo familiar",
                             showConfirmButton: false,
                             timer: 2000,
+                            backdrop: false,
+                            allowOutsideClick: false,
                             imageWidth: 100,
                             imageHeight: 100,
                             imageUrl: "/images/alertas/check.png",
@@ -168,6 +174,7 @@ window.agregarIntegrante = function (responsable_id) {
                     Swal.fire({
                         imageWidth: 100,
                         imageHeight: 100,
+                        allowOutsideClick: true,
                         imageUrl: "/images/html/lupa.png",
                         title: "Socio encontrado",
                         text: `¿Desea agregar a ${data.integrante.nombre} ${data.integrante.apellido} al grupo familiar?`,
@@ -231,14 +238,21 @@ window.agregarIntegrante = function (responsable_id) {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-    const familiaresDiv = document.getElementById("familiares");
     const cerrarBtn = document.getElementById("cerrar-alerta");
+    const familiaresDiv = document.querySelector(".familiares");
+    const overlay = document.getElementById("overlay");
 
-    if (cerrarBtn) {
-        cerrarBtn.addEventListener("click", () => {
+    if (cerrarBtn && familiaresDiv && overlay) {
+        function cerrarModal() {
             familiaresDiv.classList.remove("mostrar");
             familiaresDiv.classList.add("hidden");
+            overlay.classList.remove("mostrar");
+            overlay.classList.add("hidden");
             document.getElementById("contenedor-informacion").innerHTML = "";
-        });
+        }
+
+        cerrarBtn.addEventListener("click", cerrarModal);
+        overlay.addEventListener("click", cerrarModal);
     }
 });
+

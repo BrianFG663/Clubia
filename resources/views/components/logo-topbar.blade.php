@@ -2,7 +2,7 @@
     .custom-topbar-brand {
         display: flex;
         align-items: center;
-        gap: 0.5rem; /* equivalente a gap-2 */
+        gap: 0.5rem; 
     }
 
     .custom-topbar-logo {
@@ -12,13 +12,13 @@
     .custom-topbar-name {
         position: relative;
         right: 0.3vw;
-        font-size: 1.6vw; /* text-base */
-        font-weight: 600; /* font-semibold */
-        color: #1f2937; /* text-gray-800 */
+        font-size: 1.6vw; 
+        font-weight: 600; 
+        color: #1f2937; 
     }
 
     .dark .custom-topbar-name {
-        color: #c28840; /* text-white en dark mode */
+        color: #c28840; 
     }
 </style>
 

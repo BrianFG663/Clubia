@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Institution;
 use App\Models\Invoice;
+use App\Models\Order;
 use App\Models\Partner;
 use App\Models\Payment;
 use App\Models\Sale;
@@ -26,6 +27,7 @@ class InvoiceFactory extends Factory
         return [
             'client_id' => Partner::inRandomOrder()->first()->id,
             'institution_id' => Institution::inRandomOrder()->first()->id,
+            'order_id' => Order::inRandomOrder()->first()->id,
             'sale_id' => Sale::inRandomOrder()->first()->id,
             'tipo_factura' => $this->faker->randomElement(['A', 'B', 'C']),
             'monto_total' => $this->faker->randomFloat(2, 1000, 10000),

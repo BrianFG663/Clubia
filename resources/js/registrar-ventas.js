@@ -284,7 +284,6 @@ enviarBtn.addEventListener("click", function () {
                         title: "Venta registrada",
                         showConfirmButton: false,
                         timer: 1500,
-                        backdrop: false,
                         imageWidth: 100,
                         imageHeight: 100,
                         imageUrl: "/images/alertas/check.png",

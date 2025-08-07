@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\SubActividadController;
@@ -24,6 +25,8 @@ Route::POST('/detalles-familiares/buscar-integrante', [PartnerController::class,
 Route::PATCH('/detalles-familiares/agregar-integrante', [PartnerController::class, 'agregarIntegranteGrupoFamiliar'])->name('agregar.integrante'); //ruta agregar integrante al grupo familiar
 
 
-//panel Sub actividades 
-Route::post('/panel-subactividades', [SubActividadController::class, 'traerSocios'])->name('panel-subactividades.socios');//ruta para traer socios de sub actividades
-Route::PATCH('subactividades/baja-socio', [SubActividadController::class, 'bajaSocio'])->name('eliminar.socio'); //ruta eliminar socio
+//Rutas para actividades y subactividades
+Route::post('/inscripcion/subactividad', [ActivityController::class, 'subActividades'])->name('subactividades');
+Route::post('/inscripcion/validar', [PartnerController::class, 'validarInscripcionSubActividad'])->name('validar.inscripcion');
+Route::post('/inscripcion/registrar', [PartnerController::class, 'inscribirSocioSubActividad'])->name('registrar.inscripcion'); //ruta registrar inscripcion a subactividad
+//

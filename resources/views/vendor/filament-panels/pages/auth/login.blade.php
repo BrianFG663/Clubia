@@ -1,13 +1,52 @@
 <x-filament-panels::page.simple>
 
-    {{-- Título personalizado --}}
-    <x-slot name="heading">
-    <div style="color: #c28840 !important;" class="font-bold text-center">
-        Iniciar sesión
+    <style>
+    /* Oculta el logo por defecto */
+    .fi-logo {
+        display: none !important;
+    }
+
+    /* Oculta el heading original de Filament */
+    .fi-simple-header-heading {
+        display: none !important;
+    }
+
+    /* Estilos personalizados */
+    .custom-login-header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .custom-login-logo {
+        position: relative;
+        bottom: 15%;
+        height: 10rem;
+        margin-bottom: 1rem;
+    }
+
+    .custom-login-heading {
+        color: #c28840 !important;
+        position: relative;
+        bottom: 14%;
+        font-weight: bold;
+        text-align: center;
+        font-size: 2rem;
+    }
+</style>
+
+    {{-- Logo + Título en orden correcto --}}
+    <div class="custom-login-header">
+        <img
+            src="{{ asset('images/logos/texturizado.png') }}"
+            alt="Logo de la app"
+            class="custom-login-logo"
+        >
+
+        <div class="custom-login-heading">
+            Iniciar sesión
+        </div>
     </div>
-</x-slot>
-
-
 
     {{-- Subtítulo opcional --}}
     @if (filament()->hasRegistration())
@@ -37,4 +76,5 @@
         \Filament\View\PanelsRenderHook::AUTH_LOGIN_FORM_AFTER,
         scopes: $this->getRenderHookScopes()
     ) }}
+    
 </x-filament-panels::page.simple>

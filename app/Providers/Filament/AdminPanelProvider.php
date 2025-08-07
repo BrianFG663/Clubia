@@ -28,8 +28,8 @@ class AdminPanelProvider extends PanelProvider
     {
         return $panel
             ->default()
-            ->brandLogo(asset('images/logos/texturizado.png'))
-            ->brandLogoHeight('7rem')
+            ->brandLogo(fn () => view('components.logo-topbar'))
+            ->brandLogoHeight('3.8vw')
             ->brandName('')
             ->darkMode(true, true)
             ->id('admin')

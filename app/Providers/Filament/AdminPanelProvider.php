@@ -28,6 +28,9 @@ class AdminPanelProvider extends PanelProvider
     {
         return $panel
             ->default()
+            ->brandLogo(fn () => view('components.logo-topbar'))
+            ->brandLogoHeight('3.8vw')
+            ->brandName('')
             ->darkMode(true, true)
             ->id('admin')
             ->path('admin')

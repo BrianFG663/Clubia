@@ -13,6 +13,7 @@ return new class extends Migration
             $table->unsignedBigInteger('client_id');
             $table->foreign('client_id')->references('id')->on('partners')->onDelete('cascade');
             $table->foreignId('institution_id')->constrained()->onDelete('cascade');
+            $table->foreignId('order_id')->constrained()->onDelete('cascade');
             $table->foreignId('sale_id')->constrained()->onDelete('cascade');
             $table->string('tipo_factura');
             $table->decimal('monto_total');

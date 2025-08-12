@@ -125,12 +125,9 @@ class PartnerResource extends Resource
 
             Forms\Components\Select::make('memberTypes')
                 ->label('Seleccione tipo de socio')
-                ->multiple()
                 ->relationship('memberTypes', 'nombre')
                 ->required()
-                ->preload()
-                ->searchable(),
-
+                ->preload(),
 
             Forms\Components\TextInput::make('dni_responsable')
                 ->label('DNI del responsable del grupo familiar (en caso de querer ingresar a uno)')

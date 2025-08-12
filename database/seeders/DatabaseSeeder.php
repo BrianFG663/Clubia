@@ -35,10 +35,11 @@ class DatabaseSeeder extends Seeder
         ProductSeeder::class,
         SaleDetailSeeder::class,
         PaymentSeeder::class,
-        InvoiceSeeder::class,  
-        PaymentInvoiceSeeder::class, 
         OrderSeeder::class,
         OrderDetailSeeder::class,
+        InvoiceSeeder::class,  
+        PaymentInvoiceSeeder::class, 
+        
     ]);
     }
 }

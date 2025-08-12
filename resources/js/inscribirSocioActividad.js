@@ -66,7 +66,6 @@ window.inscribirSocio = function () {
             text: "Por favor completar el formulario",
             showConfirmButton: false,
             timer: 2000,
-            backdrop: false,
             imageWidth: 100,
             imageHeight: 100,
             imageUrl: "/images/alertas/advertencia.png",
@@ -110,7 +109,6 @@ window.inscribirSocio = function () {
                             text: "Socio inscripto correctamente",
                             showConfirmButton: false,
                             timer: 2000,
-                            backdrop: false,
                             imageWidth: 100,
                             imageHeight: 100,
                             imageUrl: "/images/alertas/check.png",
@@ -122,16 +120,17 @@ window.inscribirSocio = function () {
                 })
             }
 
-            if (data.mensaje == false && actividad != false && subActividad != false) {
+            if (data.mensaje == false && actividad != false && subActividad != false && dni != '') {
+                console.log(data)
                 Swal.fire({
                     text: "No hay un socio registrado con ese dni",
                     showConfirmButton: false,
                     timer: 2000,
-                    backdrop: false,
                     imageWidth: 100,
                     imageHeight: 100,
                     imageUrl: "/images/alertas/advertencia.png",
                 });
             }
+            
         })
 }

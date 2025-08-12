@@ -1,0 +1,176 @@
+/* ---------- CONTENEDOR PRINCIPAL ---------- */
+.contenedor {
+    height: 60vh;
+    border: 1px solid #1c202a;
+    background-color: #111827;
+    border-radius: 10px;
+    padding: 1rem;
+    margin: 0;
+    position: relative;
+    color: #e0e0e0;
+}
+
+/* Encabezado decorativo superior */
+.conenedor-color {
+    background-color: #111827;
+    height: 10%;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+/* ---------- TABLA CON SCROLL RESPONSIVE ---------- */
+.tabla-container {
+    overflow-x: auto;
+}
+
+.tabla {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #111827;
+    min-width: 600px; /* evita que se rompa en móvil */
+}
+
+.tabla th,
+.tabla td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #1c202a;
+    text-align: center;
+    font-size: 0.9vw;
+}
+
+.tabla thead {
+    background-color: #1d2332;
+}
+
+.tabla tbody tr:hover {
+    background-color: #272f45;
+    cursor: pointer;
+}
+
+/* ---------- BOTONES ---------- */
+.botones {
+    width: 10%;
+}
+
+.btn-ver {
+    color: white;
+    padding: 0.35rem 0.75rem;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: background-color 0.2s ease;
+    border: none;
+}
+
+.btn-ver:hover {
+    color: #c28840;
+    cursor: pointer;
+}
+
+i {
+    transition: 0.2s;
+}
+
+i:hover {
+    color: #c28840;
+    cursor: pointer;
+}
+
+.email {
+    width: 25%;
+}
+
+/* ---------- MODAL DETALLE (detalle-socios) ---------- */
+.detalle-socios {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+    max-height: 70vh;
+    overflow-y: auto;
+    background-color: #111827;
+    border: 1px solid #c2884088;
+    border-radius: 10px;
+    padding: 1rem;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    color: #e0e0e0;
+    display: none;
+    z-index: 1000;
+}
+
+.detalle-socios.mostrar {
+    display: block;
+}
+
+/* Overlay detrás del modal */
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(6px);
+    z-index: 900;
+}
+
+/* Botón cerrar modal */
+#cerrar-detalle {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: transparent;
+    border: none;
+    color: #e0e0e0;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+#cerrar-detalle:hover {
+    color: #c28840;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* ---------- PAGINACIÓN ---------- */
+.bajo {
+    border: 1px solid #1c202a;
+    height: 15%;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.index {
+    position: relative;
+    top: 30%;
+    padding-left: 1%;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 768px) {
+    .contenedor {
+        padding: 0.5rem;
+    }
+
+    .detalle-socios {
+        width: 90%;
+        top: 10%;
+        left: 5%;
+        transform: none;
+        height: auto;
+        max-height: 80vh;
+    }
+
+    .tabla th,
+    .tabla td {
+        font-size: 4vw;
+        padding: 0.5rem;
+    }
+
+    #cerrar-detalle {
+        font-size: 5vw;
+    }
+}

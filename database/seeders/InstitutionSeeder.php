@@ -13,6 +13,6 @@ class InstitutionSeeder extends Seeder
      */
     public function run(): void
     {
-        Institution::factory(3)->create();
+        Institution::factory(2)->create();
     }
 }

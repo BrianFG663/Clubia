@@ -19,11 +19,11 @@ class SociosPorTipoChart extends ChartWidget
                     'label' => 'Cantidad de socios',
                     'data' => $tiposConCantidad->pluck('partners_count')->toArray(),
                     'backgroundColor' => [
-                        '#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#EC4899'
+                       '#FF6B35', '#FFB627', '#E85D04', '#D00000', '#F48C06', '#9D0208' 
                     ],
                 ],
             ],
-            'labels' => $tiposConCantidad->pluck('nombre')->toArray(), // O el campo que uses como nombre
+            'labels' => $tiposConCantidad->pluck('nombre')->toArray(), 
         ];
     }
 

@@ -22,7 +22,6 @@ class inscribirSocioSubActividad extends Page
 
     use WithPagination;
 
-
     protected function getViewData(): array
     {
         return [

@@ -9,10 +9,10 @@ class SociosCard extends Widget
 {
     protected static string $view = 'filament.widgets.socios-card';
 
-    public function getData(): array
+    public int $totalSocios = 0;
+
+    public function mount(): void
     {
-        return [
-            'totalSocios' => Partner::count(),
-        ];
+        $this->totalSocios = Partner::whereHas('state', fn($q) => $q->where('nombre', 'Activo'))->count();
     }
 }

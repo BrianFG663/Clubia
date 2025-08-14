@@ -1,7 +1,6 @@
 document.getElementById('filtroNombre').addEventListener('input', function() {
     const filtro = this.value.toLowerCase();
     const filas = document.querySelectorAll('#tablaCuerpo tr');
-
     filas.forEach(fila => {
         const nombreProveedor = fila.cells[2].textContent.toLowerCase(); // índice 2 = columna Proveedor
         fila.style.display = nombreProveedor.includes(filtro) ? '' : 'none';
@@ -36,9 +35,8 @@ window.mostrarDetallesOrden = function(orderId) {
 
             document.getElementById("contenedor-informacion").innerHTML = `
             <h2 style="margin-left: 1rem; margin-bottom: 1rem;">
-                Detalle de la orden #${orderId} del proveedor ${data.proveedor}
+                Detalle de la orden N°${orderId} del proveedor ${data.proveedor}
             </h2>
-
                 <table class="tabla">
                     <thead>
                         <tr>
@@ -54,8 +52,8 @@ window.mostrarDetallesOrden = function(orderId) {
             document.getElementById("contenedor-informacion").innerHTML = `<div style="display: flex; justify-content: center; align-items: center; height: 100%;">No hay detalles para esta orden.</div>`;
         }
 
-        detalleDiv.classList.add("mostrar");  // mostrar modal
-        overlay.classList.add("mostrar");      // mostrar overlay
+        detalleDiv.classList.add("mostrar");  
+        overlay.classList.add("mostrar");      
     })
     .catch(error => {
         console.error(error);

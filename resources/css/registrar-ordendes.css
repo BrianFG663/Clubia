@@ -72,6 +72,7 @@ font-family: sans-serif;
 
 .btn-ver:hover {
     color: #c28840;
+    cursor: pointer;
 }
 
 .pagination-container {
@@ -79,7 +80,13 @@ font-family: sans-serif;
     margin-bottom: 0.5rem;
     margin-right: 2rem;
     margin-left: 2rem;  /* 2rem = 32px aprox */
+    
 }
+
+
+
+
+
 
 /* Ajustes responsive para tamaño de fuente en tabla */
 @media (max-width: 768px) {
@@ -163,22 +170,7 @@ font-family: sans-serif;
     color: #fff; /* o el color que uses en la interfaz */
 }
 
-.btn-agregar-orden {
-    background-color: #c28840; /* dorado caramelo oscuro */
-    color: #fff;
-    font-weight: 600;
-    font-family: 'Inter', sans-serif;
-    border: none;
-    border-radius: 6px;
-    padding: 0.35rem 0.85rem;
-    font-size: 0.85rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
 
-.btn-agregar-orden:hover {
-    background-color: #d2aa6c; /* dorado más claro */
-}
 
 .titulo-ordenes {
     font-size: 2rem; /* 3 veces más grande que el texto normal */
@@ -191,19 +183,28 @@ font-family: sans-serif;
 
 
 
+/* ---------- Scroll del modal ---------- */
+.detalle-orden::-webkit-scrollbar {
+    width: 0.6rem;
+    
+}
+.detalle-orden::-webkit-scrollbar-track {
+    background: transparent;
+}
+.detalle-orden::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 0.625rem;
+    border: 0.2rem solid transparent; /* crea separación */
+    background-clip: padding-box;     /* evita que el color rellene el borde */
+}
 
-
-
-
-
-
-/* ---------- MODAL DETALLE (detalle-orden) ---------- */
+/* ---------- MODAL DETALLE  ---------- */
 .detalle-orden {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 70%;
+    width: 60%;
     max-height: 70vh;
     overflow-y: auto;
     background-color: #111827; /* mismo fondo que tabla y contenedor */

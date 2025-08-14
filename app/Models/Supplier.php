@@ -14,6 +14,8 @@ class Supplier extends Model
         'nombre',
         'telefono',
         'direccion',
+        'cuit',
+        'condicion_id'
     ];
 
     public function orders(): HasMany
@@ -21,4 +23,10 @@ class Supplier extends Model
         return $this->hasMany(Order::class);
     }
 
+      public function condition()
+    {
+        return $this->belongsTo(Condition::class);
+    }
+
+   
 }

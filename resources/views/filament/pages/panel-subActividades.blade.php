@@ -7,6 +7,20 @@
 
 
     <div class="contenedor">
+
+         <div class="filtro-container">
+            <div class="input-icon-wrapper">
+                <input
+                type="text"
+                id="filtroNombre"
+                placeholder="Buscar Subactividad"
+                aria-label="Filtro por nombre"
+                class="filtro-input"
+                />
+                <i class="fa-solid fa-magnifying-glass icon"></i>
+            </div>
+        </div>
+
         <div id="overlay" class="hidden"></div>
         <div class="detalle-socios hidden" id="detalle-socios">
             <button id="cerrar-detalle"><i class="fa-solid fa-xmark"></i></button>
@@ -23,16 +37,16 @@
                     <th>Acciones</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="tablaCuerpo">
                 @foreach ($subActivities as $sub)
 
                     <tr>
                         <td>{{ $sub->activity->nombre }}</td>
                         <td>{{ $sub->nombre }}</td>
                         <td>{{ $sub->monto  }}</td>
-                        <td >{{ $sub->partners_count }}</td>
+                        <td style="text-align: center;">{{ $sub->partners_count }}</td>
                         <td>
-                            <button onclick="mostrarSocios({{ $sub->id }})" class="btn-ver">
+                            <button onclick="mostrarSocios({{ $sub->id }})" class="btn">
                                 <i class="fa-solid fa-eye"></i>
                             </button>
                         </td>
@@ -41,8 +55,8 @@
                 @endforeach
             </tbody>
         </table>
-        
-        <x-filament::pagination :paginator="$subActivities" class="index mt-4" />
-
+         <div class="pagination-container">
+            <x-filament::pagination :paginator="$subActivities" class="index mt-4" />
+         </div>
     </div>
 </x-filament-panels::page>

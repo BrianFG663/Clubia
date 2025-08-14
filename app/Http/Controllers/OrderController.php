@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use Illuminate\Validation\ValidationException;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class OrderController extends Controller
 {
@@ -14,7 +15,7 @@ class OrderController extends Controller
         $orden = Order::with('orderDetails', 'supplier')->findOrFail($id);
 
         return response()->json([
-            'proveedor' => $orden->supplier->nombre, // suponiendo la relación supplier en Order
+            'proveedor' => $orden->supplier->nombre, 
             'detalles' => $orden->orderDetails->map(function($detalle) {
                 return [
                     'id' => $detalle->id,
@@ -26,28 +27,11 @@ class OrderController extends Controller
         ]);
     }
 
-    public function eliminarDetalle($detalleId)
-        {
-            $detalle = OrderDetail::find($detalleId);
-            if (!$detalle) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Detalle no encontrado'
-                ]);
-            }
-
-            $ordenId = $detalle->order_id;
-            $detalle->delete();
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Detalle eliminado',
-                'orden_id' => $ordenId
-            ]);
-        }
-
-
-
-
+    public function exportPdf($id)
+    {
+        $order = Order::with('orderDetails')->findOrFail($id);
+        $pdf = Pdf::loadView('filament.pages.orders.pdf', compact('order'));
+        return $pdf->stream("orden-{$order->id}.pdf");
+    }
 
 }

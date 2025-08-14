@@ -44,6 +44,11 @@
                                 <button class="btn-ver" data-order-id="{{ $order->id }}" aria-label="Ver orden {{ $order->id }}" onclick="mostrarDetallesOrden({{ $order->id }})">
                                     <i class="fa-solid fa-eye"></i>
                                 </button>
+
+                                <a href="{{ route('ordenes.pdf', $order->id) }}" target="_blank" class="btn-ver">
+                                    Exportar PDF
+                                </a>
+
                             </td>
                         </tr>
                     @endforeach

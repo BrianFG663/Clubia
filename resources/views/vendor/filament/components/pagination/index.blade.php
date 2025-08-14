@@ -32,14 +32,15 @@
         @endphp
 
         <x-filament::button
-            color="gray"
-            rel="prev"
-            :wire:click="$wireClickAction"
-            :wire:key="$this->getId() . '.pagination.previous'"
-            class="fi-pagination-previous-btn justify-self-start"
-        >
-            {{ __('filament::components/pagination.actions.previous.label') }}
-        </x-filament::button>
+        style="background-color: #c28840 !important; color: white !important;"
+        rel="prev"
+        :wire:click="$wireClickAction"
+        :wire:key="$this->getId() . '.pagination.previous'"
+        class="fi-pagination-previous-btn justify-self-start"
+    >
+        {{ __('filament::components/pagination.actions.previous.label') }}
+    </x-filament::button>
+
     @endif
 
     @if (! $isSimple)
@@ -108,7 +109,7 @@
         @endphp
 
         <x-filament::button
-            color="gray"
+            style="background-color: #c28840 !important; color: white !important;"
             rel="next"
             :wire:click="$wireClickAction"
             :wire:key="$this->getId() . '.pagination.next'"

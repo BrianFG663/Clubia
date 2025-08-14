@@ -11,39 +11,100 @@ class ActividadesChart extends ChartWidget
 
     protected function getData(): array
     {
-        // Obtener todas las actividades con la cantidad de socios únicos
-        $activities = Activity::with(['subActivities.partners'])
-            ->get()
-            ->map(function ($activity) {
-                // Contar socios únicos para esta actividad
-                $totalSocios = $activity->subActivities
-                    ->flatMap->partnerSubActivities
-                    ->pluck('partner_id')
-                    ->unique()
-                    ->count();
+        $activities = Activity::with('subActivities.partners')->get();
 
-                return [
-                    'nombre' => $activity->nombre,
-                    'total' => $totalSocios,
-                ];
-            });
+        $labels = [];
+        $data = [];
+
+        foreach ($activities as $activity) {
+            $labels[] = $activity->nombre;
+
+            // Obtener todos los partner_id únicos asociados a las subactividades de esta actividad
+            $partnerIds = $activity->subActivities
+                ->flatMap(function ($subActivity) {
+                    return $subActivity->partners->pluck('id');
+                })
+                ->unique();
+
+            $data[] = $partnerIds->count();
+        }
 
         return [
             'datasets' => [
                 [
                     'label' => 'Cantidad de socios',
-                    'data' => $activities->pluck('total')->toArray(),
+                    'data' => $data,
                     'backgroundColor' => [
-                        '#FF6384',
-                        '#36A2EB',
-                        '#FFCE56',
-                        '#4BC0C0',
-                        '#9966FF',
-                        '#FF9F40'
+                            '#D4A373', // Marrón claro cálido
+                            '#F4A261', // Naranja suave
+                            '#E9C46A', // Amarillo mostaza apagado
+                            '#A8DADC', // Verde agua desaturado
+                            '#457B9D', // Azul grisáceo
+                            '#E5989B', // Rosa antiguo
+                            '#B5838D', // Malva cálido
+                            '#CDB4DB', // Lavanda pastel
+                            '#FFB4A2', // Coral suave
+                            '#F6BD60', // Amarillo mantecoso
+                        ],
+                ],
+            ],
+            'labels' => $labels,
+        ];
+    }
+
+    protected function getOptions(): array
+    {
+        return [
+            'animation' => [
+                'duration' => 1200,
+                'easing' => 'easeOutQuart', // Más suave y profesional
+                'animateScale' => true,
+                'animateRotate' => false, // Evita el giro brusco
+            ],
+            'scales' => [
+                'y' => [
+                    'ticks' => [
+                        'display' => false,
+                    ],
+                    'grid' => [
+                        'color' => 'rgba(0,0,0,0.05)', // Líneas suaves
+                    ],
+                ],
+                'x' => [
+                    'ticks' => [
+                        'display' => false,
+                    ],
+                    'grid' => [
+                        'display' => false, // Sin líneas verticales
                     ],
                 ],
             ],
-            'labels' => $activities->pluck('nombre')->toArray(),
+            'plugins' => [
+                'legend' => [
+                    'position' => 'bottom',
+                    'labels' => [
+                        'boxWidth' => 12,
+                        'padding' => 15,
+                        'font' => [
+                            'size' => 14,
+                            'weight' => '500',
+                        ],
+                    ],
+                ],
+                'tooltip' => [
+                    'enabled' => true,
+                    'backgroundColor' => '#333',
+                    'titleFont' => [
+                        'size' => 14,
+                        'weight' => '600',
+                    ],
+                    'bodyFont' => [
+                        'size' => 13,
+                    ],
+                    'cornerRadius' => 4,
+                    'padding' => 10,
+                ],
+            ],
         ];
     }
 

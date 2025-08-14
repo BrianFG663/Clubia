@@ -41,6 +41,7 @@
                 @endforeach
             </tbody>
         </table>
+        
         <x-filament::pagination :paginator="$subActivities" class="index mt-4" />
 
     </div>

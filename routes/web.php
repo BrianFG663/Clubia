@@ -8,6 +8,7 @@ use App\Http\Controllers\SubActividadController;
 use App\Http\Controllers\SupplierController;
 use App\Models\Partner;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\OrderController;
 
 Route::redirect('/', '/admin'); //redireccionar al login
 
@@ -35,81 +36,6 @@ Route::post('/inscripcion/registrar', [PartnerController::class, 'inscribirSocio
 //Rutas para panel subactividades
 Route::post('/panel-subactividades', [SubActividadController::class, 'traerSocios'])->name('panel-subactividades.socios');//ruta para traer socios de sub actividades
 Route::PATCH('subactividades/baja-socio', [SubActividadController::class, 'bajaSocio'])->name('eliminar.socio'); //ruta eliminar socio
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-use App\Http\Controllers\OrderController;
 
   // Ruta para ordenes
 Route::get('/ordenes/{id}/detalles', [OrderController::class, 'obtenerDetalles']);

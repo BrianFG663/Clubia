@@ -55,3 +55,7 @@ Route::post('/notacredito/socio/facturas', [PartnerController::class, 'facturasS
 Route::post('/notacredito/ventas/facturas', [SaleController::class, 'facturasVentas'])->name('ventas.facturas');
 Route::delete('/notacredito/elimininar/facturas', [InvoiceConstroller::class, 'notaCreditoFactura'])->name('nota-credito.facturas');
 
+  // Ruta para ordenes
+Route::get('/ordenes/{id}/detalles', [OrderController::class, 'obtenerDetalles']);
+Route::delete('/ordenes/detalles/{id}', [OrderController::class, 'eliminarDetalle'])->name('ordenes.detalles.eliminar');
+Route::get('/ordenes/{id}/pdf', [OrderController::class, 'exportPdf'])->name('ordenes.pdf');

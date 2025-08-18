@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Invoice;
 use App\Models\Partner;
 use App\Models\SubActivity;
 use Illuminate\Http\Request;
@@ -38,11 +39,25 @@ class PartnerController extends Controller
     public function buscarIntegrante(Request $request)
     {
 
-        $integrante = Partner::firstWhere('dni', $request->dni);
-        Log::info('Datos del request:', $request->all());
+        $integrante = Partner::with([
+            'memberTypes',
+            'subActivities.activity',
+            'familyMembers',
+            'responsable'
+        ])->where('dni', $request->dni)->first();
+
 
         if ($integrante) {
-            return response()->json(['mensaje' => true, 'integrante' => $integrante]);
+            if (!empty($integrante->responsable)) {
+                $jefe =  Partner::with([
+                    'familyMembers',
+                ])->where('id', $integrante->responsable->id)->firstOrFail();
+                $familiares =  $jefe->familyMembers;
+
+                return response()->json(['mensaje' => true, 'integrante' => $integrante, 'familiares' => $familiares]);
+            } else {
+                return response()->json(['mensaje' => true, 'integrante' => $integrante, 'familiares' => []]);
+            }
         } else {
             return response()->json(['mensaje' => false]);
         }
@@ -84,5 +99,29 @@ class PartnerController extends Controller
         $integrante->subActivities()->syncWithoutDetaching($request->subActividad);
 
         return redirect()->back();
+    }
+
+
+    public function facturasSocios(Request $request)
+    {
+
+        $dni = $request->dni;
+        $socioId = Partner::where('dni', $dni)->value('id');
+
+        if(!$socioId){
+            return response()->json(['socio' => false]);  
+        }
+
+        $facturas = Invoice::with('partner')
+            ->where('client_id', $socioId)
+            ->get();
+
+
+
+        if ($facturas->isNotEmpty()) {
+            return response()->json(['mensaje' => true, 'facturas' => $facturas]);
+        } else {
+            return response()->json(['mensaje' => false]);
+        }
     }
 }

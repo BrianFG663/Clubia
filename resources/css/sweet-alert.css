@@ -12,14 +12,14 @@
 .swal2-confirm {
     background-color: transparent !important; 
     color: white !important;
-    border:1px solid #4caf50 !important;
+    border:1px solid #c28840 !important;
     padding: 8px 20px !important;
     font-weight: 100 !important;
     border-radius: 5px !important;
 }
 
 .swal2-confirm:hover {
-    background-color: #4caf4f46 !important; 
+    background-color: #c288406b !important; 
 }
 
 .swal2-cancel {

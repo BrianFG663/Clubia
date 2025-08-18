@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Invoice;
+use App\Models\Partner;
 use App\Models\Product;
 use App\Models\Sale;
 use App\Models\SaleDetail;
@@ -46,5 +48,20 @@ class SaleController extends Controller
         }
 
         return response()->json(['message' => 'Venta recibida correctamente.', 'productos' => $productos]);
+    }
+
+    public function facturasVentas(Request $request){
+        
+        $facturas = Invoice::with('sale.user','sale.saleDetails')
+        ->whereNotNull('sale_id')
+        ->get();
+
+
+
+        if ($facturas->isNotEmpty()) {
+            return response()->json(['mensaje' => true, 'facturas' => $facturas]);
+        } else {
+            return response()->json(['mensaje' => false]);
+        }
     }
 }

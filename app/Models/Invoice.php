@@ -15,7 +15,10 @@ class Invoice extends Model
     protected $fillable = [
         'partner_id',
         'institution_id',
+        'client_id',
         'order_id',
+        'sub_activity_id',
+        'member_type_id',
         'tipo_factura',
         'sale_id',
         'monto_total',
@@ -24,7 +27,7 @@ class Invoice extends Model
 
     public function partner(): BelongsTo
     {
-        return $this->belongsTo(Partner::class);
+        return $this->belongsTo(Partner::class, 'client_id');
     }
 
     public function institution(): HasOne
@@ -42,5 +45,8 @@ class Invoice extends Model
         return $this->belongsTo(Sale::class);
     }
 
-    
+    public function order(): BelongsTo
+    {
+        return $this->belongsTo(Order::class);
+    }
 }

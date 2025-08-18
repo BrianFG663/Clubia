@@ -37,6 +37,86 @@ Route::post('/panel-subactividades', [SubActividadController::class, 'traerSocio
 Route::PATCH('subactividades/baja-socio', [SubActividadController::class, 'bajaSocio'])->name('eliminar.socio'); //ruta eliminar socio
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+use App\Http\Controllers\OrderController;
+
+  // Ruta para ordenes
+Route::get('/ordenes/{id}/detalles', [OrderController::class, 'obtenerDetalles']);
+Route::delete('/ordenes/detalles/{id}', [OrderController::class, 'eliminarDetalle'])->name('ordenes.detalles.eliminar');
+Route::get('/ordenes/{id}/pdf', [OrderController::class, 'exportPdf'])->name('ordenes.pdf');
+
+
 //Rutas para facturacion general e individual
 Route::post('/facturar/socio', [InvoiceConstroller::class, 'facturacionMasivaMensualSocio'])->name('facturar.socio');//ruta para traer socios de sub actividades
 Route::post('/facturar/buscarSocio', [PartnerController::class, 'buscarIntegrante'])->name('facturar.buscarSocio');

@@ -1,21 +1,17 @@
-/* ---------- CONTENEDOR PRINCIPAL ---------- */
 .contenedor {
-     border: 0.125rem solid #1c202a; /* 2px = 0.125rem */
+    border: 0.125rem solid #1c202a; /* 2px = 0.125rem */
     background-color: #111827;
     border-radius: 0.625rem; /* 10px */
     padding-top: 0.5rem;
     padding-bottom: 1rem; /* OK */
+    margin: 0 auto;
     max-width: 65.5rem; /* 1000px */
     width: 100%;
-    height: auto;
     box-sizing: border-box;
     color: #e0e0e0;
 font-family: sans-serif;
 }
 
-
-
-/* ---------- TABLA ---------- */
 .tabla-container {
     width: 100%;
     overflow-x: auto;
@@ -62,7 +58,7 @@ font-family: sans-serif;
     width: 10%;
 }
 
-.btn {
+.btn-ver {
     background: transparent;
     border: none;
     color: #e0e0e0;
@@ -74,7 +70,7 @@ font-family: sans-serif;
     text-decoration: none;
 }
 
-.btn:hover {
+.btn-ver:hover {
     color: #c28840;
     cursor: pointer;
 }
@@ -84,113 +80,25 @@ font-family: sans-serif;
     margin-bottom: 0.5rem;
     margin-right: 2rem;
     margin-left: 2rem;  /* 2rem = 32px aprox */
-}
-
-
-/* ---------- scroll MODAL  ---------- */
-.familiares::-webkit-scrollbar {
-    width: 0.6rem;
-    
-}
-.familiares::-webkit-scrollbar-track {
-    background: transparent;
-}
-.familiares::-webkit-scrollbar-thumb {
-    background-color: #888;
-    border-radius:  0.625rem;
-    border: 0.2rem solid transparent; /* crea separación */
-    background-clip: padding-box;     /* evita que el color rellene el borde */
-}
-
-/* ---------- MODAL DETALLE---------- */
-.familiares {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: auto;
-    max-height: 70vh;
-    overflow-y: auto;
-    background-color: #111827; /* mismo fondo que tabla y contenedor */
-    border: 0.2rem solid #c28840cc; /* borde dorado semitransparente */
-    border-radius: 12px;
-    padding-top: 1.5rem;
-    padding-bottom: 1.5rem;
-    color: #e0e0e0;
-    font-family: 'Inter', sans-serif;
-    display: none;
-    z-index: 1000;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-    opacity: 0;
     
 }
 
-.familiares.mostrar {
-    display: block;
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-}
-
-/* Overlay detrás del modal */
-#overlay {
-     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(6px);
-    z-index: 900;
-    display: none;
-}
-#overlay.mostrar {
-    display: block;
-}
-
-/* Botón cerrar modal */
-#cerrar-alerta {
-     position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
-    background: transparent;
-    border: none;
-    color: #e0e0e0;
-    font-size: 1.4rem;
-    cursor: pointer;
-    transition: color 0.2s ease;
-}
-
-#cerrar-alerta:hover {
-    color: #c28840;
-}
 
 
 
 
 
-/* ---------- RESPONSIVE ---------- */
+/* Ajustes responsive para tamaño de fuente en tabla */
 @media (max-width: 768px) {
     .contenedor {
         padding: 0.5rem;
-    }
-
-    .familiares {
-        width: 90%;
-        top: 10%;
-        left: 5%;
-        transform: none;
         height: auto;
-        max-height: 80vh;
     }
 
     .tabla th,
     .tabla td {
         font-size: 4vw;
         padding: 0.5rem;
-    }
-
-    #cerrar-alerta {
-        font-size: 5vw;
     }
 }
 
@@ -253,4 +161,116 @@ font-family: sans-serif;
     margin-bottom: 0.5rem;
     margin-right: 1rem;
     margin-left: 1rem;
+}
+
+.titulo-ordenes {
+    font-size: 1.25rem; /* tamaño similar al de Filament */
+    font-weight: 600;
+    font-family: 'Inter', sans-serif; /* misma fuente que usa Filament */
+    color: #fff; /* o el color que uses en la interfaz */
+}
+
+
+
+.titulo-ordenes {
+    font-size: 2rem; /* 3 veces más grande que el texto normal */
+    font-weight: 700; /* bien grueso */
+    font-family: 'Inter', sans-serif;
+    color: #fff; /* mismo color que el texto de la interfaz */
+    margin: 0; /* para que no sume espacio extra */
+}
+
+
+
+
+/* ---------- Scroll del modal ---------- */
+.detalle-orden::-webkit-scrollbar {
+    width: 0.6rem;
+    
+}
+.detalle-orden::-webkit-scrollbar-track {
+    background: transparent;
+}
+.detalle-orden::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 0.625rem;
+    border: 0.2rem solid transparent; /* crea separación */
+    background-clip: padding-box;     /* evita que el color rellene el borde */
+}
+
+/* ---------- MODAL DETALLE  ---------- */
+.detalle-orden {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: auto;
+    max-height: 70vh;
+    overflow-y: auto;
+    background-color: #111827; /* mismo fondo que tabla y contenedor */
+    border: 2px solid #c28840cc; /* borde dorado semitransparente */
+    border-radius: 12px;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    color: #e0e0e0;
+    font-family: 'Inter', sans-serif;
+    display: none;
+    z-index: 1000;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    opacity: 0;
+}
+
+.detalle-orden.mostrar {
+    display: block;
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+
+/* Overlay detrás del modal */
+#overlay-orden {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(6px);
+    z-index: 900;
+    display: none;
+}
+
+/* Mostrar overlay */
+#overlay-orden.mostrar {
+    display: block;
+}
+
+/* Botón cerrar modal */
+#cerrar-detalle {
+     position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: transparent;
+    border: none;
+    color: #e0e0e0;
+    font-size: 1.4rem;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+#cerrar-detalle:hover {
+    color: #c28840;
+}
+
+.boton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #ccc; /* gris inicial */
+    font-size: 1.2rem;
+    transition: color 0.3s ease;
+}
+
+.boton:hover {
+    color: gold; /* dorado en hover */
 }

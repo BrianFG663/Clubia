@@ -1,3 +1,13 @@
+document.getElementById('filtroNombre').addEventListener('input', function() {
+    const filtro = this.value.toLowerCase();
+    const filas = document.querySelectorAll('#tablaCuerpo tr');
+
+    filas.forEach(fila => {
+        const nombreSubactividad = fila.cells[1].textContent.toLowerCase(); 
+        fila.style.display = nombreSubactividad.includes(filtro) ? '' : 'none';
+    });
+});
+
 window.mostrarSocios = function(subactividadId) {
     fetch("/panel-subactividades", {
         method: "POST",
@@ -10,30 +20,29 @@ window.mostrarSocios = function(subactividadId) {
     })
     .then(res => res.json())
     .then(data => {
-        const detalleDiv = document.getElementById("detalle-socios");
-        const overlay = document.getElementById("overlay");
+        let contenido = ""; 
 
         if (data.mensaje === true) {
             const sociosHtml = data.socios.map(s => `
                 <tr>
                     <td>${s.nombre} ${s.apellido}</td>
                     <td>${s.dni}</td>
-                    <td>${s.email ?? ''}</td>
-                    <td>${s.telefono ?? ''}</td>
-                    <td>
-                    <button onclick="bajaSocio(${s.id}, ${data.subactividad.id})">
-                        <i class="fa-solid fa-user-xmark"></i>
-                    </button>
-                </td>
+                    <td>${s.email}</td>
+                    <td>${s.telefono}</td>
+                    <td style="text-align: center;">
+                        <button class="btn" onclick="bajaSocio(${s.id}, ${data.subactividad.id})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
                 </tr>
             `).join("");
 
-            document.getElementById("contenedor-informacion").innerHTML = `
-                <h2>Socios en sub actividad: ${data.subactividad.nombre}</h2>
+            contenido = `
+                <h2 style="margin-left: 1rem; margin-bottom: 1rem;">Socios en sub actividad: ${data.subactividad.nombre}</h2>
                 <table class="tabla table-auto w-full">
                     <thead>
                         <tr>
-                            <th>Nombre completo</th>
+                            <th>Nombre </th>
                             <th>DNI</th>
                             <th>Email</th>
                             <th>Teléfono</th>
@@ -43,43 +52,15 @@ window.mostrarSocios = function(subactividadId) {
                     <tbody>${sociosHtml}</tbody>
                 </table>
             `;
-
         } else {
-            document.getElementById("contenedor-informacion").innerHTML = `<div>No hay socios en esta sub actividad.</div>`;
+            contenido = `<div class="mensaje" style="text-align:center; margin: 1.5rem" >No hay socios en esta subactividad.</div>`;
         }
 
-        // Mostrar modal y overlay juntos
-        detalleDiv.classList.add("mostrar");
-        detalleDiv.classList.remove("hidden");
-        overlay.classList.add("mostrar");
-        overlay.classList.remove("hidden");
+        abrirModal("detalle-socios", "overlay-socios", contenido);
     });
 };
 
-document.addEventListener("DOMContentLoaded", () => {
-    const cerrarBtn = document.getElementById("cerrar-detalle");
-    const detalleDiv = document.getElementById("detalle-socios");
-    const overlay = document.getElementById("overlay");
 
-    if (cerrarBtn && detalleDiv && overlay) {
-        cerrarBtn.addEventListener("click", () => {
-            detalleDiv.classList.remove("mostrar");
-            detalleDiv.classList.add("hidden");
-            overlay.classList.remove("mostrar");
-            overlay.classList.add("hidden");
-            document.getElementById("contenedor-informacion").innerHTML = "";
-        });
-
-        // Cerrar modal si se clickea en el overlay también
-        overlay.addEventListener("click", () => {
-            detalleDiv.classList.remove("mostrar");
-            detalleDiv.classList.add("hidden");
-            overlay.classList.remove("mostrar");
-            overlay.classList.add("hidden");
-            document.getElementById("contenedor-informacion").innerHTML = "";
-        });
-    }
-});
 
 window.bajaSocio = function(socioId, subactividadId) {
     Swal.fire({
@@ -134,3 +115,35 @@ window.bajaSocio = function(socioId, subactividadId) {
 
 
 
+
+function abrirModal(modalId, overlayId, contenidoHTML) {
+    const modal = document.getElementById(modalId);
+    const overlay = document.getElementById(overlayId);
+
+    if (contenidoHTML) {
+        modal.querySelector("#contenedor-informacion").innerHTML = contenidoHTML;
+    }
+
+    // Mostrar modal-overlay
+    modal.classList.add("mostrar");
+    modal.classList.remove("hidden");
+    overlay.classList.add("mostrar");
+    overlay.classList.remove("hidden");
+
+    // Cerrar modal al hacer click en el overlay
+    const cerrarBtn = modal.querySelector(".cerrar-detalle");
+    cerrarBtn?.addEventListener("click", () => cerrarModal(modalId, overlayId));
+    overlay?.addEventListener("click", () => cerrarModal(modalId, overlayId));
+}
+
+function cerrarModal(modalId, overlayId) {
+    const modal = document.getElementById(modalId);
+    const overlay = document.getElementById(overlayId);
+
+    modal.classList.remove("mostrar");
+    modal.classList.add("hidden");
+    overlay.classList.remove("mostrar");
+    overlay.classList.add("hidden");
+
+    modal.querySelector("#contenedor-informacion").innerHTML = "";
+}

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Condition;
 use Faker\Provider\bg_BG\PhoneNumber;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -21,6 +22,8 @@ class SupplierFactory extends Factory
            'nombre'=> $this->faker->company(),
            'telefono'=>$this->faker->unique()->PhoneNumber(),
            'direccion'=>$this->faker->streetAddress(),
+           'cuit' => $this->faker->numerify('20#########'),
+           'condicion_id' => Condition::inRandomOrder()->first()?->id,
            
         ];
     }

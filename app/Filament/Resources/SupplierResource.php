@@ -71,7 +71,7 @@ class SupplierResource extends Resource
                 ->rule(function (callable $get) {         
                     return function (string $attribute, $value, \Closure $fail) use ($get) {
                         $idActual = $get('id');
-                        $existe = Supplier::where('telefono', $value)
+                        $existe = Supplier::where('cuit', $value)
                             ->when($idActual, fn($query) => $query->where('id', '!=', $idActual))
                             ->exists();
 

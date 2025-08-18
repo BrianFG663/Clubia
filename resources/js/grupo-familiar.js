@@ -64,7 +64,7 @@ window.detalleFamilia = function (id) {
                     .join("");
 
                 document.getElementById("contenedor-informacion").innerHTML = `
-                    <h2 class="titulo-informacion">Detalles miembros familia ${data.jefe.apellido}</h2>
+                    <h2 class="titulo-informacion" style="margin-left: 1rem; margin-bottom: 1rem;">Detalles miembros familia ${data.jefe.apellido}</h2>
                     <div class="informacion">
                         <div>
                             <div class="alto-inf"></div>
@@ -91,7 +91,7 @@ window.detalleFamilia = function (id) {
             } else {
                 document.getElementById(
                     "contenedor-informacion"
-                ).innerHTML = `<div class="mensaje" style="text-align:center;" >No hay familiares inscriptos en este grupo.</div>`;
+                ).innerHTML = `<div class="mensaje" style="text-align:center; margin: 1.5rem" >No hay familiares inscriptos en este grupo.</div>`;
             }
              // Mostrar modal y overlay juntos
             familiaresDiv.classList.remove("hidden");

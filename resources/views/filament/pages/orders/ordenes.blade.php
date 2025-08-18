@@ -46,7 +46,7 @@
                                 </button>
 
                                 <a href="{{ route('ordenes.pdf', $order->id) }}" target="_blank" class="btn-ver">
-                                    Exportar PDF
+                                    <i class="fa-solid fa-file-pdf"></i>
                                 </a>
 
                             </td>
@@ -62,10 +62,13 @@
 
 
     <div id="detalle-orden" class="detalle-orden">
-        <button id="cerrar-detalle" aria-label="Cerrar modal">&times;</button>
-        <div id="contenedor-informacion"></div>
-    </div>
-    <div id="overlay" onclick="cerrarModal()"></div>
+    <button id="cerrar-detalle" class="cerrar-detalle" aria-label="Cerrar modal">
+        <i class="fa-solid fa-xmark"></i>
+    </button>
+    <div id="contenedor-informacion"></div>
+</div>
+<div id="overlay-orden"></div>
+
 
 
 </x-filament-panels::page>

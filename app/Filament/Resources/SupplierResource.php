@@ -62,6 +62,24 @@ class SupplierResource extends Resource
                     };
                 }),
 
+                Forms\Components\TextInput::make('cuit')
+                ->label('Cuit')
+                ->required()
+                ->maxLength(20)
+                ->tel()
+                ->rule('regex:/^\+?[0-9\s\-]{7,20}$/')  
+                ->rule(function (callable $get) {         
+                    return function (string $attribute, $value, \Closure $fail) use ($get) {
+                        $idActual = $get('id');
+                        $existe = Supplier::where('telefono', $value)
+                            ->when($idActual, fn($query) => $query->where('id', '!=', $idActual))
+                            ->exists();
+
+                        if ($existe) {
+                            $fail('El Cuit ya está registrado para otro proveedor.');
+                        }
+                    };
+                }),
 
                 Forms\Components\TextInput::make('direccion')
                     ->label('Dirección')
@@ -71,8 +89,17 @@ class SupplierResource extends Resource
                         $component->state(ucwords(strtolower($state)));
                     })
                     ->dehydrateStateUsing(fn($state) => ucwords(strtolower($state))),
-            ]);
+
+
+            Forms\Components\Select::make('condicion_id')
+                ->label('Condición IVA')
+                ->relationship('condition', 'nombre') 
+                ->required()
+                ->searchable()
+                ->preload() 
+                ]);
     }
+
 
     public static function table(Table $table): Table
     {
@@ -92,6 +119,12 @@ class SupplierResource extends Resource
 
                 Tables\Columns\TextColumn::make('direccion')
                     ->label('Dirección')
+                    ->searchable()
+                    ->sortable()
+                    ->alignCenter(),
+
+                Tables\Columns\TextColumn::make('cuit')
+                    ->label('Cuit')
                     ->searchable()
                     ->sortable()
                     ->alignCenter(),

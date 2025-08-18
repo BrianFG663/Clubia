@@ -1,15 +1,4 @@
-document.getElementById('filtroNombre').addEventListener('input', function() {
-    const filtro = this.value.toLowerCase();
-    const filas = document.querySelectorAll('#tablaCuerpo tr');
-    filas.forEach(fila => {
-        const nombreProveedor = fila.cells[2].textContent.toLowerCase(); // índice 2 = columna Proveedor
-        fila.style.display = nombreProveedor.includes(filtro) ? '' : 'none';
-    });
-});
-
-
 window.mostrarDetallesOrden = function(orderId) {
-    console.log('click');
     fetch(`/ordenes/${orderId}/detalles`, {
         method: "GET",
         credentials: "same-origin",
@@ -20,9 +9,7 @@ window.mostrarDetallesOrden = function(orderId) {
     })
     .then(res => res.json())
     .then(data => {
-        const detalleDiv = document.getElementById("detalle-orden");
-        const overlay = document.getElementById("overlay");
-        console.log(data);
+        let contenidoHTML = "";
 
         if (data.detalles && data.detalles.length > 0) {
             const detallesHtml = data.detalles.map(d => `
@@ -33,10 +20,10 @@ window.mostrarDetallesOrden = function(orderId) {
                 </tr>
             `).join("");
 
-            document.getElementById("contenedor-informacion").innerHTML = `
-            <h2 style="margin-left: 1rem; margin-bottom: 1rem;">
-                Detalle de la orden N°${orderId} del proveedor ${data.proveedor}
-            </h2>
+            contenidoHTML = `
+                <h2 style="margin-left: 1rem; margin-bottom: 1rem;">
+                    Detalle de la orden N°${orderId} del proveedor ${data.proveedor}
+                </h2>
                 <table class="tabla">
                     <thead>
                         <tr>
@@ -49,11 +36,10 @@ window.mostrarDetallesOrden = function(orderId) {
                 </table>
             `;
         } else {
-            document.getElementById("contenedor-informacion").innerHTML = `<div style="display: flex; justify-content: center; align-items: center; height: 100%;">No hay detalles para esta orden.</div>`;
+            contenidoHTML = `<div style="display: flex; justify-content: center; align-items: center; height: 100%;">No hay detalles para esta orden.</div>`;
         }
 
-        detalleDiv.classList.add("mostrar");  
-        overlay.classList.add("mostrar");      
+        abrirModal("detalle-orden", "overlay-orden", contenidoHTML);
     })
     .catch(error => {
         console.error(error);
@@ -61,16 +47,28 @@ window.mostrarDetallesOrden = function(orderId) {
     });
 }
 
+function abrirModal(modalId, overlayId, contenidoHTML) {
+    const modal = document.getElementById(modalId);
+    const overlay = document.getElementById(overlayId);
 
-window.cerrarModal = function() {
-    document.getElementById("detalle-orden").classList.remove("mostrar");
-    document.getElementById("overlay").classList.remove("mostrar");
-};
+    if (contenidoHTML) {
+        modal.querySelector("#contenedor-informacion").innerHTML = contenidoHTML;
+    }
 
-// Listener para el botón cerrar
-document.getElementById("cerrar-detalle").addEventListener("click", window.cerrarModal);
+    modal.classList.add("mostrar");
+    overlay.classList.add("mostrar");
 
-// Listener para el overlay también para cerrar modal al clickear fuera
-document.getElementById("overlay").addEventListener("click", window.cerrarModal);
+    // Cerrar modal
+    const cerrarBtn = modal.querySelector(".cerrar-detalle");
+    cerrarBtn?.addEventListener("click", () => cerrarModal(modalId, overlayId));
+    overlay?.addEventListener("click", () => cerrarModal(modalId, overlayId));
+}
 
+function cerrarModal(modalId, overlayId) {
+    const modal = document.getElementById(modalId);
+    const overlay = document.getElementById(overlayId);
 
+    modal.classList.remove("mostrar");
+    overlay.classList.remove("mostrar");
+    modal.querySelector("#contenedor-informacion").innerHTML = "";
+}

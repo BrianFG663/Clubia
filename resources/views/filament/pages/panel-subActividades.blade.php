@@ -21,11 +21,12 @@
             </div>
         </div>
 
-        <div id="overlay" class="hidden"></div>
-        <div class="detalle-socios hidden" id="detalle-socios">
-            <button id="cerrar-detalle"><i class="fa-solid fa-xmark"></i></button>
+        <div id="detalle-socios" class="detalle-socios">
+            <button id="cerrar-detalle" class="cerrar-detalle"><i class="fa-solid fa-xmark" ></i></button>
             <div id="contenedor-informacion"></div>
         </div>
+        <div id="overlay-socios"></div>
+
 
         <table class="tabla table-auto w-full">
             <thead>

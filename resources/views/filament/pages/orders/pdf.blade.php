@@ -9,13 +9,11 @@
 <body>
 
     <header>
-        <img src="{{ public_path('images/excavador.png') }}" alt="Logo">
+        <img src="{{ public_path('images/logos/logo-cce.png') }}" alt="Logo">
         <div class="empresa">Club central entrerriano</div>
     </header>
 
-    <footer>
-        Página <span class="page"></span> - Generado el {{ \Carbon\Carbon::now()->format('d/m/Y') }}
-    </footer>
+    
 
     <main>
         <div class="titulo">Orden N°{{ $order->id }}</div>
@@ -24,6 +22,9 @@
             <table>
                 <tr><th>Proveedor:</th><td>{{ $order->supplier->nombre ?? $order->supplier_id }}</td></tr>
                 <tr><th>Fecha:</th><td>{{ $order->created_at->format('d/m/Y') }}</td></tr>
+                <tr><th>CUIT:</th><td>{{ $order->supplier->cuit ?? $order->supplier_id }}</td></tr>
+                <tr><th>Condicion IVA:</th><td>{{ $order->supplier->condition->nombre }}</td></tr>
+
             </table>
         </div>
 
@@ -47,14 +48,14 @@
                             <td>{{ $index + 1 }}</td>
                             <td>{{ $detail->nombre_producto }}</td>
                             <td>{{ $detail->cantidad }}</td>
-                            <td>${{ number_format($detail->precio_unitario, 2) }}</td>
-                            <td>${{ number_format($subtotal, 2) }}</td>
+                           <td>${{ number_format($detail->precio_unitario, 2, ',', '.') }}</td>
+                            <td>${{ number_format($subtotal, 2, ',', '.') }}</td>
                         </tr>
                         @php $totalCalculado += $subtotal; @endphp
                     @endforeach
                     <tr>
                         <td colspan="4" style="text-align: right; font-weight: bold;">Total</td>
-                        <td>${{ number_format($order->total ?? $totalCalculado, 2) }}</td>
+                        <td>${{ number_format($order->total ?? $totalCalculado, 2,',','.' )}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -76,15 +77,15 @@
 
     header {
         position: fixed;
-        top: -110px;
+        top: -150px;
         left: 0;
         right: 0;
         text-align: center;
         padding: 30px 0 15px;
         border-bottom: 4px solid #f80c08d2;
-        border-top: 4px solid #f80c08d2;
-        background-color: #000;
+        background-color: #fffdfde1;
         color: #f80c08d2;
+
     }
 
     header img {
@@ -92,68 +93,63 @@
         margin-bottom: 10px;
     }
 
+  
     .empresa {
         font-size: 24px;
         font-weight: bold;
-        color: white;
+        color: rgb(17, 17, 17);
+     
     }
 
-    .dominio {
-        font-size: 14px;
-        color: white;
+    .info-section h3 {
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+    
+}
+
+table {
+    margin-top: 2rem;
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+/* Encabezados de la tabla */
+table thead th {
+    background-color: #f5f5f5; /
+    color: #424242;
+    font-weight: bold;
+    text-align: left;
+    padding: 12px 8px; 
+    border: 1px solid #e0e0e0; 
+}
+
+/* Celdas de la tabla */
+table tbody td {
+    padding: 10px 8px;
+    border: 1px solid #e0e0e0;
+}
+
+/* Filas impares */
+table tbody tr:nth-child(odd) {
+    background-color: #fafafa;
+}
+
+/* Estilo para el total */
+.total-row {
+    font-weight: bold;
+    background-color: #e0e0e0;
+    text-align: right !important; 
+}
+
+/* MAIN: Contenido principal del documento */
+    main {
+        margin-top: 80px; 
     }
 
-    footer {
-        position: fixed;
-        bottom: -50px;
-        left: 0;
-        right: 0;
+    .titulo{
         text-align: center;
-        font-size: 11px;
-        color: #555;
-        border-top: 1px solid #ccc;
-        padding-top: 5px;
-    }
-
-    footer .page::after {
-        content: counter(page);
-    }
-
-    .titulo {
-        text-align: center;
-        font-size: 20px;
-        margin: 60px 0 25px;
-        text-transform: uppercase;
-        color: #000;
-        font-weight: bold;
-    }
-
-    .info-section {
-        margin-bottom: 25px;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 10px;
-    }
-
-    table th,
-    table td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        vertical-align: top;
-    }
-
-    table th {
-        background-color: #7a7871;
-        color: #000;
-        font-weight: bold;
-    }
-
-    h3 {
-        margin-bottom: 5px;
-        color: #000;
     }
 </style>
 

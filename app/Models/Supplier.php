@@ -23,10 +23,9 @@ class Supplier extends Model
         return $this->hasMany(Order::class);
     }
 
-      public function condition()
+    public function condition()
     {
-        return $this->belongsTo(Condition::class);
+        return $this->belongsTo(Condition::class,'condicion_id');
     }
 
-   
 }

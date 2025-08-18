@@ -3,7 +3,7 @@ document.getElementById('filtroNombre').addEventListener('input', function() {
     const filas = document.querySelectorAll('#tablaCuerpo tr');
 
     filas.forEach(fila => {
-        const nombreSubactividad = fila.cells[1].textContent.toLowerCase(); // índice 2 = columna Proveedor
+        const nombreSubactividad = fila.cells[1].textContent.toLowerCase(); 
         fila.style.display = nombreSubactividad.includes(filtro) ? '' : 'none';
     });
 });
@@ -42,7 +42,7 @@ window.mostrarSocios = function(subactividadId) {
                 <table class="tabla table-auto w-full">
                     <thead>
                         <tr>
-                            <th>Nombre completo</th>
+                            <th>Nombre </th>
                             <th>DNI</th>
                             <th>Email</th>
                             <th>Teléfono</th>
@@ -53,7 +53,7 @@ window.mostrarSocios = function(subactividadId) {
                 </table>
             `;
         } else {
-            contenido = `<div>No hay socios en esta sub actividad.</div>`;
+            contenido = `<div class="mensaje" style="text-align:center; margin: 1.5rem" >No hay socios en esta subactividad.</div>`;
         }
 
         abrirModal("detalle-socios", "overlay-socios", contenido);

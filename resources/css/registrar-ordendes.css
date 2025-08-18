@@ -204,7 +204,7 @@ font-family: sans-serif;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 60%;
+    width: auto;
     max-height: 70vh;
     overflow-y: auto;
     background-color: #111827; /* mismo fondo que tabla y contenedor */
@@ -228,7 +228,7 @@ font-family: sans-serif;
 
 
 /* Overlay detrás del modal */
-#overlay {
+#overlay-orden {
     position: fixed;
     top: 0;
     left: 0;
@@ -241,13 +241,13 @@ font-family: sans-serif;
 }
 
 /* Mostrar overlay */
-#overlay.mostrar {
+#overlay-orden.mostrar {
     display: block;
 }
 
 /* Botón cerrar modal */
 #cerrar-detalle {
-    position: absolute;
+     position: absolute;
     top: 0.5rem;
     right: 0.5rem;
     background: transparent;

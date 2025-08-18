@@ -13,6 +13,7 @@ class Ordenes extends Page
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static string $view = 'filament.pages.orders.ordenes';
     protected static ?string $navigationLabel = 'Órdenes (Vista personalizada)';
+    
 
 
     protected function getViewData(): array

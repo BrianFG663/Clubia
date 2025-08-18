@@ -3,5 +3,6 @@
         @livewire(\App\Filament\Widgets\SociosCard::class)
         @livewire(\App\Filament\Widgets\SociosPorTipoChart::class)
         @livewire(\App\Filament\Widgets\ActividadesChart::class)
+        @livewire(\App\Filament\Widgets\SociosAlDia::class)
     </div>
 </x-filament-panels::page>

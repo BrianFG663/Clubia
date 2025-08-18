@@ -25,7 +25,7 @@ class PanelSubactividades extends Page
     protected function getViewData(): array
     {
         return [
-            'subActivities' => SubActivity::withCount('partners')->paginate(5),
+            'subActivities' => SubActivity::withCount('partners')->paginate(10),
         ];
     }
 }

@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
         PaymentTypeSeeder::class,    
         CategorySeeder::class,
         InstitutionSeeder::class,
+        ConditionSeeder::class,
         SupplierSeeder::class,
         MemberTypeSeeder::class,
         MemberTypePartnerSeeder::class,

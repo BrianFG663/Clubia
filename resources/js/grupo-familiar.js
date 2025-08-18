@@ -1,3 +1,20 @@
+document.getElementById('filtroNombre').addEventListener('input', function() {
+    const filtro = this.value.toLowerCase();
+    const filas = document.querySelectorAll('#tablaCuerpo tr');
+
+    filas.forEach(fila => {
+        const familiar = fila.cells[0].textContent.toLowerCase();
+        const dni = fila.cells[1].textContent.toLowerCase();
+
+        if (familiar.includes(filtro) || dni.includes(filtro)) {
+            fila.style.display = '';
+        } else {
+            fila.style.display = 'none';
+        }
+    });
+});
+
+
 function calcularEdad(fechaNacimiento) {
     const hoy = new Date();
     const nacimiento = new Date(fechaNacimiento);
@@ -40,14 +57,14 @@ window.detalleFamilia = function (id) {
                     <td>${f.telefono}</td>
                     <td class="email">${f.direccion}</td>
                     <td>${calcularEdad(f.fecha_nacimiento)}</td>
-                    <td class="botones"><button onclick="eliminarIntegrante(${f.id
+                    <td class="btn" style="text-align:center;"><button onclick="eliminarIntegrante(${f.id
                             })"><i class="fas fa-trash"></i></button></td>
                 </tr>`
                     )
                     .join("");
 
                 document.getElementById("contenedor-informacion").innerHTML = `
-                    <h2 class="titulo-informacion">Detalles miembros familia ${data.jefe.apellido}</h2>
+                    <h2 class="titulo-informacion" style="margin-left: 1rem; margin-bottom: 1rem;">Detalles miembros familia ${data.jefe.apellido}</h2>
                     <div class="informacion">
                         <div>
                             <div class="alto-inf"></div>
@@ -61,7 +78,7 @@ window.detalleFamilia = function (id) {
                                         <th>Direccion</th>
                                         <th>Edad
                                         </th>
-                                        <th class="botones" colspan="1">Eliminar</th>
+                                        <th>Eliminar</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -74,7 +91,7 @@ window.detalleFamilia = function (id) {
             } else {
                 document.getElementById(
                     "contenedor-informacion"
-                ).innerHTML = `<div class="mensaje">No hay familiares inscriptos en este grupo.</div>`;
+                ).innerHTML = `<div class="mensaje" style="text-align:center; margin: 1.5rem" >No hay familiares inscriptos en este grupo.</div>`;
             }
              // Mostrar modal y overlay juntos
             familiaresDiv.classList.remove("hidden");

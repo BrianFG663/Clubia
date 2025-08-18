@@ -28,7 +28,7 @@ class grupoFamiliar extends Page
         return [
             'jefes' => Partner::where('jefe_grupo', 1)
                 ->with('familyMembers')
-                ->paginate(5),
+                ->paginate(10),
         ];
     }
 }

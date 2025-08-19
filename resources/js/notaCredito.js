@@ -196,7 +196,7 @@ function facturasVentas(){
                     <td>${p.monto_total}</td>
                     <td>${p.sale && p.sale.sale_details ? p.sale.sale_details.length : 0}</td>
                     <td>
-                        <button class="btn-borrar" title="Eliminar factura" onclick="realizarNotaDebito(${p.id},'venta')" style="background:none; border:none; cursor:pointer;">
+                        <button class="btn-borrar" title="Realizar nota de credito" onclick="realizarNotaDebito(${p.id},'venta')" style="background:none; border:none; cursor:pointer;">
                             <i class="fa-regular fa-credit-card"></i>
                         </button>
                     </td>
@@ -272,7 +272,7 @@ function facturasProveedor(proveedorid) {
                         <td>${p.fecha_factura}</td>
                         <td>${p.monto_total}</td>
                         <td>
-                            <button class="btn-borrar" title="Eliminar factura" onclick="realizarNotaDebito(${p.id},'proveedor','${proveedor}')" style="background:none; border:none; cursor:pointer;">
+                            <button class="btn-borrar" title="Realizar nota de credito" onclick="realizarNotaDebito(${p.id},'proveedor','${proveedor}')" style="background:none; border:none; cursor:pointer;">
                                 <i class="fa-regular fa-credit-card"></i>
                             </button>
                         </td>
@@ -401,7 +401,7 @@ function facturasSocio(dniSocio) {
                         <td>${p.fecha_factura}</td>
                         <td>${p.monto_total}</td>
                         <td>
-                            <button class="btn-borrar" title="Eliminar factura" onclick="realizarNotaDebito(${p.id},'socio','${dni}')" style="background:none; border:none; cursor:pointer;">
+                            <button class="btn-borrar" title="Realizar nota de credito" onclick="realizarNotaDebito(${p.id},'socio','${dni}')" style="background:none; border:none; cursor:pointer;">
                                 <i class="fa-regular fa-credit-card"></i>
                             </button>
                         </td>

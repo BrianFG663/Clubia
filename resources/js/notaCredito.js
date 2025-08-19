@@ -2,6 +2,7 @@ const select = document.getElementById('actividad');
 select.addEventListener('change', function () {
     const actividad = this.value;
 
+    console.log(actividad)
     document.getElementById('facturas').innerHTML =
     `<div class="facturas-pagas" id="facturas-pagas"></div>
     <div class="facturas-no-pagas" id="facturas-no-pagas"></div>`
@@ -9,13 +10,10 @@ select.addEventListener('change', function () {
     document.getElementById('facturas').style.padding = '0%';
     document.getElementById('facturas').style.flexDirection = 'row';
 
-
     const facturasPagas = document.getElementById('facturas-pagas')
     const facturasNoPagas = document.getElementById('facturas-no-pagas')
     facturasNoPagas.innerHTML = '';
     facturasPagas.innerHTML = '';
-    
-
 
     const mensajeVacio = document.createElement("div");
     mensajeVacio.classList.add("carrito-vacio");
@@ -30,7 +28,6 @@ select.addEventListener('change', function () {
     mensajeVacio.appendChild(texto);
     facturasPagas.appendChild(mensajeVacio);
     facturasNoPagas.appendChild(mensajeVacio.cloneNode(true));
-
 
     if (actividad == 1) {
         document.getElementById('select-js').innerHTML =
@@ -60,135 +57,11 @@ select.addEventListener('change', function () {
                 return
             }
 
-            fetch("/notacredito/socio/facturas", {
-                method: "POST",
-                credentials: "same-origin",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": document
-                    .querySelector('meta[name="csrf-token"]')
-                    .getAttribute("content"),
-                },
-                body: JSON.stringify({ dni: dni })
-            })
-                .then((res) => res.json())
-                .then((data) => {
-
-                    if (data.socio == false) {
-                        Swal.fire({
-                        text: `No hay un socio registrado con ese dni.`,
-                        imageUrl: "/images/alertas/advertencia.png",
-                        confirmButtonText: 'Entendido',
-                        confirmButtonColor: '#3085d6',
-                        backdrop: false,
-                        allowOutsideClick: false,
-                        allowEscapeKey: false,
-                        imageWidth: 100,
-                        imageHeight: 100,
-                        });
-                    }
-                    
-                    if (data.mensaje == true) {
-                        console.log(data)
-                        const crearMensajeVacio = (texto) => {
-                        const div = document.createElement("div");
-                        div.classList.add("carrito-vacio");
-
-                        const img = document.createElement("img");
-                        img.src = "/images/html/caja-vacia.png";
-                        img.classList.add("img-vacio");
-
-                        const span = document.createElement("span");
-                        span.textContent = texto;
-
-                        div.appendChild(img);
-                        div.appendChild(span);
-
-                        return div;
-                    };
-
-                    const generarFilas = (facturas) => {
-                        return facturas.map(p => 
-                            `<tr data-id="${p.id}">
-                                <td>${p.partner.nombre} ${p.partner.apellido}</td>
-                                <td>${p.fecha_factura}</td>
-                                <td>${p.monto_total}</td>
-                                <td>
-                                    <button class="btn-borrar" title="Eliminar factura" onclick="realizarNotaDebito(${p.id})" style="background:none; border:none; cursor:pointer;">
-                                        <i class="fa-regular fa-credit-card"></i>
-                                    </button>
-                                </td>
-                            </tr>`).join('');
-                        };
-
-                    const facturasPagas = data.facturas.filter(p => p.estado_pago == 1);
-                    const facturasImpagas = data.facturas.filter(p => p.estado_pago == 0);
-
-                    const contPagas = document.getElementById('facturas-pagas');
-                    const contImpagas = document.getElementById('facturas-no-pagas');
-
-                    // Facturas pagas
-                    if (facturasPagas.length > 0) {
-                        contPagas.innerHTML = 
-                        `<h2 class="titulo-facturas-pagas">Facturas pagas</h2>
-                        <table border="1" cellspacing="0" cellpadding="5">
-                            <thead>
-                                <tr>
-                                    <th>Socio</th>
-                                    <th>Fecha de factura</th>
-                                    <th>Monto total</th>
-                                    <th>Acción</th>
-                                </tr>
-                            </thead>
-                                <tbody>${generarFilas(facturasPagas)}</tbody>
-                        </table>`;
-                        } else {
-                            contPagas.innerHTML = "";
-                            contPagas.appendChild(crearMensajeVacio("Este proveedor no tiene facturas pagas"));
-                        }
-
-                        // Facturas impagas
-                        if (facturasImpagas.length > 0) {
-                            contImpagas.innerHTML = 
-                            `<h2 class="titulo-facturas-inpagas">Facturas a pagar</h2>
-                            <table border="1" cellspacing="0" cellpadding="5">
-                                <thead>
-                                    <tr>
-                                        <th>Socio</th>
-                                        <th>Fecha de factura</th>
-                                        <th>Monto total</th>
-                                        <th>Acción</th>
-                                    </tr>
-                                </thead>
-                                <tbody>${generarFilas(facturasImpagas)}</tbody>
-                            </table>`;
-                        } else {
-                            contImpagas.innerHTML = "";
-                            contImpagas.appendChild(crearMensajeVacio("Este proveedor no tiene facturas impagas"));
-                        }
-                    }
-
-                    if (data.mensaje == false) {
-                        Swal.fire({
-                            title: 'Atencion',
-                            text: 'Este socio no tiene facturas registradas',
-                            icon: 'info',
-                            confirmButtonText: 'Entendido',
-                            confirmButtonColor: '#3085d6',
-                            backdrop: false,
-                            allowOutsideClick: false,
-                            allowEscapeKey: false,
-                            imageWidth: 100,
-                            imageHeight: 100,
-                        });
-                    }
-                    
-                }) //fin de fetch
-            });
-        }
+            facturasSocio(dni)
+        });
+    }
 
     if (actividad == 2) {
-
         fetch("/notacredito/buscar/proveedores", {
             method: "POST",
             credentials: "same-origin",
@@ -210,211 +83,26 @@ select.addEventListener('change', function () {
 
             document.getElementById('proveedores').innerHTML += proveedores
 
-
             const selectProveedores = document.getElementById('proveedores');
             selectProveedores.addEventListener('change', function () {
-            const proveedor = this.value;
-
-            fetch("/notacredito/proveedor/facturas", {
-                method: "POST",
-                credentials: "same-origin",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": document
-                    .querySelector('meta[name="csrf-token"]')
-                    .getAttribute("content"),
-                },
-                body: JSON.stringify({ proveedor: proveedor }),
-                })
-                .then((res) => res.json())
-                .then((data) => {
-                    console.log(data)
-
-                    if (data.mensaje == true) {
-                        const crearMensajeVacio = (texto) => {
-                            const div = document.createElement("div");
-                            div.classList.add("carrito-vacio");
-
-                            const img = document.createElement("img");
-                            img.src = "/images/html/caja-vacia.png";
-                            img.classList.add("img-vacio");
-
-                            const span = document.createElement("span");
-                            span.textContent = texto;
-
-                            div.appendChild(img);
-                            div.appendChild(span);
-
-                            return div;
-                        };
-
-                        const generarFilas = (facturas) => {
-                            return facturas.map(p => 
-                                `<tr data-id="${p.id}">
-                                    <td>${p.order?.supplier?.nombre ?? ''}</td>
-                                    <td>${p.fecha_factura}</td>
-                                    <td>${p.monto_total}</td>
-                                    <td>
-                                        <button class="btn-borrar" title="Eliminar factura" onclick="realizarNotaDebito(${p.id})" style="background:none; border:none; cursor:pointer;">
-                                            <i class="fa-regular fa-credit-card"></i>
-                                        </button>
-                                    </td>
-                                </tr>`).join('');
-                            };
-
-                        const facturasPagas = data.facturas.filter(p => p.estado_pago == 1);
-                        const facturasImpagas = data.facturas.filter(p => p.estado_pago == 0);
-
-                        const contPagas = document.getElementById('facturas-pagas');
-                        const contImpagas = document.getElementById('facturas-no-pagas');
-
-                            // Facturas pagas
-                        if (facturasPagas.length > 0) {
-                            contPagas.innerHTML = 
-                            `<h2 class="titulo-facturas-pagas">Facturas pagas</h2>
-                            <table border="1" cellspacing="0" cellpadding="5">
-                                <thead>
-                                    <tr>
-                                        <th>Proveedor</th>
-                                        <th>Fecha de factura</th>
-                                        <th>Monto total</th>
-                                        <th>Acción</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    ${generarFilas(facturasPagas)}
-                                </tbody>
-                            </table>`;
-                        } else {
-                            contPagas.innerHTML = "";
-                            contPagas.appendChild(crearMensajeVacio("Este proveedor no tiene facturas pagas"));
-                        }
-
-                            // Facturas impagas
-                        if (facturasImpagas.length > 0) {
-                            contImpagas.innerHTML = 
-                            `<h2 class="titulo-facturas-inpagas">Facturas a pagar</h2>
-                            <table border="1" cellspacing="0" cellpadding="5">
-                                <thead>
-                                    <tr>
-                                        <th>Proveedor</th>
-                                        <th>Fecha de factura</th>
-                                        <th>Monto total</th>
-                                        <th>Acción</th>
-                                    </tr>
-                                </thead>
-                                <tbody>${generarFilas(facturasImpagas)}</tbody>
-                            </table>`;
-                        } else {
-                            contImpagas.innerHTML = "";
-                            contImpagas.appendChild(crearMensajeVacio("Este proveedor no tiene facturas impagas"));
-                        }
-                    }
-
-                        
-                    if (data.mensaje == false) {
-                        Swal.fire({
-                            title: 'Atencion',
-                            text: 'Este proveedor no tiene facturas registradas',
-                            icon: 'info',
-                            confirmButtonText: 'Entendido',
-                            confirmButtonColor: '#3085d6',
-                            backdrop: false,
-                            allowOutsideClick: false,
-                            allowEscapeKey: false,
-                            imageWidth: 100,
-                            imageHeight: 100,
-                        });
-                    }
-                })
-
+                const proveedor = this.value;
+                facturasProveedor(proveedor)
             })
-
         })
     }
 
-
     if(actividad == 3){
-        fetch("/notacredito/ventas/facturas", {
-            method: "POST",
-            credentials: "same-origin",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-TOKEN": document
-                .querySelector('meta[name="csrf-token"]')
-                .getAttribute("content"),
-            }
-        })
-        .then((res) => res.json())
-        .then((data) => {
-            if (data.mensaje == true) {
-                console.log(data)
-                const crearMensajeVacio = (texto) => {
-                    const div = document.createElement("div");
-                    div.classList.add("carrito-vacio");
-
-                    const img = document.createElement("img");
-                    img.src = "/images/html/caja-vacia.png";
-                    img.classList.add("img-vacio");
-
-                    const span = document.createElement("span");
-                    span.textContent = texto;
-
-                    div.appendChild(img);
-                    div.appendChild(span);
-
-                    return div;
-                };
-
-                const generarFilas = (facturas) => {
-                    return facturas.map(p => `
-                    <tr data-id="${p.id}">
-                        <td>${p.sale.user.nombre} ${p.sale.user.apellido}</td>
-                        <td>${p.fecha_factura}</td>
-                        <td>${p.monto_total}</td>
-                        <td>${p.sale && p.sale.sale_details ? p.sale.sale_details.length : 0}</td>
-                        <td>
-                            <button class="btn-borrar" title="Eliminar factura" onclick="realizarNotaDebito(${p.id})" style="background:none; border:none; cursor:pointer;">
-                                <i class="fa-regular fa-credit-card"></i>
-                            </button>
-                        </td>
-                    </tr>`).join('');
-                };
-
-                const facturasPagas = data.facturas.filter(p => p.estado_pago == 1);
-                const contPagas = document.getElementById('facturas');
-
-                if (facturasPagas.length > 0) {
-                    contPagas.innerHTML = '<h2 class="titulo-facturas-inpagas">Facturas de las ventas realizadas</h2>';
-                    contPagas.innerHTML += 
-                    `<table border="1" cellspacing="0" cellpadding="5" class="tabla-ventas">
-                        <thead>
-                            <tr>
-                                <th>Encargado de la venta</th>
-                                <th>Fecha de la venta</th>
-                                <th>Monto total</th>
-                                <th>Cantidad de productos</th>
-                                <th>Acción</th>
-                            </tr>
-                        </thead>
-                        <tbody>${generarFilas(facturasPagas)}</tbody>
-                    </table>`;
-
-                    contPagas.style.flexDirection = 'column';
-                    contPagas.style.padding = '2%';
-
-                } else {
-                    contPagas.innerHTML = "";
-                    contPagas.appendChild(crearMensajeVacio("Este proveedor no tiene facturas pagas"));
-                    }
-            }
-        })
+        facturasVentas()
     }
 });
 
-window.realizarNotaDebito = function(id){
-    const idFactura = id
+window.realizarNotaDebito = function (id, tipo, identificador) {
+    const tipoFactura = tipo;
+    const idFactura = id;
+    const parametro = identificador;
     console.log(idFactura)
+    console.log(parametro)
+    console.log(tipoFactura)
 
     fetch("/notacredito/elimininar/facturas", {
         method: "DELETE",
@@ -422,86 +110,362 @@ window.realizarNotaDebito = function(id){
         headers: {
             "Content-Type": "application/json",
             "X-CSRF-TOKEN": document
-            .querySelector('meta[name="csrf-token"]')
-            .getAttribute("content"),
+                .querySelector('meta[name="csrf-token"]')
+                .getAttribute("content"),
         },
         body: JSON.stringify({ id: idFactura }),
     })
     .then((res) => res.json())
     .then((data) => {
-        if(data.mensaje == true){
-            fetch("/notacredito/ventas/facturas", {
-            method: "POST",
-            credentials: "same-origin",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-TOKEN": document
+        if (data.mensaje == true) {
+            Swal.fire({
+                imageWidth: 100,
+                imageHeight: 100,
+                imageUrl: "/images/alertas/advertencia.png",
+                text: `¿Desea realizar una nota de crédito a la factura seleccionada?`,
+                showCancelButton: true,
+                cancelButtonText: "CANCELAR",
+                confirmButtonText: "CONFIRMAR",
+                confirmButtonColor: "#e74938",
+                cancelButtonColor: "#ffd087",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        text: "Nota de crédito realizada con éxito",
+                        showConfirmButton: false,
+                        timer: 2000,
+                        backdrop: false,
+                        allowOutsideClick: false,
+                        imageWidth: 100,
+                        imageHeight: 100,
+                        imageUrl: "/images/alertas/check.png",
+                    });
+                    if (tipoFactura == 'venta') {
+                        facturasVentas();
+                    }
+                    if (tipoFactura == 'socio') {
+                        facturasSocio(parametro);
+                    }
+                    if (tipoFactura == 'proveedor') {
+                        facturasProveedor(parametro);
+                    }
+                }
+            });
+        }
+    });
+}
+
+function facturasVentas(){
+    fetch("/notacredito/ventas/facturas", {
+        method: "POST",
+        credentials: "same-origin",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": document
+            .querySelector('meta[name="csrf-token"]')
+            .getAttribute("content"),
+        }
+    })
+    .then((res) => res.json())
+    .then((data) => {
+        if (data.mensaje == true) {
+            console.log(data)
+            const crearMensajeVacio = (texto) => {
+                const div = document.createElement("div");
+                div.classList.add("carrito-vacio");
+
+                const img = document.createElement("img");
+                img.src = "/images/html/caja-vacia.png";
+                img.classList.add("img-vacio");
+
+                const span = document.createElement("span");
+                span.textContent = texto;
+
+                div.appendChild(img);
+                div.appendChild(span);
+
+                return div;
+            };
+
+            const contPagas = document.getElementById('facturas');
+
+            const filas = data.facturas.map(p => `
+                <tr data-id="${p.id}">
+                    <td>${p.sale.user.nombre} ${p.sale.user.apellido}</td>
+                    <td>${p.fecha_factura}</td>
+                    <td>${p.monto_total}</td>
+                    <td>${p.sale && p.sale.sale_details ? p.sale.sale_details.length : 0}</td>
+                    <td>
+                        <button class="btn-borrar" title="Eliminar factura" onclick="realizarNotaDebito(${p.id},'venta')" style="background:none; border:none; cursor:pointer;">
+                            <i class="fa-regular fa-credit-card"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+
+            if (data.facturas.length > 0) {
+                contPagas.innerHTML = 
+                `<h2 class="titulo-facturas-inpagas">Facturas sobre las ventas registradas</h2>
+                <table border="1" cellspacing="0" cellpadding="5" class="tabla-ventas">
+                    <thead>
+                        <tr>
+                            <th>Encargado de la venta</th>
+                            <th>Fecha de la venta</th>
+                            <th>Monto total</th>
+                            <th>Cantidad de productos</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>${filas}</tbody>
+                </table>`;
+
+                contPagas.style.padding = '2%';
+                contPagas.style.flexDirection = 'column';
+            } else {
+                contPagas.innerHTML = "";
+                contPagas.appendChild(crearMensajeVacio("Este proveedor no tiene facturas"));
+            }
+        }
+    })
+}
+
+function facturasProveedor(proveedorid) {
+    const proveedor = proveedorid
+
+    fetch("/notacredito/proveedor/facturas", {
+        method: "POST",
+        credentials: "same-origin",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": document
                 .querySelector('meta[name="csrf-token"]')
                 .getAttribute("content"),
-            }
-            })
-            .then((res) => res.json())
-            .then((data) => {
-                if (data.mensaje == true) {
-                    console.log(data)
-                    const crearMensajeVacio = (texto) => {
-                        const div = document.createElement("div");
-                        div.classList.add("carrito-vacio");
+        },
+        body: JSON.stringify({ proveedor: proveedor }),
+    })
+    .then((res) => res.json())
+    .then((data) => {
+        console.log(data)
 
-                        const img = document.createElement("img");
-                        img.src = "/images/html/caja-vacia.png";
-                        img.classList.add("img-vacio");
+        if (data.mensaje == true) {
+            const crearMensajeVacio = (texto) => {
+                const div = document.createElement("div");
+                div.classList.add("carrito-vacio");
 
-                        const span = document.createElement("span");
-                        span.textContent = texto;
+                const img = document.createElement("img");
+                img.src = "/images/html/caja-vacia.png";
+                img.classList.add("img-vacio");
 
-                        div.appendChild(img);
-                        div.appendChild(span);
+                const span = document.createElement("span");
+                span.textContent = texto;
 
-                        return div;
-                    };
+                div.appendChild(img);
+                div.appendChild(span);
 
-                    const generarFilas = (facturas) => {
-                        return facturas.map(p => `
-                        <tr data-id="${p.id}">
-                            <td>${p.sale.user.nombre} ${p.sale.user.apellido}</td>
-                            <td>${p.fecha_factura}</td>
-                            <td>${p.monto_total}</td>
-                            <td>${p.sale && p.sale.sale_details ? p.sale.sale_details.length : 0}</td>
-                            <td>
-                                <button class="btn-borrar" title="Eliminar factura" onclick="realizarNotaDebito(${p.id})" style="background:none; border:none; cursor:pointer;">
-                                    <i class="fa-regular fa-credit-card"></i>
-                                </button>
-                            </td>
-                        </tr>`).join('');
-                    };
+                return div;
+            };
 
-                    const facturasPagas = data.facturas.filter(p => p.estado_pago == 1);
-                    const contPagas = document.getElementById('facturas');
+            const generarFilas = (facturas) => {
+                return facturas.map(p =>
+                    `<tr data-id="${p.id}">
+                        <td>${p.order?.supplier?.nombre ?? ''}</td>
+                        <td>${p.fecha_factura}</td>
+                        <td>${p.monto_total}</td>
+                        <td>
+                            <button class="btn-borrar" title="Eliminar factura" onclick="realizarNotaDebito(${p.id},'proveedor','${proveedor}')" style="background:none; border:none; cursor:pointer;">
+                                <i class="fa-regular fa-credit-card"></i>
+                            </button>
+                        </td>
+                    </tr>`).join('');
+            };
 
-                    if (facturasPagas.length > 0) {
-                        contPagas.innerHTML = 
-                        `<table border="1" cellspacing="0" cellpadding="5" class="tabla-ventas">
+            const facturasPagas = data.facturas.filter(p => p.estado_pago == 1);
+            const facturasImpagas = data.facturas.filter(p => p.estado_pago == 0);
+
+            const contPagas = document.getElementById('facturas-pagas');
+            const contImpagas = document.getElementById('facturas-no-pagas');
+
+            if (facturasPagas.length > 0) {
+                contPagas.innerHTML =
+                    `<h2 class="titulo-facturas-pagas">Facturas pagas</h2>
+                        <table border="1" cellspacing="0" cellpadding="5">
                             <thead>
                                 <tr>
-                                    <th>Encargado de la venta</th>
-                                    <th>Fecha de la venta</th>
+                                    <th>Proveedor</th>
+                                    <th>Fecha de factura</th>
                                     <th>Monto total</th>
-                                    <th>Cantidad de productos</th>
                                     <th>Acción</th>
                                 </tr>
                             </thead>
-                            <tbody>${generarFilas(facturasPagas)}</tbody>
+                            <tbody>
+                                ${generarFilas(facturasPagas)}
+                            </tbody>
                         </table>`;
+            } else {
+                contPagas.innerHTML = "";
+                contPagas.appendChild(crearMensajeVacio("Este proveedor no tiene facturas pagas"));
+            }
 
-                        contPagas.style.padding = '2%';
+            if (facturasImpagas.length > 0) {
+                contImpagas.innerHTML =
+                    `<h2 class="titulo-facturas-inpagas">Facturas a pagar</h2>
+                        <table border="1" cellspacing="0" cellpadding="5">
+                            <thead>
+                                <tr>
+                                    <th>Proveedor</th>
+                                    <th>Fecha de factura</th>
+                                    <th>Monto total</th>
+                                    <th>Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody>${generarFilas(facturasImpagas)}</tbody>
+                        </table>`;
+            } else {
+                contImpagas.innerHTML = "";
+                contImpagas.appendChild(crearMensajeVacio("Este proveedor no tiene facturas impagas"));
+            }
+        }
 
-                    } else {
-                        contPagas.innerHTML = "";
-                        contPagas.appendChild(crearMensajeVacio("Este proveedor no tiene facturas pagas"));
-                    }
-                }
-            })
+        if (data.mensaje == false) {
+            Swal.fire({
+                title: 'Atencion',
+                text: 'Este proveedor no tiene facturas registradas',
+                icon: 'info',
+                confirmButtonText: 'Entendido',
+                confirmButtonColor: '#3085d6',
+                backdrop: false,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                imageWidth: 100,
+                imageHeight: 100,
+            });
+            document.getElementById('facturas-pagas').innerHTML = '';
+            document.getElementById('facturas-no-pagas').innerHTML = '';
+        }
+    })
+}
+
+function facturasSocio(dniSocio) {
+    const dni = dniSocio
+
+    fetch("/notacredito/socio/facturas", {
+        method: "POST",
+        credentials: "same-origin",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": document
+                .querySelector('meta[name="csrf-token"]')
+                .getAttribute("content"),
+        },
+        body: JSON.stringify({ dni: dni })
+    })
+    .then((res) => res.json())
+    .then((data) => {
+        if (data.socio == false) {
+            Swal.fire({
+                text: `No hay un socio registrado con ese dni.`,
+                imageUrl: "/images/alertas/advertencia.png",
+                confirmButtonText: 'Entendido',
+                confirmButtonColor: '#3085d6',
+                backdrop: false,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                imageWidth: 100,
+                imageHeight: 100,
+            });
+        }
+
+        if (data.mensaje == true) {
+            console.log(data)
+            const crearMensajeVacio = (texto) => {
+                const div = document.createElement("div");
+                div.classList.add("carrito-vacio");
+
+                const img = document.createElement("img");
+                img.src = "/images/html/caja-vacia.png";
+                img.classList.add("img-vacio");
+
+                const span = document.createElement("span");
+                span.textContent = texto;
+
+                div.appendChild(img);
+                div.appendChild(span);
+
+                return div;
+            };
+
+            const generarFilas = (facturas) => {
+                return facturas.map(p =>
+                    `<tr data-id="${p.id}">
+                        <td>${p.partner.nombre} ${p.partner.apellido}</td>
+                        <td>${p.fecha_factura}</td>
+                        <td>${p.monto_total}</td>
+                        <td>
+                            <button class="btn-borrar" title="Eliminar factura" onclick="realizarNotaDebito(${p.id},'socio','${dni}')" style="background:none; border:none; cursor:pointer;">
+                                <i class="fa-regular fa-credit-card"></i>
+                            </button>
+                        </td>
+                    </tr>`).join('');
+            };
+
+            const facturasPagas = data.facturas.filter(p => p.estado_pago == 1);
+            const facturasImpagas = data.facturas.filter(p => p.estado_pago == 0);
+
+            const contPagas = document.getElementById('facturas-pagas');
+            const contImpagas = document.getElementById('facturas-no-pagas');
+
+            if (facturasPagas.length > 0) {
+                contPagas.innerHTML =
+                    `<h2 class="titulo-facturas-pagas">Facturas pagas</h2>
+                    <table border="1" cellspacing="0" cellpadding="5">
+                        <thead>
+                            <tr>
+                                <th>Socio</th>
+                                <th>Fecha de factura</th>
+                                <th>Monto total</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>${generarFilas(facturasPagas)}</tbody>
+                    </table>`;
+            } else {
+                contPagas.innerHTML = "";
+                contPagas.appendChild(crearMensajeVacio("Este proveedor no tiene facturas pagas"));
+            }
+
+            if (facturasImpagas.length > 0) {
+                contImpagas.innerHTML =
+                    `<h2 class="titulo-facturas-inpagas">Facturas a pagar</h2>
+                        <table border="1" cellspacing="0" cellpadding="5">
+                            <thead>
+                                <tr>
+                                    <th>Socio</th>
+                                    <th>Fecha de factura</th>
+                                    <th>Monto total</th>
+                                    <th>Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody>${generarFilas(facturasImpagas)}</tbody>
+                        </table>`;
+            } else {
+                contImpagas.innerHTML = "";
+                contImpagas.appendChild(crearMensajeVacio("Este proveedor no tiene facturas impagas"));
+            }
+        }
+
+        if (data.mensaje == false) {
+            Swal.fire({
+                title: 'Atencion',
+                text: 'Este socio no tiene facturas registradas',
+                icon: 'info',
+                confirmButtonText: 'Entendido',
+                confirmButtonColor: '#3085d6',
+                backdrop: false,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                imageWidth: 100,
+                imageHeight: 100,
+            });
         }
     })
 }

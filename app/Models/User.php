@@ -29,7 +29,8 @@ class User extends Authenticatable implements HasName
         'apellido',
         'email',
         'password',
-        'partner_id'
+        'partner_id',
+        'institution_id'
     ];
 
     /**
@@ -73,5 +74,10 @@ class User extends Authenticatable implements HasName
      public function partner(): HasOne
     {
         return $this->hasOne(Partner::class);
+    }
+
+    public function institution(): BelongsTo
+    {
+        return $this->belongsTo(Institution::class);
     }
 }

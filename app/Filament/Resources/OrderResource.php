@@ -28,8 +28,12 @@ class OrderResource extends Resource
 {
     protected static ?string $model = Order::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationLabel = 'Órdenes';
+    protected static ?string $navigationIcon = 'heroicon-o-document-currency-dollar';
+    protected static ?string $navigationLabel = 'Crear orden de compra';
+    protected static ?string $navigationGroup = '📦Ordenes de compra';
+    
+    protected static ?int $navigationSort = 8;
+    
 
 public static function form(Form $form): Form
     {

@@ -10,14 +10,17 @@ return new class extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('client_id');
+            $table->unsignedBigInteger('client_id')->nullable();
             $table->foreign('client_id')->references('id')->on('partners')->onDelete('cascade');
-            $table->foreignId('institution_id')->constrained()->onDelete('cascade');
-            $table->foreignId('order_id')->constrained()->onDelete('cascade');
-            $table->foreignId('sale_id')->constrained()->onDelete('cascade');
+            $table->foreignId('sub_activity_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('member_type_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('institution_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('order_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('sale_id')->nullable()->constrained()->onDelete('cascade');
             $table->string('tipo_factura');
             $table->decimal('monto_total');
-            $table->date('fecha_factura');
+            $table->string('fecha_factura');
+            $table->boolean('estado_pago')->default(false);
             $table->timestamps();
         });
     }

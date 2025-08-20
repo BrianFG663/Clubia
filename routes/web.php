@@ -1,11 +1,14 @@
 <?php
 
 use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\InvoiceConstroller;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\SubActividadController;
+use App\Http\Controllers\SupplierController;
 use App\Models\Partner;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\OrderController;
 
 Route::redirect('/', '/admin'); //redireccionar al login
 
@@ -34,80 +37,23 @@ Route::post('/inscripcion/registrar', [PartnerController::class, 'inscribirSocio
 Route::post('/panel-subactividades', [SubActividadController::class, 'traerSocios'])->name('panel-subactividades.socios');//ruta para traer socios de sub actividades
 Route::PATCH('subactividades/baja-socio', [SubActividadController::class, 'bajaSocio'])->name('eliminar.socio'); //ruta eliminar socio
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-use App\Http\Controllers\OrderController;
+  // Ruta para ordenes
+Route::get('/ordenes/{id}/detalles', [OrderController::class, 'obtenerDetalles']);
+Route::delete('/ordenes/detalles/{id}', [OrderController::class, 'eliminarDetalle'])->name('ordenes.detalles.eliminar');
+Route::get('/ordenes/{id}/pdf', [OrderController::class, 'exportPdf'])->name('ordenes.pdf');
+
+
+//Rutas para facturacion general e individual
+Route::post('/facturar/socio', [InvoiceConstroller::class, 'facturacionMasivaMensualSocio'])->name('facturar.socio');//ruta para traer socios de sub actividades
+Route::post('/facturar/buscarSocio', [PartnerController::class, 'buscarIntegrante'])->name('facturar.buscarSocio');
+Route::post('/facturar/socio/individual', [InvoiceConstroller::class, 'facturarSocioIndividual'])->name('facturar.socio.individual');//ruta para traer socios de sub actividades
+
+//Rutas para nota de credito
+Route::post('/notacredito/buscar/proveedores', [SupplierController::class, 'proveedores'])->name('buscar.proveedores');
+Route::post('/notacredito/proveedor/facturas', [SupplierController::class, 'facturasProveedores'])->name('proveedores.facturas');
+Route::post('/notacredito/socio/facturas', [PartnerController::class, 'facturasSocios'])->name('socios.facturas');
+Route::post('/notacredito/ventas/facturas', [SaleController::class, 'facturasVentas'])->name('ventas.facturas');
+Route::delete('/notacredito/elimininar/facturas', [InvoiceConstroller::class, 'notaCreditoFactura'])->name('nota-credito.facturas');
 
   // Ruta para ordenes
 Route::get('/ordenes/{id}/detalles', [OrderController::class, 'obtenerDetalles']);

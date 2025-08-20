@@ -29,7 +29,7 @@ class Partner extends Model
 
     public function invoices(): HasMany
     {
-        return $this->hasMany(Invoice::class);
+        return $this->hasMany(Invoice::class, 'client_id');
     }
 
     public function memberTypes(): BelongsToMany
@@ -57,7 +57,7 @@ class Partner extends Model
     public function responsable(): BelongsTo
     {
         return $this->belongsTo(Partner::class, 'responsable_id'); 
-    }
+    }   
 
     public function familyMembers(): HasMany
     {

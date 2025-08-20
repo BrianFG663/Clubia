@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Invoice;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\OrderDetail;
@@ -31,7 +32,30 @@ class OrderController extends Controller
     {
         $order = Order::with('orderDetails')->findOrFail($id);
         $pdf = Pdf::loadView('filament.pages.orders.pdf', compact('order'));
-        return $pdf->stream("orden-{$order->id}.pdf");
+        return $pdf->download("orden-{$order->id}.pdf");
     }
 
-}
+
+    public function generarFactura($id)
+    {
+        $order = Order::with('orderDetails')->findOrFail($id);
+        $facturaExistente = Invoice::where('order_id', $order->id)->exists();
+
+        if (!$facturaExistente) {
+            $factura = Invoice::create([
+            'client_id' => $order->client_id ?? null,
+            'order_id' => $order->id,
+            'monto_total' => $order->total,
+            'tipo_factura' => 'A',
+            'fecha_factura' => now(),
+]);
+
+            return response()->json(['success' => true,]);
+        }
+
+       
+        return response()->json(['success' => false,]);
+    }
+} 
+
+

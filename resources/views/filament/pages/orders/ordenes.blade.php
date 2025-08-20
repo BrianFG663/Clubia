@@ -45,7 +45,7 @@
                                     <i class="fa-solid fa-eye"></i>
                                 </button>
 
-                                <a href="{{ route('ordenes.pdf', $order->id) }}" target="_blank" class="btn-ver">
+                                <a href="{{ route('ordenes.pdf', $order->id) }}"  onclick="generarFactura({{ $order->id }})" target="_blank" class="btn-ver">
                                     <i class="fa-solid fa-file-pdf"></i>
                                 </a>
 

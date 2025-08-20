@@ -113,3 +113,4 @@ use App\Http\Controllers\OrderController;
 Route::get('/ordenes/{id}/detalles', [OrderController::class, 'obtenerDetalles']);
 Route::delete('/ordenes/detalles/{id}', [OrderController::class, 'eliminarDetalle'])->name('ordenes.detalles.eliminar');
 Route::get('/ordenes/{id}/pdf', [OrderController::class, 'exportPdf'])->name('ordenes.pdf');
+Route::post('/ordenes/{id}/factura', [OrderController::class, 'generarFactura']);

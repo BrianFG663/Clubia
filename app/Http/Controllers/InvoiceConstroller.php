@@ -13,7 +13,7 @@ use Symfony\Component\VarDumper\VarDumper;
 
 class InvoiceConstroller extends Controller
 {
-
+//FUNCIONES PARA PANEL DONDE SE GENERAN LAS FACTURAS 
     public function facturacionMasivaMensualSocio(Request $request)
     {
         $institutionId = $request->input('institution_id');
@@ -188,4 +188,44 @@ class InvoiceConstroller extends Controller
 
 
     }
+
+    //FUNCIONES PARA PANEL DONDE SE PAGAN LAS FACTURAS 
+
+    public function facturasImpagas(Partner $partner)
+{
+    // Facturas del titular
+        $facturasTitular = $partner->invoices()->where('estado_pago', false)->get();
+
+        // Facturas de familiares (si es jefe de grupo)
+        $facturasFamiliares = collect();
+        if ($partner->jefe_grupo) {
+            $dependientes = Partner::where('responsable_id', $partner->id)->get();
+            foreach ($dependientes as $dep) {
+                $dep->invoices()->where('estado_pago', false)->get()->each(function($f) use ($dep, $facturasFamiliares) {
+                    $facturasFamiliares->push([
+                        'id' => $f->id,
+                        'tipo_factura' => $f->tipo_factura,
+                        'subActivity' => $f->subActivity ?? null,
+                        'memberType' => $f->memberType ?? null,
+                        'institution' => $f->institution ?? null,
+                        'fecha_factura' => $f->fecha_factura,
+                        'monto_total' => $f->monto_total,
+                        'partner_name' => $dep->nombre . ' ' . $dep->apellido,
+                    ]);
+                });
+            }
+        }
+
+        return response()->json([
+            'partner' => $partner->nombre . ' ' . $partner->apellido,
+            'tipo' => $partner->jefe_grupo ? 'jefe' : 'independiente',
+            'facturasTitular' => $facturasTitular,
+            'facturasFamiliares' => $facturasFamiliares,
+        ]);
+    }
+
+
+
+
+
 }

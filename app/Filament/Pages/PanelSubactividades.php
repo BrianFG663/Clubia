@@ -10,10 +10,17 @@ class PanelSubactividades extends Page
 {
     use WithPagination;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationGroup = '📅Administracion de Actividades';
-    protected static ?string $navigationLabel = 'Panel Subactividades';
+    protected static ?string $navigationIcon = 'heroicon-o-book-open';
+    protected static ?string $navigationGroup = '👥Administracion de Socios';
+    protected static ?string $navigationLabel = 'Panel socios-subactividades';
     protected static ?int $navigationSort = 5;
+
+    public static function canAccess(): bool{
+        /** @var \App\Models\User|null $user */
+        $user = \Illuminate\Support\Facades\Auth::user();
+
+        return $user?->can('page_PanelSubactividades') ?? false;
+    }
 
     protected static string $view = 'filament.pages.panel-subactividades';
 

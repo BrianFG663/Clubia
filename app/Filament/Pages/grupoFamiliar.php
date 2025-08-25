@@ -15,6 +15,14 @@ class grupoFamiliar extends Page
     protected static ?int $navigationSort = 5;
     protected static string $view = 'filament.pages.grupo-familiar';
 
+    public static function canAccess(): bool{
+        /** @var \App\Models\User|null $user */
+        $user = \Illuminate\Support\Facades\Auth::user();
+
+        return $user?->can('page_grupoFamiliar') ?? false;
+    }
+
+
     public function getTitle(): string
     {
         return 'Grupos familiares';

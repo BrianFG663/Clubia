@@ -4,8 +4,17 @@ namespace App\Filament\Pages;
 
 use Filament\Pages\Page;
 
-class registrarVentas extends Page
+class RegistrarVentas extends Page
 {
+
+    public static function canAccess(): bool{
+        /** @var \App\Models\User|null $user */
+        $user = \Illuminate\Support\Facades\Auth::user();
+
+        return $user?->can('page_RegistrarVentas') ?? false;
+    }
+
+    protected static ?string $permission = 'view_registrar_ventas';
     protected static ?string $navigationIcon = 'heroicon-o-shopping-cart';
     protected static string $view = 'filament.pages.registrar-ventas';
     protected static ?string $navigationGroup = '🛒Administracion de Ventas';    

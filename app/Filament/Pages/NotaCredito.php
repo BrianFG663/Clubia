@@ -6,6 +6,15 @@ use Filament\Pages\Page;
 
 class NotaCredito extends Page
 {
+
+
+    public static function canAccess(): bool{
+        /** @var \App\Models\User|null $user */
+        $user = \Illuminate\Support\Facades\Auth::user();
+
+        return $user?->can('page_NotaCredito') ?? false;
+    }
+
     protected static ?string $navigationIcon = 'heroicon-o-credit-card';
     protected static ?string $navigationGroup = '🧾Facturacion';
     protected static ?string $navigationLabel = 'Nota de credito';

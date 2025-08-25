@@ -10,6 +10,13 @@ class Ordenes extends Page
 {
     use WithPagination;
 
+    public static function canAccess(): bool{
+        /** @var \App\Models\User|null $user */
+        $user = \Illuminate\Support\Facades\Auth::user();
+
+        return $user?->can('page_Ordenes') ?? false;
+    }
+
     protected static ?string $navigationIcon = 'heroicon-o-numbered-list';
     protected static string $view = 'filament.pages.orders.ordenes';
     protected static ?string $navigationLabel = 'Listado y facturación - Órdenes de compra';

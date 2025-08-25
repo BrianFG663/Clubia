@@ -9,6 +9,14 @@ use Filament\Pages\Page;
 
 class inscribirSocioSubActividad extends Page
 {
+
+    public static function canAccess(): bool{
+        /** @var \App\Models\User|null $user */
+        $user = \Illuminate\Support\Facades\Auth::user();
+
+        return $user?->can('page_inscribirSocioSubActividad') ?? false;
+    }
+
     protected static ?string $navigationIcon = 'heroicon-o-user-plus';
     protected static ?string $navigationGroup = '👥Administracion de Socios';
     protected static ?string $navigationLabel = 'Inscribir socio a sub actividad';

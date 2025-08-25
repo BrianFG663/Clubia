@@ -12,8 +12,10 @@ use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 use Filament\Models\Contracts\HasName;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
+use Illuminate\Auth\Access\Authorizable;
 
-class User extends Authenticatable implements HasName
+class User extends Authenticatable implements HasName, AuthorizableContract
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use Notifiable;

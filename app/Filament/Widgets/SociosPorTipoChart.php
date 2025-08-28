@@ -7,7 +7,7 @@ use Filament\Widgets\ChartWidget;
 
 class SociosPorTipoChart extends ChartWidget
 {
-    protected static ?string $heading = 'Tipos de Socios Actuales';
+    protected static ?string $heading = 'Tipos de Socios';
 
     protected function getData(): array
     {

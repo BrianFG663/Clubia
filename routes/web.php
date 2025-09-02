@@ -64,6 +64,7 @@ Route::post('/ordenes/{id}/factura', [OrderController::class, 'generarFactura'])
 
 //Rutas para cobrar facturas de socio
 
-// Cobrar todas las facturas impagas de un socio
-Route::get('/invoices/impagas/{partner}', [InvoiceConstroller::class, 'facturasImpagas']);
 
+Route::get('/invoices/impagas/{partner}', [InvoiceConstroller::class, 'facturasImpagas']);// ver todas las facturas impagas de un socio
+Route::get('/invoices/pagas/{partner}', [InvoiceConstroller::class, 'facturasPagas']);
+Route::patch('/invoices/pagar', [InvoiceConstroller::class, 'pagarFacturas']); //Pagar facturas

@@ -1,5 +1,5 @@
 <x-filament-panels::page>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @vite(['resources/css/cobroFacturas.css', 'resources/js/cobroFacturas.js'])
 
@@ -7,81 +7,82 @@
         <div class="filtro-container">
             <div class="input-icon-wrapper">
                 <input
-                type="text"
-                id="filtroNombre"
-                placeholder="Buscar Nombre/DNI"
-                aria-label="Filtro por nombre/DNI"
-                class="filtro-input"
+                    type="text"
+                    id="filtroNombre"
+                    placeholder="Buscar Nombre/DNI"
+                    aria-label="Filtro por nombre/DNI"
+                    class="filtro-input"
                 />
                 <i class="fa-solid fa-magnifying-glass icon"></i>
-                
             </div>
         </div>
 
-
-
         <div class="tabla-container">
             <table class="tabla">
-    <thead>
-        <tr>
-            <th>Nombre</th>
-            <th>DNI</th>
-            <th>Responsable</th>
-            <th>Facturas Impagas</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody id="tablaCuerpo">
-        @foreach($partners as $partner)
-            <tr>
-                <td>{{ $partner->nombre . ' ' . $partner->apellido }}</td>
-                <td>{{ $partner->dni ?? '-' }}</td>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>DNI</th>
+                        <th>Responsable</th>
+                        <th>Facturas Impagas</th>
+                        <th>Facturas Pagas</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaCuerpo">
+                    @foreach($partners as $partner)
+                        @php
+                            $totalImpagas = $partner->facturasImpagas->count();
+                            $totalPagas   = $partner->facturasPagas->count();
 
-                <td>
-                    @if($partner->jefe_grupo)
-                        Sí
-                    @else
-                        No
-                    @endif
-                </td>
-                
-          <td>
-    @php
-        $totalImpagas = $partner->invoices->count();
+                            // Si es jefe de grupo, sumamos facturas de familiares
+                            if ($partner->jefe_grupo) {
+                                $dependientes = \App\Models\Partner::where('responsable_id', $partner->id)
+                                    ->with(['facturasImpagas', 'facturasPagas'])
+                                    ->get();
 
-        if ($partner->jefe_grupo) {
-            $totalImpagas += \App\Models\Partner::where('responsable_id', $partner->id)
-                ->with('invoices')
-                ->get()
-                ->sum(fn($dep) => $dep->invoices->count());
-        }
-    @endphp
-    {{ $totalImpagas }}
-</td>
+                                foreach ($dependientes as $cantidad) {
+                                    $totalImpagas += $cantidad->facturasImpagas->count();
+                                    $totalPagas   += $cantidad->facturasPagas->count();
+                                }
+                            }
+                        @endphp
 
-                <td>
-                    <button class="btn-ver" onclick="verFacturas({{ $partner->id }})">
-                        Ver Facturas
-                    </button>
-                </td>
-            </tr>
-        @endforeach
-    </tbody>
-</table>
-
+                        <tr>
+                            <td>{{ $partner->nombre . ' ' . $partner->apellido }}</td>
+                            <td>{{ $partner->dni ?? '-' }}</td>
+                            <td>{{ $partner->jefe_grupo ? 'Sí' : 'No' }}</td>
+                            <td>
+                                {{ $totalImpagas }}
+                                @if($totalImpagas > 0)
+                                    <button class="btn-ver" onclick="verFacturasImpagas({{ $partner->id }})">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </button>
+                                @endif
+                            </td>
+                            <td>
+                                {{ $totalPagas }}
+                                @if($totalPagas > 0)
+                                    <button class="btn-ver" onclick="verFacturasPagas({{ $partner->id }})">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </button>
+                                @endif
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
 
             <div class="pagination-container">
                 <x-filament::pagination :paginator="$partners"/>
             </div>
         </div>
 
-           <div id="detalle-factura" class="detalle-factura">
+        <div id="detalle-factura" class="detalle-factura">
             <button id="cerrar-factura" class="cerrar-factura" aria-label="Cerrar modal">
                 <i class="fa-solid fa-xmark"></i>
             </button>
             <div id="contenedor-informacion"></div>
         </div>
         <div id="overlay-factura"></div>
-
     </div>
 </x-filament-panels::page>

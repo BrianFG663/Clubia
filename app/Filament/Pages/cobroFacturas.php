@@ -23,7 +23,7 @@ class cobroFacturas extends Page
 
 
 
-   protected function getViewData(): array
+  /* protected function getViewData(): array
     {
         $partners = Partner::with(['invoices' => function ($query) {
                 $query->where('estado_pago', false);
@@ -39,5 +39,19 @@ class cobroFacturas extends Page
         ];
     }
 
+    */
+protected function getViewData(): array
+{
+    $partners = Partner::withCount(['facturasImpagas', 'facturasPagas'])
+    ->where(function ($q) {
+        $q->whereNull('responsable_id')   
+          ->orWhere('jefe_grupo', true); 
+    })
+    ->paginate(10);
+
+    return [
+        'partners' => $partners,
+    ];
+}
 
 }

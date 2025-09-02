@@ -164,13 +164,11 @@ font-family: sans-serif;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 95%;
-    height: 95%;
+    height: auto;
     overflow-y: auto;
     background-color: #111827; /* mismo fondo que tabla y contenedor */
     border: 2px solid #c28840cc; /* borde dorado semitransparente */
     border-radius: 12px;
-    padding-top: 1.5rem;
-    padding-bottom: 1.5rem;
     color: #e0e0e0;
     font-family: 'Inter', sans-serif;
     display: none;
@@ -207,7 +205,6 @@ font-family: sans-serif;
 /* Botón cerrar modal */
 #cerrar-factura{
      position: absolute;
-    top: 0.5rem;
     right: 0.5rem;
     background: transparent;
     border: none;
@@ -251,3 +248,154 @@ font-family: sans-serif;
         width: 100%;
     }
 }
+
+
+/* ---------- Scroll del modal ---------- */
+.contenedor-modal::-webkit-scrollbar {
+    width: 0.6rem;
+    
+}
+.contenedor-modal::-webkit-scrollbar-track {
+    background: transparent;
+}
+.contenedor-modal::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 0.625rem;
+    border: 0.2rem solid transparent; /* crea separación */
+    background-clip: padding-box;     /* evita que el color rellene el borde */
+}
+
+.contenedor-modal {
+    width: 99%;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    border: 1px solid #c28840;
+    max-height: 220px;
+     overflow-y: auto;
+    margin-bottom: 0.5rem;
+}
+
+.contenedor-modal table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed; 
+}
+
+
+.contenedor-modal thead {
+    position: sticky;
+    top: 0;
+    background-color: #272f45;
+    z-index: 10;
+}
+
+
+
+.contenedor-modal th, 
+.contenedor-modal td {
+    padding: 8px;
+    text-align: left;
+   border-bottom: 0.0625rem solid #1c202a;
+    color: #e0e0e0;
+}
+
+
+
+.custom-checkbox {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  user-select: none;
+  z-index: 5;
+  /* ajusta padding si quieres */
+}
+
+.custom-checkbox input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  position: relative;
+  height: 18px;
+  width: 18px;
+  background-color: #111827;
+  border: 2px solid #c28840;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+/* Estado checked */
+.custom-checkbox input:checked + .checkmark {
+  background-color: #c28840;
+  border-color: #c28840;
+}
+
+.checkmark::after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Palomita visible al estar checked */
+.custom-checkbox input:checked + .checkmark::after {
+  display: block;
+  left: 5px;
+  top: 1px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+th .check-factura {
+  position: static; /* o eliminar position si no es necesario */
+  z-index: auto;
+  width: 18px;
+  height: 18px;
+  vertical-align: middle; /* para centrarlo con el texto */
+  margin-right: 0.5rem; /* espacio entre checkbox y texto */
+  cursor: pointer;
+}
+
+.total-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color:transparent;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.total-text {
+    font-size: 1.25rem; /* Más grande */
+    font-weight: 600;
+    color: white;
+    margin-left: 0.5rem; /* Separación del borde */
+    font-family: 'Inter', sans-serif;
+}
+
+.btn-pagar {
+    background-color: #c28840;
+    color: white;
+    padding: 0.5rem 1rem;
+    margin: 0.5rem;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    font-family: 'Inter', sans-serif;
+}
+
+.btn-pagar:hover {
+    background-color: #d29c5a;
+}
+

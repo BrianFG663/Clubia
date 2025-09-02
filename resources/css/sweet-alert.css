@@ -2,9 +2,10 @@
 /*sweet alert*/
 
 .swal2-popup {
-    background-color: #374151 !important; 
+    background-color: #111827 !important; 
     color: #fff !important;              
     border-radius: 10px !important;       
+    border:1px solid #c28840 !important; 
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.5) !important;
 }
 
@@ -72,3 +73,5 @@ input[type=number] {
 body.swal2-shown > *:not(.swal2-container) {
   pointer-events: none !important;
 }
+
+

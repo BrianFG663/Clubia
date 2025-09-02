@@ -82,4 +82,9 @@ class User extends Authenticatable implements HasName, AuthorizableContract
     {
         return $this->belongsTo(Institution::class);
     }
+
+    public function cashRecordsDetails(): HasMany
+    {
+        return $this->hasMany(CashRecordDetail::class);
+    }
 }

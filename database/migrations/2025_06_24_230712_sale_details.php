@@ -13,7 +13,7 @@ return new class extends Migration
             $table->foreignId('sale_id')->constrained()->onDelete('cascade');
             $table->foreignId('product_id')->constrained()->onDelete('cascade');
             $table->integer('cantidad');
-            $table->decimal('subtotal');
+            $table->decimal('subtotal',20,6);
             $table->timestamps();
         });
     }

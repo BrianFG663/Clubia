@@ -266,27 +266,38 @@ font-family: sans-serif;
 }
 
 .contenedor-modal {
+    padding: 0;
     width: 99%;
     margin-left: 0.5rem;
     margin-right: 0.5rem;
     border: 1px solid #c28840;
     max-height: 220px;
-     overflow-y: auto;
+    overflow-y: auto;
     margin-bottom: 0.5rem;
+    z-index: 15;
+}
+
+
+.contenedor-borde {
+    border: 1px solid #c28840;
+    overflow: hidden;
+    margin: 0 0.5rem 0.5rem 0.5rem;
+    width: 99%;
+    background-color: #1c1e26; /* o el que uses */
 }
 
 .contenedor-modal table {
     width: 100%;
     border-collapse: collapse;
-    table-layout: fixed; 
+    table-layout: fixed;
 }
 
 
 .contenedor-modal thead {
     position: sticky;
-    top: 0;
+    top: -1px;
     background-color: #272f45;
-    z-index: 10;
+    z-index: 20; 
 }
 
 
@@ -295,10 +306,15 @@ font-family: sans-serif;
 .contenedor-modal td {
     padding: 8px;
     text-align: left;
-   border-bottom: 0.0625rem solid #1c202a;
+    border-bottom: 0.0625rem solid #1c202a;
     color: #e0e0e0;
+    z-index: 3;
 }
 
+.contenedor-modal thead tr {
+    width: 100%;
+     z-index: 1;
+} 
 
 
 .custom-checkbox {

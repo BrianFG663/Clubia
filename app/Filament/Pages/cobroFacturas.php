@@ -22,24 +22,6 @@ class cobroFacturas extends Page
     protected static string $view = 'filament.pages.cobro-facturas';
 
 
-
-  /* protected function getViewData(): array
-    {
-        $partners = Partner::with(['invoices' => function ($query) {
-                $query->where('estado_pago', false);
-            }])
-            ->where(function ($q) {
-                $q->whereNull('responsable_id')   
-                ->orWhere('jefe_grupo', true); 
-            })
-            ->paginate(10);
-
-        return [
-            'partners' => $partners,
-        ];
-    }
-
-    */
 protected function getViewData(): array
 {
     $partners = Partner::withCount(['facturasImpagas', 'facturasPagas'])

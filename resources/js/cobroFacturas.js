@@ -46,7 +46,7 @@ window.verFacturasImpagas = function(partnerId) {
                     <td>${f.memberType ?? '-'}</td>
                     <td>${f.institution ?? '-'}</td>
                     <td>${f.fecha_factura}</td>
-                    <td>$${f.monto_total}</td>
+                    <td>$${new Intl.NumberFormat('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(f.monto_total)}</td>
                     ${tipo === 'familiar' ? `<td>${f.partner_name ?? '-'}</td>` : ''}
                     <td>
                         <label class="custom-checkbox">
@@ -123,17 +123,18 @@ window.verFacturasImpagas = function(partnerId) {
         abrirModal("detalle-factura", "overlay-factura", contenidoHTML);
 
         // Checkboxes y total
-        const checkboxes = document.querySelectorAll('.check-factura');
-        const totalSpan = document.getElementById('total-pagar');
+            const checkboxes = document.querySelectorAll('.check-factura');
+            const totalSpan = document.getElementById('total-pagar');
 
-        checkboxes.forEach(chk => {
-            chk.addEventListener('change', () => {
-                const total = Array.from(checkboxes)
-                    .filter(c => c.checked)
-                    .reduce((sum, c) => sum + parseFloat(c.dataset.monto), 0);
-                totalSpan.textContent = total.toFixed(2);
+            checkboxes.forEach(chk => {
+                chk.addEventListener('change', () => {
+                    const total = Array.from(checkboxes)
+                        .filter(c => c.checked)
+                        .reduce((sum, c) => sum + parseFloat(c.dataset.monto), 0);
+                    totalSpan.textContent = ' ' + new Intl.NumberFormat('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(total);
+                });
             });
-        });
+
 
         // Botón seleccionar/deseleccionar todos
         const btnToggle = document.getElementById("btn-toggle");
@@ -145,7 +146,8 @@ window.verFacturasImpagas = function(partnerId) {
             const total = Array.from(checkboxes)
                 .filter(c => c.checked)
                 .reduce((sum, c) => sum + parseFloat(c.dataset.monto), 0);
-            totalSpan.textContent = total.toFixed(2);
+            totalSpan.textContent = ' ' + new Intl.NumberFormat('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(total);
+
 
             btnToggle.textContent = allChecked ? "Seleccionar todos" : "Deseleccionar todos";
         });
@@ -175,8 +177,6 @@ window.verFacturasImpagas = function(partnerId) {
                 text: "¿Desea cobrar las facturas seleccionadas?",
                 cancelButtonText: "CANCELAR",
                 confirmButtonText: "CONFIRMAR",
-                confirmButtonColor: "#e74938",
-                cancelButtonColor: "#ffd087",
                 showCancelButton: true
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -263,7 +263,12 @@ window.verFacturasPagas = function(partnerId) {
             </tr>
         `).join('');
 
-        let contenidoHTML = `<h2 style="display: flex; justify-content: space-between; align-items: center; margin-left: 1rem; margin-top: 0.5rem; margin-bottom: 0.5rem;" >Facturas pagas de ${data.partner}</h2>`;
+        let contenidoHTML = `
+            <h2 style="display: flex; justify-content: space-between; align-items: center; margin-left: 1rem; margin-top: 0.5rem;">
+                Facturas pagas de ${data.partner}
+            </h2>
+            `;
+
 
         if (data.facturasTitular?.length) {
             contenidoHTML += `

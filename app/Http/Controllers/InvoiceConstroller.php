@@ -245,19 +245,16 @@ class InvoiceConstroller extends Controller
     public function pagarFacturas(Request $request)
     {
         $ids = $request->input('facturas');
-
         if (!$ids || !is_array($ids)) {
             return response()->json(['mensaje' => false]); 
         }
-
         $actualizadas = Invoice::whereIn('id', $ids)
             ->update(['estado_pago' => true]);
 
         if ($actualizadas > 0) {
             return response()->json(['mensaje' => true]);
         }
-
-        return response()->json(['mensaje' => false], 404); // Ninguna factura actualizada
+        return response()->json(['mensaje' => false], 404); 
     }
 
 

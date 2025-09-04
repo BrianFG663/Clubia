@@ -2,7 +2,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @vite(['resources/css/cobroFacturas.css', 'resources/js/cobroFacturas.js'])
-
+    @vite('resources/css/sweet-alert.css')
     <div class="contenedor">
         <div class="filtro-container">
             <div class="input-icon-wrapper">
@@ -46,7 +46,6 @@
                                 }
                             }
                         @endphp
-
                         <tr>
                             <td>{{ $partner->nombre . ' ' . $partner->apellido }}</td>
                             <td>{{ $partner->dni ?? '-' }}</td>

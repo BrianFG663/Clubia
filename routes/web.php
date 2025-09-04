@@ -64,7 +64,6 @@ Route::get('/ordenes/{id}/pdf', [OrderController::class, 'exportPdf'])->name('or
 
 
 // Rutas para caja diaria
-
 Route::post('/cajadiaria', [CashRecordController::class, 'cashRecords'])->name('caja.diaria');
 Route::post('/cajadiaria/registros', [CashRecordController::class, 'cashRecord'])->name('caja.registros');
 Route::post('/cajadiaria/registrar', [CashRecordDetailController::class, 'agregarMovimiento'])->name('caja.registrar');

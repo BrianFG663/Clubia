@@ -185,7 +185,5 @@ class InvoiceConstroller extends Controller
         }else{
             return response()->json(['mensaje' => false]);
         }
-
-
     }
 }

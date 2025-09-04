@@ -159,38 +159,39 @@ window.eliminarRegistro = function (id){
 
 }
 
-window.eliminarMovimiento = function(id){
+window.eliminarMovimiento = function (id) {
 
-    const movimiento = id; 
+    const movimiento = id;
+    console.log(movimiento)
 
 
-    fetch("/cajadiaria/eliminar/movimiento", {
-        method: "DELETE",
-        credentials: "same-origin",
-        headers: {
-            "Content-Type": "application/json",
-            "X-CSRF-TOKEN": document
-                .querySelector('meta[name="csrf-token"]')
-                .getAttribute("content"),
-        },
-        body: JSON.stringify({
-            movimiento: movimiento
-        }),
-    })
-        .then((res) => res.json())
-        .then((data) => {
-            console.log(data)
-            Swal.fire({
-                imageWidth: 100,
-                imageHeight: 100,
-                imageUrl: "/images/alertas/advertencia.png",
-                title: '¿Está seguro que desea eliminar este movimiento?',
-                text: `Atencion: esta accion no tiene vuelta atras`,
-                cancelButtonText: "CANCELAR",
-                confirmButtonText: "CONFIRMAR",
-                showCancelButton: true,
-            }).then((result) => {
-                if (result.isConfirmed) {
+    Swal.fire({
+        imageWidth: 100,
+        imageHeight: 100,
+        imageUrl: "/images/alertas/advertencia.png",
+        title: '¿Está seguro que desea eliminar este movimiento?',
+        text: `Atencion: esta accion no tiene vuelta atras`,
+        cancelButtonText: "CANCELAR",
+        confirmButtonText: "CONFIRMAR",
+        showCancelButton: true,
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch("/cajadiaria/eliminar/movimiento", {
+                method: "DELETE",
+                credentials: "same-origin",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": document
+                        .querySelector('meta[name="csrf-token"]')
+                        .getAttribute("content"),
+                },
+                body: JSON.stringify({
+                    movimiento: movimiento
+                }),
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    console.log(data)
                     Swal.fire({
                         text: 'Movimiento eliminado correctamente',
                         showConfirmButton: false,
@@ -203,14 +204,12 @@ window.eliminarMovimiento = function(id){
                         imageHeight: 100,
                         imageUrl: "/images/alertas/check.png"
                     });
-                    setTimeout(() => {
-                        location.reload();
-                    }, 2000);
-                }
-            })
-
-        })
+                    cajaDiaria(false, institucion.value)
+                })
+        }
+    })
 }
+
 
 
 window.eliminarRegistroCero = function (){

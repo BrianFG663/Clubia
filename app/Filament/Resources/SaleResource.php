@@ -58,7 +58,7 @@ class SaleResource extends Resource
 
                 Tables\Columns\TextColumn::make('Cantidad de productos')
                     ->label('Cantidad de productos')
-                    ->getStateUsing(fn($record) => $record->saleDetails->count())
+                    ->getStateUsing(fn($record) => $record->saleDetails->sum('cantidad'))
                     ->alignCenter(),
 
                 Tables\Columns\TextColumn::make('Productos')

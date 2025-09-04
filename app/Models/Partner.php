@@ -31,7 +31,6 @@ class Partner extends Model
     {
         return $this->hasMany(Invoice::class, 'client_id');
     }
-
     public function memberTypes(): BelongsToMany
     {
         return $this->belongsToMany(MemberType::class);
@@ -63,4 +62,16 @@ class Partner extends Model
     {
         return $this->hasMany(Partner::class, 'responsable_id');
     }
+
+    //relacion filtradas de invoices
+    public function facturasImpagas()
+    {
+        return $this->hasMany(Invoice::class, 'client_id')->where('estado_pago', false);
+    }
+
+    public function facturasPagas()
+    {
+        return $this->hasMany(Invoice::class, 'client_id')->where('estado_pago', true);
+    }
+
 }

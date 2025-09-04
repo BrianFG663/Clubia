@@ -12,27 +12,27 @@ class Invoice extends Model
 {
     Use HasFactory;
     
-    protected $fillable = [
-        'partner_id',
-        'institution_id',
-        'client_id',
-        'order_id',
-        'sub_activity_id',
-        'member_type_id',
-        'tipo_factura',
-        'sale_id',
-        'monto_total',
-        'fecha_factura',
-    ];
+   protected $fillable = [
+    'institution_id',
+    'client_id',
+    'order_id',
+    'sub_activity_id',
+    'member_type_id',
+    'tipo_factura',
+    'sale_id',
+    'monto_total',
+    'fecha_factura',
+    'estado_pago', 
+];
 
     public function partner(): BelongsTo
     {
         return $this->belongsTo(Partner::class, 'client_id');
     }
 
-    public function institution(): HasOne
+    public function institution():  BelongsTo
     {
-        return $this->hasOne(Institution::class);
+        return $this-> BelongsTo(Institution::class);
     }
 
     public function payments(): BelongsToMany
@@ -49,4 +49,15 @@ class Invoice extends Model
     {
         return $this->belongsTo(Order::class);
     }
-}
+
+    public function memberType(): BelongsTo
+    {
+        return $this->belongsTo(MemberType::class);
+    }
+
+    public function subActivity(): BelongsTo
+    {
+        return $this->belongsTo(SubActivity::class);
+    }
+
+    }

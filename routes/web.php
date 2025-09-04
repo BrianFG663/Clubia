@@ -70,3 +70,9 @@ Route::post('/cajadiaria/registrar', [CashRecordDetailController::class, 'agrega
 Route::delete('/cajadiaria/eliminar/movimiento', [CashRecordDetailController::class, 'eliminarMovimiento'])->name('caja.eliminar');
 Route::delete('/cajadiaria/eliminar/registro', [CashRecordController::class, 'eliminarCashRecord'])->name('caja.eliminar.registro');
 Route::delete('/cajadiaria/eliminar/registro/vacio', [CashRecordController::class, 'eliminarCashRecordVacio'])->name('caja.eliminar.registro.vacio');
+
+
+//Rutas para cobrar facturas de socio
+Route::get('/invoices/impagas/{partner}', [InvoiceConstroller::class, 'facturasImpagas']);// ver todas las facturas impagas de un socio
+Route::get('/invoices/pagas/{partner}', [InvoiceConstroller::class, 'facturasPagas']);
+Route::patch('/invoices/pagar', [InvoiceConstroller::class, 'pagarFacturas']); //Pagar facturas

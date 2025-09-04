@@ -72,3 +72,36 @@ function cerrarModal(modalId, overlayId) {
     overlay.classList.remove("mostrar");
     modal.querySelector("#contenedor-informacion").innerHTML = "";
 }
+
+window.generarFactura = function(orderId) {
+    fetch(`/ordenes/${orderId}/factura`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+        }
+    })
+    .then(res => res.json())
+    .then(data => {
+       
+         if (data.success) {
+            Swal.fire({
+                icon: 'success',
+                title: '¡Factura generada!',
+                text: 'La factura se creó correctamente ✅',
+                showConfirmButton: true
+            });
+        } else {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Factura existente',
+                text: 'Ya existe una factura para esta orden ⚠️',
+    
+                showConfirmButton: true
+            });
+        }
+    })
+    .catch(function(error) {
+        console.error("Error:", error);
+    });
+};

@@ -13,7 +13,7 @@ use Symfony\Component\VarDumper\VarDumper;
 
 class InvoiceConstroller extends Controller
 {
-
+//FUNCIONES PARA PANEL DONDE SE GENERAN LAS FACTURAS 
     public function facturacionMasivaMensualSocio(Request $request)
     {
         $institutionId = $request->input('institution_id');
@@ -186,4 +186,125 @@ class InvoiceConstroller extends Controller
             return response()->json(['mensaje' => false]);
         }
     }
+
+    //FUNCIONES PARA PANEL DONDE SE PAGAN LAS FACTURAS 
+
+    public function facturasImpagas(Partner $partner)
+    {
+        // Facturas del titular
+        $facturasTitular = $partner->invoices()
+            ->where('estado_pago', false)
+            ->get()
+            ->map(fn($factura) => [
+                'id' => $factura->id,
+                'tipo_factura' => $factura->tipo_factura,
+                'subActivity' => $factura->subActivity?->nombre ?? '-',
+                'memberType' => $factura->memberType?->nombre ?? '-',
+                'institution' => $factura->institution?->nombre ?? '-',
+                'fecha_factura' => $factura->fecha_factura,
+                'monto_total' => $factura->monto_total,
+                'partner_name' => $partner->nombre . ' ' . $partner->apellido,
+            ]);
+
+        // Facturas de familiares (si es jefe de grupo)
+        $facturasFamiliares = collect();
+
+        if ($partner->jefe_grupo) {
+            $dependientes = Partner::where('responsable_id', $partner->id)->get();
+
+            foreach ($dependientes as $dep) {
+                $depFacturas = $dep->invoices()
+                    ->where('estado_pago', false)
+                    ->get()
+                    ->map(fn($factura) => [
+                        'id' => $factura->id,
+                        'tipo_factura' => $factura->tipo_factura,
+                        'subActivity' => $factura->subActivity?->nombre ?? '-',
+                        'memberType' => $factura->memberType?->nombre ?? '-',
+                        'institution' => $factura->institution?->nombre ?? '-',
+                        'fecha_factura' => $factura->fecha_factura,
+                        'monto_total' => $factura->monto_total,
+                        'partner_name' => $dep->nombre . ' ' . $dep->apellido,
+                    ]);
+
+                $facturasFamiliares = $facturasFamiliares->concat($depFacturas);
+            }
+        }
+
+        return response()->json([
+            'partner' => $partner->nombre . ' ' . $partner->apellido,
+            'tipo' => $partner->jefe_grupo,
+            'facturasTitular' => $facturasTitular,
+            'facturasFamiliares' => $facturasFamiliares,
+        ]);
+
+    }
+
+    public function pagarFacturas(Request $request)
+    {
+        $ids = $request->input('facturas');
+        if (!$ids || !is_array($ids)) {
+            return response()->json(['mensaje' => false]); 
+        }
+        $actualizadas = Invoice::whereIn('id', $ids)
+            ->update(['estado_pago' => true]);
+
+        if ($actualizadas > 0) {
+            return response()->json(['mensaje' => true]);
+        }
+        return response()->json(['mensaje' => false], 404); 
+    }
+
+
+
+ public function facturasPagas(Partner $partner)
+    {
+        // Facturas del titular
+        $facturasTitular = $partner->invoices()
+            ->where('estado_pago', true)
+            ->get()
+            ->map(fn($factura) => [
+                'id' => $factura->id,
+                'tipo_factura' => $factura->tipo_factura,
+                'subActivity' => $factura->subActivity?->nombre ?? '-',
+                'memberType' => $factura->memberType?->nombre ?? '-',
+                'institution' => $factura->institution?->nombre ?? '-',
+                'fecha_factura' => $factura->fecha_factura,
+                'monto_total' => $factura->monto_total,
+                'partner_name' => $partner->nombre . ' ' . $partner->apellido,
+            ]);
+
+        // Facturas familiares si es jefe de grupo
+        $facturasFamiliares = collect();
+
+        if ($partner->jefe_grupo) {
+            $dependientes = Partner::where('responsable_id', $partner->id)->get();
+
+            foreach ($dependientes as $dep) {
+                $depFacturas = $dep->invoices()
+                    ->where('estado_pago', true)
+                    ->get()
+                    ->map(fn($factura) => [
+                        'id' => $factura->id,
+                        'tipo_factura' => $factura->tipo_factura,
+                        'subActivity' => $factura->subActivity?->nombre ?? '-',
+                        'memberType' => $factura->memberType?->nombre ?? '-',
+                        'institution' => $factura->institution?->nombre ?? '-',
+                        'fecha_factura' => $factura->fecha_factura,
+                        'monto_total' => $factura->monto_total,
+                        'partner_name' => $dep->nombre . ' ' . $dep->apellido,
+                    ]);
+
+                $facturasFamiliares = $facturasFamiliares->concat($depFacturas);
+            }
+        }
+
+        return response()->json([
+            'partner' => $partner->nombre . ' ' . $partner->apellido,
+            'facturasTitular' => $facturasTitular,
+            'facturasFamiliares' => $facturasFamiliares,
+        ]);
+    }
+
+
 }

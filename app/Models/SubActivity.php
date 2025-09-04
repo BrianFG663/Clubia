@@ -29,4 +29,10 @@ class SubActivity extends Model
         return $this->belongsTo(Activity::class);
     }
 
+    public function invoices(): HasMany
+    {
+        return $this->hasMany(Invoice::class);
+    }
+
+
 }

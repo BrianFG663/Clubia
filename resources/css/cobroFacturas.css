@@ -1,0 +1,417 @@
+.contenedor {
+    border: 0.125rem solid #1c202a; /* 2px = 0.125rem */
+    background-color: #111827;
+    border-radius: 0.625rem; /* 10px */
+    padding-top: 0.5rem;
+    padding-bottom: 1rem; /* OK */
+    margin: 0 auto;
+    max-width: 65.5rem; /* 1000px */
+    width: 100%;
+    box-sizing: border-box;
+    color: #e0e0e0;
+font-family: sans-serif;
+}
+
+.tabla-container {
+    width: 100%;
+    overflow-x: auto;
+
+}
+
+.tabla {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 43.75rem; /* 700px */
+    background-color: #111827;
+}
+
+.tabla thead {
+    background-color: #1d2332;
+}
+
+.tabla thead th {
+    padding: 0.75rem 1rem;
+    color: #c28840 ;
+    border-bottom: 0.0625rem solid #1c202a; /* 1px */
+    text-align: left;
+}
+
+.tabla tbody tr {
+    border-bottom: 0.0625rem solid #1c202a; /* 1px */
+    transition: background-color 0.15s ease-in-out;
+}
+
+.tabla tbody tr:hover {
+    background-color: #272f45;
+    cursor: pointer;
+}
+
+.tabla tbody td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/* ================= Botones ================= */
+.botones {
+    width: 10%;
+}
+
+.btn-ver {
+    background: transparent;
+    border: none;
+    color: #e0e0e0;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0.35rem 0.75rem;
+    border-radius: 0.375rem;
+    transition: color 0.2s ease;
+    text-decoration: none;
+}
+
+.btn-ver:hover {
+    color: #c28840;
+    cursor: pointer;
+}
+
+.pagination-container {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    margin-right: 2rem;
+    margin-left: 2rem;  /* 2rem = 32px aprox */
+    
+}
+
+/* ================= Filtro de búsqueda ================= */
+.filtro-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 0.5rem;
+    margin-right: 1rem;
+}
+
+.input-icon-wrapper {
+    position: relative;
+    width: 250px;
+}
+
+.filtro-input {
+    width: 100%;
+    padding: 0.4rem 0.6rem 0.4rem 2.5rem; /* espacio a la izquierda para el icono */
+    border-radius: 8px;
+    border: 1px solid  #6b7280;
+    background-color: #1d2332;
+    color: #e0e0e0;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+    z-index: 10;
+}
+
+.filtro-input::placeholder {
+    color: #6b7280; /* gris medio, parecido a la imagen */
+}
+
+
+
+.filtro-input:focus {
+    border-color: #c28840 !important;
+    outline: none;
+    box-shadow: none;
+    border: solid 2px;
+}
+
+.icon {
+    position: absolute;
+    top: 50%;
+    left: 0.7rem;
+    transform: translateY(-50%);
+    color: #6b7280; /* gris medio para el icono */
+    pointer-events: none; /* que no interfiera con el input */
+    font-size: 1.1rem;
+}
+
+.top-bar {
+    display: flex;
+    justify-content: space-between; /* título a la izq, botón a la der */
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+    margin-right: 1rem;
+    margin-left: 1rem;
+}
+
+.detalle-orden::-webkit-scrollbar {
+    width: 0.6rem;
+    
+}
+.detalle-orden::-webkit-scrollbar-track {
+    background: transparent;
+}
+.detalle-orden::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 0.625rem;
+    border: 0.2rem solid transparent; /* crea separación */
+    background-clip: padding-box;     /* evita que el color rellene el borde */
+}
+
+/* ---------- MODAL DETALLE  ---------- */
+.detalle-factura {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 95%;
+    height: auto;
+    overflow-y: auto;
+    background-color: #111827; /* mismo fondo que tabla y contenedor */
+    border: 2px solid #c28840cc; /* borde dorado semitransparente */
+    border-radius: 12px;
+    color: #e0e0e0;
+    font-family: 'Inter', sans-serif;
+    display: none;
+    z-index: 1000;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    opacity: 0;
+}
+
+.detalle-factura.mostrar {
+    display: block;
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+
+/* Overlay detrás del modal */
+#overlay-factura {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(6px);
+    z-index: 900;
+    display: none;
+}
+
+/* Mostrar overlay */
+#overlay-factura.mostrar {
+    display: block;
+}
+
+/* Botón cerrar modal */
+#cerrar-factura{
+     position: absolute;
+    right: 0.5rem;
+    background: transparent;
+    border: none;
+    color: #e0e0e0;
+    font-size: 1.4rem;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+#cerrar-factura:hover {
+    color: #c28840;
+}
+
+.boton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #ccc; /* gris inicial */
+    font-size: 1.2rem;
+    transition: color 0.3s ease;
+}
+
+.boton:hover {
+    color: gold; /* dorado en hover */
+}
+
+/* ================= Responsivo ================= */
+@media (max-width: 768px) {
+    .contenedor {
+        padding: 0.5rem;
+        height: auto;
+    }
+
+    .tabla th,
+    .tabla td {
+        font-size: 4vw;
+        padding: 0.5rem;
+    }
+
+    .input-icon-wrapper {
+        width: 100%;
+    }
+}
+
+
+/* ---------- Scroll del modal ---------- */
+.contenedor-modal::-webkit-scrollbar {
+    width: 0.6rem;
+    
+}
+.contenedor-modal::-webkit-scrollbar-track {
+    background: transparent;
+}
+.contenedor-modal::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 0.625rem;
+    border: 0.2rem solid transparent; /* crea separación */
+    background-clip: padding-box;     /* evita que el color rellene el borde */
+}
+
+.contenedor-modal {
+    padding: 0;
+    width: 99%;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    border: 1px solid #c28840;
+    max-height: 220px;
+    overflow-y: auto;
+    margin-bottom: 0.5rem;
+    z-index: 15;
+}
+
+
+.contenedor-borde {
+    border: 1px solid #c28840;
+    overflow: hidden;
+    margin: 0 0.5rem 0.5rem 0.5rem;
+    width: 99%;
+    background-color: #1c1e26; /* o el que uses */
+}
+
+.contenedor-modal table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+
+.contenedor-modal thead {
+    position: sticky;
+    top: -1px;
+    background-color: #272f45;
+    z-index: 20; 
+}
+
+
+
+.contenedor-modal th, 
+.contenedor-modal td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 0.0625rem solid #1c202a;
+    color: #e0e0e0;
+    z-index: 3;
+}
+
+.contenedor-modal thead tr {
+    width: 100%;
+     z-index: 1;
+} 
+
+
+.custom-checkbox {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  user-select: none;
+  z-index: 5;
+  /* ajusta padding si quieres */
+}
+
+.custom-checkbox input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  position: relative;
+  height: 18px;
+  width: 18px;
+  background-color: #111827;
+  border: 2px solid #c28840;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+/* Estado checked */
+.custom-checkbox input:checked + .checkmark {
+  background-color: #c28840;
+  border-color: #c28840;
+}
+
+.checkmark::after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Palomita visible al estar checked */
+.custom-checkbox input:checked + .checkmark::after {
+  display: block;
+  left: 5px;
+  top: 1px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+th .check-factura {
+  position: static; /* o eliminar position si no es necesario */
+  z-index: auto;
+  width: 18px;
+  height: 18px;
+  vertical-align: middle; /* para centrarlo con el texto */
+  margin-right: 0.5rem; /* espacio entre checkbox y texto */
+  cursor: pointer;
+}
+
+.total-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color:transparent;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.total-text {
+    font-size: 1.25rem; /* Más grande */
+    font-weight: 600;
+    color: white;
+    margin-left: 0.5rem; /* Separación del borde */
+    font-family: 'Inter', sans-serif;
+}
+
+.btn-pagar {
+    background-color: #c28840;
+    color: white;
+    padding: 0.5rem 1rem;
+    margin: 0.5rem;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    font-family: 'Inter', sans-serif;
+}
+
+.btn-pagar:hover {
+    background-color: #d29c5a;
+}
+

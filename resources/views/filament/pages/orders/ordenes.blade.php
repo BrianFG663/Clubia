@@ -13,10 +13,10 @@
                 type="text"
                 id="filtroNombre"
                 placeholder="Buscar proveedor"
-                aria-label="Filtro por nombre"
-                class="filtro-input"
-                />
+                aria-label="Filtro por proveedor"
+                class="filtro-input"/>
                 <i class="fa-solid fa-magnifying-glass icon"></i>
+                
             </div>
         </div>
 
@@ -41,14 +41,18 @@
                             <td>{{ \Carbon\Carbon::parse($order->fecha)->format('d/m/Y') }}</td>
                             <td>${{ number_format($order->total, 2) }}</td>
                             <td class="botones">
-                                <button class="btn-ver" data-order-id="{{ $order->id }}" aria-label="Ver orden {{ $order->id }}" onclick="mostrarDetallesOrden({{ $order->id }})">
+                                
+                                <button title="Ver"    class="btn-ver" data-order-id="{{ $order->id }}" aria-label="Ver orden {{ $order->id }}" onclick="mostrarDetallesOrden({{ $order->id }})">
                                     <i class="fa-solid fa-eye"></i>
                                 </button>
 
-                                <a href="{{ route('ordenes.pdf', $order->id) }}" target="_blank" class="btn-ver">
+                                <a title="Descargar PDF" href="{{ route('ordenes.pdf', $order->id) }}"  class="btn-ver">
                                     <i class="fa-solid fa-file-pdf"></i>
                                 </a>
 
+                                <button title="Generar Factura" class="btn-ver" onclick="generarFactura({{ $order->id }})">
+                                    <i class="fa-solid fa-file-arrow-up"> </i>
+                                </button>
                             </td>
                         </tr>
                     @endforeach

@@ -11,7 +11,7 @@ class RegistrarVentas extends Page
         /** @var \App\Models\User|null $user */
         $user = \Illuminate\Support\Facades\Auth::user();
 
-        return $user?->can('page_RegistrarVentas') ?? false;
+        return $user?->can('page_registrarVentas') ?? false;
     }
 
     protected static ?string $permission = 'view_registrar_ventas';

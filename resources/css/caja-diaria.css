@@ -1,0 +1,294 @@
+
+
+.contenedor-general{
+    height: 70vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #111827;
+    border: 1px solid #c28840;
+    border-radius: 5px;
+}
+
+.div-select{
+    width: 100%;
+    height: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.div-select>label{
+    position: relative;
+    right: 32%;
+    margin-bottom: 0.5%;
+}
+
+select {
+    width: 90%;
+    background-color: rgba(128, 128, 128, 0.366);
+    border-radius: 2px;
+    outline: none;
+    appearance: none;  
+    -webkit-appearance: none;
+    -moz-appearance: none;    
+
+}
+
+select:focus {
+    border: 1px solid #c28840;
+    box-shadow: none;
+    outline: none;
+}
+
+
+select option {
+    background-color: #111827;
+    color: white;
+    border: none;
+    padding: 5px;
+    font-size: 14px;
+    transition: background-color 0.5s ease;
+}
+
+.monto{
+    height: 30%;
+}
+
+.monto > span{
+    color: #c28840;
+    font-weight: 700;
+    font-size: 10vh;
+    position: relative;
+    left: 5%;
+    top: 15%;
+}
+
+.monto > span >sup{
+    position: relative;
+    left: 0.5vh;
+    font-size: 6vh;
+    font-weight: 100;
+}
+
+.monto > button{
+    color: #c28840;
+    font-weight: 700;
+    font-size: 10vh;
+    position: relative;
+    left: 6%;
+    top: 15%;
+}
+
+.movimientos{
+    height: 48%;
+}
+
+.btn-registrar{
+    position: relative;
+    border: 1px solid #c28840;
+    background-color: transparent;
+    height: 6vh;
+    width: 20%;
+    position: relative;
+    bottom: 45%;
+    left: 80%;
+    border-radius: 5px;
+    transition: 0.2s;
+}
+
+.btn-registrar:hover {
+    cursor: pointer;
+    background-color: #c288406e;
+}
+
+.btn-subir{
+    position: relative;
+    border: 1px solid #c28840;
+    background-color: transparent;
+    height: 13%;
+    width: 25%;
+    position: relative;
+    left: 70%;
+    top: 4%;
+    border-radius: 5px;
+    transition: 0.2s;
+}
+
+.btn-subir:hover{
+    cursor: pointer;
+    background-color: #c288406e;
+}
+
+
+.tabla::-webkit-scrollbar {
+    width: 6px;
+}
+
+.tabla::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.tabla::-webkit-scrollbar-thumb {
+    background-color: #c28840;
+    border-radius: 10px;
+}
+
+.tabla{
+    overflow-y: scroll;
+    height: 83%;
+    display: flex;
+    flex-direction: column;
+    padding-left: 1vw;
+    padding-right: 1vw;
+}
+
+.titulo-movimientos{
+    position: relative;
+    left: 2%;
+    font-size: 2.5vh;
+    font-weight: 600;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  border: 2px solid #838383;
+  background-color: transparent; /* Fondo transparente */
+  font-family: Arial, sans-serif;
+}
+
+th, td {
+  border: 1px solid #838383;
+  padding: 8px 12px;
+  text-align: left;
+  text-align: center;       /* Centra horizontalmente */
+  vertical-align: middle;
+  background-color: transparent; /* Fondo transparente en celdas */
+}
+
+th {
+  color: #c28840; /* Texto en color del borde para que destaque */
+}
+
+tr:nth-child(even) {
+  background-color: transparent; /* Sin color de fondo alternado */
+}
+
+
+.carrito-vacio{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    height: 25%;
+    position: relative;
+    opacity: 0.2;
+    top: 25%;
+    left: 25%;
+}
+
+.carrito-vacio >span{
+    font-weight: 1vw;
+    text-align: center;
+    width: 100%;
+}
+
+.img-vacio{
+    height: 8vh;
+    width: auto; 
+}
+
+
+#overlay {
+     position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(6px);
+    z-index: 900;
+    display: none;
+}
+#overlay.mostrar {
+    display: block;
+}
+
+.agregar-movimiento {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: auto;
+    height: 50%;
+    width: 50%;
+    overflow-y: auto;
+    background-color: #111827; /* mismo fondo que tabla y contenedor */
+    border: 0.2rem solid #c28840cc; /* borde dorado semitransparente */
+    border-radius: 12px;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    color: #e0e0e0;
+    font-family: 'Inter', sans-serif;
+    display: none;
+    z-index: 1000;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    opacity: 0;
+
+}
+
+.agregar-movimiento > h2{
+    font-size: larger;
+    position: relative;
+    text-align: center;
+    position: relative;
+    bottom: 6%;
+}
+
+.agregar-movimiento > label{
+    position: relative;
+    left: 6%;
+
+}
+
+.agregar-movimiento.mostrar {
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+#descripcion,#total{
+    position: relative;
+    left: 5%;
+    border-radius:2px;
+    background-color: rgba(71, 71, 71, 0.685);
+    padding: 0.5rem 0.75rem;
+    width: 90%;
+    transition: 0.3s;
+    outline: none;
+    height: 14%;
+
+    margin-bottom: 1%;
+}
+
+#tipo{
+    position: relative;
+    left: 5%;
+
+}
+
+#cerrar-alerta{
+    position: relative;
+    left: 45%;
+    bottom: 3%;
+    transition: 0.2s;
+}
+
+#cerrar-alerta:hover{
+    color: #c28840;
+}

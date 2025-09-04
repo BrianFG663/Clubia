@@ -36,4 +36,9 @@ class Institution extends Model
     {
         return $this->hasMany(User::class);
     }
+
+    public function cashRecords(): HasMany
+    {
+        return $this->hasMany(CashRecord::class);
+    }
 }

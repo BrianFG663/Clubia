@@ -185,8 +185,6 @@ class InvoiceConstroller extends Controller
         }else{
             return response()->json(['mensaje' => false]);
         }
-
-
     }
 
     //FUNCIONES PARA PANEL DONDE SE PAGAN LAS FACTURAS 

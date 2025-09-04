@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('payment_id')->constrained()->onDelete('cascade');
             $table->foreignId('invoice_id')->constrained()->onDelete('cascade');
-            $table->decimal('monto_asignado');
+            $table->decimal('monto_asignado',20,6);
             $table->timestamps();
         });
     }

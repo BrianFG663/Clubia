@@ -33,8 +33,15 @@ class FacturarSocio implements ShouldQueue
     /**
      * Execute the job.
      */
-     public function handle(): void
-{
+    public function handle(): void{
+
+    $partner = Partner::find($this->partnerId);
+
+    if (!$partner || $partner->state_id !== 1) {
+        Log::info("Socio {$this->partnerId} no facturado por status_id: {$partner?->state_id}");
+        return;
+    }
+    
     // Facturar por cada tipoSocio
 
     foreach ($this->tipos['tipoSocio'] ?? [] as $tipoSocio) {

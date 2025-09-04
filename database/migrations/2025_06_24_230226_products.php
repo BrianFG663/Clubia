@@ -13,7 +13,7 @@ return new class extends Migration
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->string('descripcion');
             $table->string('nombre')->unique();
-            $table->decimal('precio');
+            $table->decimal('precio',20,6);
             $table->timestamps();
         });
     }

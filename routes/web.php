@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\CashRecordController;
+use App\Http\Controllers\CashRecordDetailController;
 use App\Http\Controllers\InvoiceConstroller;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\SaleController;
@@ -55,10 +57,22 @@ Route::post('/notacredito/socio/facturas', [PartnerController::class, 'facturasS
 Route::post('/notacredito/ventas/facturas', [SaleController::class, 'facturasVentas'])->name('ventas.facturas');
 Route::delete('/notacredito/elimininar/facturas', [InvoiceConstroller::class, 'notaCreditoFactura'])->name('nota-credito.facturas');
 
-  // Ruta para ordenes
+// Ruta para ordenes
 Route::get('/ordenes/{id}/detalles', [OrderController::class, 'obtenerDetalles']);
 Route::delete('/ordenes/detalles/{id}', [OrderController::class, 'eliminarDetalle'])->name('ordenes.detalles.eliminar');
 Route::get('/ordenes/{id}/pdf', [OrderController::class, 'exportPdf'])->name('ordenes.pdf');
-Route::post('/ordenes/{id}/factura', [OrderController::class, 'generarFactura']);
 
 
+// Rutas para caja diaria
+Route::post('/cajadiaria', [CashRecordController::class, 'cashRecords'])->name('caja.diaria');
+Route::post('/cajadiaria/registros', [CashRecordController::class, 'cashRecord'])->name('caja.registros');
+Route::post('/cajadiaria/registrar', [CashRecordDetailController::class, 'agregarMovimiento'])->name('caja.registrar');
+Route::delete('/cajadiaria/eliminar/movimiento', [CashRecordDetailController::class, 'eliminarMovimiento'])->name('caja.eliminar');
+Route::delete('/cajadiaria/eliminar/registro', [CashRecordController::class, 'eliminarCashRecord'])->name('caja.eliminar.registro');
+Route::delete('/cajadiaria/eliminar/registro/vacio', [CashRecordController::class, 'eliminarCashRecordVacio'])->name('caja.eliminar.registro.vacio');
+
+
+//Rutas para cobrar facturas de socio
+Route::get('/invoices/impagas/{partner}', [InvoiceConstroller::class, 'facturasImpagas']);// ver todas las facturas impagas de un socio
+Route::get('/invoices/pagas/{partner}', [InvoiceConstroller::class, 'facturasPagas']);
+Route::patch('/invoices/pagar', [InvoiceConstroller::class, 'pagarFacturas']); //Pagar facturas

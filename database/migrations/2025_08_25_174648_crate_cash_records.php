@@ -9,13 +9,13 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+        public function up(): void
     {
-        Schema::create('member_types', function (Blueprint $table) {
+        Schema::create('cash_records', function (Blueprint $table) {
             $table->id();
             $table->foreignId('institution_id')->constrained()->onDelete('cascade');
-            $table->string('nombre');
-            $table->decimal('arancel',20,6);
+            $table->decimal('total', 20, 6);
+            $table->date('fecha');
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('member_types');
+        Schema::dropIfExists('cash_records');
     }
 };

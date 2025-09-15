@@ -8,8 +8,7 @@ use App\Models\Partner;
 use Filament\Pages\Page;
 use Livewire\WithPagination;
 
-class cobroFacturas extends Page
-{
+class cobroFacturas extends Page{
 
     use WithPagination;
 
@@ -21,7 +20,7 @@ class cobroFacturas extends Page
 
     protected static string $view = 'filament.pages.cobro-facturas';
 
-        public static function canAccess(): bool{
+    public static function canAccess(): bool{
         /** @var \App\Models\User|null $user */
         $user = \Illuminate\Support\Facades\Auth::user();
 
@@ -29,8 +28,8 @@ class cobroFacturas extends Page
     }
 
 
-protected function getViewData(): array
-{
+    protected function getViewData(): array{
+
     $partners = Partner::withCount(['facturasImpagas', 'facturasPagas'])
     ->where(function ($q) {
         $q->whereNull('responsable_id')   

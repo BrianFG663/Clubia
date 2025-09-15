@@ -11,6 +11,7 @@ use App\Http\Controllers\SupplierController;
 use App\Models\Partner;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ParameterController;
 
 Route::redirect('/', '/admin'); //redireccionar al login
 
@@ -76,3 +77,9 @@ Route::delete('/cajadiaria/eliminar/registro/vacio', [CashRecordController::clas
 Route::get('/invoices/impagas/{partner}', [InvoiceConstroller::class, 'facturasImpagas']);// ver todas las facturas impagas de un socio
 Route::get('/invoices/pagas/{partner}', [InvoiceConstroller::class, 'facturasPagas']);
 Route::patch('/invoices/pagar', [InvoiceConstroller::class, 'pagarFacturas']); //Pagar facturas
+
+
+//Rutas parametros
+Route::post('/parametros/buscar', [ParameterController::class, 'buscarParametros']);
+Route::post('/parametro/cuota/cambio', [ParameterController::class, 'cambiarParametroSocial']);
+Route::post('/parametro/actividad/cambio', [ParameterController::class, 'cambiarParametroActividad']);

@@ -1,19 +1,19 @@
-<?php
-
+ <?php
+/*
 namespace App\Filament\Widgets;
 
+use Filament\Forms;
+use App\Models\Activity;
+use Filament\Widgets\ChartWidget;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Widgets\ChartWidget;
-use App\Models\Activity;
-use Filament\Forms;
 
 class ActividadSubactividadesChart extends ChartWidget implements HasForms
 {
-    
     use InteractsWithForms;
 
-    protected static ?string $heading = 'Elija una Actividad';
+    protected static ?string $heading = 'Subactividades por Actividad';
+    protected int | string | array $columnSpan = 'full';
 
     public ?int $actividadId = null;
 
@@ -24,34 +24,61 @@ class ActividadSubactividadesChart extends ChartWidget implements HasForms
                 ->label('Selecciona una Actividad')
                 ->options(Activity::pluck('nombre', 'id'))
                 ->searchable()
-                ->reactive(),
+                ->reactive()
+                ->afterStateUpdated(fn () => $this->dispatchChartRefresh()),
         ];
     }
 
-    
+    public function mount(): void
+    {
+        $this->form->fill();
+    }
+
+    public function dispatchChartRefresh(): void
+    {
+        // Esto fuerza a que el gráfico se actualice
+        $this->dispatch('refreshChart');
+    }
+
     protected function getData(): array
     {
         if (! $this->actividadId) {
             return [
-                'datasets' => [],
-                'labels'   => [],
+                'datasets' => [
+                    [
+                        'label' => 'Cantidad de socios',
+                        'data' => [],
+                        'backgroundColor' => '#3b82f6',
+                    ],
+                ],
+                'labels' => [],
             ];
         }
 
         $actividad = Activity::with('subActivities.partners')->find($this->actividadId);
 
-        $labels = $actividad->subActivities->pluck('nombre')->toArray();
-        $data   = $actividad->subActivities->map(fn ($sub) => $sub->partners->count())->toArray();
+        if (! $actividad) {
+            return [
+                'datasets' => [
+                    [
+                        'label' => 'Cantidad de socios',
+                        'data' => [],
+                        'backgroundColor' => '#3b82f6',
+                    ],
+                ],
+                'labels' => [],
+            ];
+        }
 
         return [
             'datasets' => [
                 [
                     'label' => 'Cantidad de socios',
-                    'data'  => $data,
-                    'backgroundColor' => '#3b82f6', // azul Tailwind
+                    'data' => $actividad->subActivities->map(fn ($sub) => $sub->partners->count())->toArray(),
+                    'backgroundColor' => '#3b82f6',
                 ],
             ],
-            'labels' => $labels,
+            'labels' => $actividad->subActivities->pluck('nombre')->toArray(),
         ];
     }
 
@@ -60,12 +87,18 @@ class ActividadSubactividadesChart extends ChartWidget implements HasForms
         return 'bar';
     }
 
-    protected function getContent(): ?\Illuminate\Contracts\View\View
+    protected function getOptions(): array
     {
-        return view('filament.widgets.activity-subactivities-form', [
-            'form' => $this->form,
-        ]);
+        return [
+            'scales' => [
+                'y' => [
+                    'beginAtZero' => true,
+                    'ticks' => [
+                        'stepSize' => 1,
+                    ],
+                ],
+            ],
+        ];
     }
-
-    
 }
+*/

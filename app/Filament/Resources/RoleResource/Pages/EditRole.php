@@ -74,13 +74,30 @@ class EditRole extends EditRecord
     protected function afterSave(): void
     {
         $permissionModels = collect();
+
+        // permisos marcados en el form
         $this->permissions->each(function ($permission) use ($permissionModels) {
-            $permissionModels->push(Utils::getPermissionModel()::firstOrCreate([
-                'name' => $permission,
-                'guard_name' => $this->data['guard_name'],
-            ]));
+            $permissionModels->push(
+                Utils::getPermissionModel()::firstOrCreate([
+                    'name' => $permission,
+                    'guard_name' => $this->data['guard_name'],
+                ])
+            );
         });
 
+        // 👇 permisos extra automáticos (igual que en afterCreate)
+        $extraPermissions = ['access_admin_panel'];
+
+        foreach ($extraPermissions as $perm) {
+            $permissionModels->push(
+                Utils::getPermissionModel()::firstOrCreate([
+                    'name' => $perm,
+                    'guard_name' => $this->data['guard_name'],
+                ])
+            );
+        }
+
+        // sincronizar todo junto
         $this->record->syncPermissions($permissionModels);
     }
 }

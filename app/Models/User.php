@@ -25,8 +25,9 @@ class User extends Authenticatable implements HasName, AuthorizableContract, Fil
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return $this->hasRole('super_admin');
+        return $this->can('access_admin_panel');
     }
+
 
     /**
      * The attributes that are mass assignable.

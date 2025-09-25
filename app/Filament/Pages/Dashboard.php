@@ -7,6 +7,13 @@ use Filament\Pages\Page;
 class Dashboard extends Page
 {
 
+    public static function canAccess(): bool{
+        /** @var \App\Models\User|null $user */
+        $user = \Illuminate\Support\Facades\Auth::user();
+
+        return $user?->can('access_admin_panel') ?? false;
+    }
+
     public function getTitle(): string
     {
         return '';

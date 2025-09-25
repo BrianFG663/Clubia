@@ -13,6 +13,7 @@ use Filament\Forms\Form;
 use Filament\Pages\SubNavigationPosition;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Spatie\Permission\Models\Permission;    
 use Filament\Tables\Table;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\HtmlString;
@@ -42,56 +43,86 @@ class RoleResource extends Resource implements HasShieldPermissions
         ];
     }
 
+    public static function getShieldFormComponents(): array
+{
+    // Asegurarse de que el permiso exista
+    Permission::firstOrCreate(['name' => 'access_admin_panel']);
+
+    // Obtener los permisos que Shield ya genera
+    $shieldPermissions = Permission::query()
+        ->where(function ($query) {
+            $query->where('name', 'like', 'page_%')
+                  ->orWhere('name', 'like', 'resource_%')
+                  ->orWhere('name', 'like', 'widget_%');
+        })
+        ->pluck('name', 'name');
+
+    // Agregar el permiso personalizado
+    $customPermissions = Permission::where('name', 'access_admin_panel')->pluck('name', 'name');
+
+    // Combinar todos los permisos
+    $allPermissions = $shieldPermissions->merge($customPermissions)->unique();
+
+    return [
+        Forms\Components\CheckboxList::make('permissions')
+            ->label(__('filament-shield::filament-shield.field.permissions'))
+            ->options($allPermissions)
+            ->default(fn($record) => $record?->permissions->pluck('name')->toArray() ?? ['access_admin_panel'])
+            ->columns(2),
+    ];
+}
+
     public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Forms\Components\Grid::make()
-                    ->schema([
-                        Forms\Components\Section::make()
-                            ->schema([
-                                Forms\Components\TextInput::make('name')
-                                    ->label(__('filament-shield::filament-shield.field.name'))
-                                    ->unique(
-                                        ignoreRecord: true,
-                                        modifyRuleUsing: fn(Unique $rule) => Utils::isTenancyEnabled()
-                                            ? $rule->where(Utils::getTenantModelForeignKey(), Filament::getTenant()?->id)
-                                            : $rule
-                                    )
-                                    ->required()
-                                    ->maxLength(255),
+{
+    return $form
+        ->schema([
+            Forms\Components\Grid::make()
+                ->schema([
+                    Forms\Components\Section::make()
+                        ->schema([
+                            Forms\Components\TextInput::make('name')
+                                ->label(__('filament-shield::filament-shield.field.name'))
+                                ->unique(
+                                    ignoreRecord: true,
+                                    modifyRuleUsing: fn(Unique $rule) => Utils::isTenancyEnabled()
+                                        ? $rule->where(Utils::getTenantModelForeignKey(), Filament::getTenant()?->id)
+                                        : $rule
+                                )
+                                ->required()
+                                ->maxLength(255),
 
-                                Forms\Components\TextInput::make('guard_name')
-                                    ->label(__('filament-shield::filament-shield.field.guard_name'))
-                                    ->default(Utils::getFilamentAuthGuard())
-                                    ->nullable()
-                                    ->maxLength(255),
+                            Forms\Components\TextInput::make('guard_name')
+                                ->label(__('filament-shield::filament-shield.field.guard_name'))
+                                ->default(Utils::getFilamentAuthGuard())
+                                ->nullable()
+                                ->maxLength(255),
 
-                                Forms\Components\Select::make(config('permission.column_names.team_foreign_key'))
-                                    ->label(__('filament-shield::filament-shield.field.team'))
-                                    ->placeholder(__('filament-shield::filament-shield.field.team.placeholder'))
-                                    ->default([Filament::getTenant()?->id])
-                                    ->options(fn(): Arrayable => Utils::getTenantModel()
-                                        ? Utils::getTenantModel()::pluck('name', 'id')
-                                        : collect())
-                                    ->hidden(fn(): bool => !(static::shield()->isCentralApp() && Utils::isTenancyEnabled()))
-                                    ->dehydrated(fn(): bool => !(static::shield()->isCentralApp() && Utils::isTenancyEnabled())),
+                            Forms\Components\Select::make(config('permission.column_names.team_foreign_key'))
+                                ->label(__('filament-shield::filament-shield.field.team'))
+                                ->placeholder(__('filament-shield::filament-shield.field.team.placeholder'))
+                                ->default([Filament::getTenant()?->id])
+                                ->options(fn(): Arrayable => Utils::getTenantModel()
+                                    ? Utils::getTenantModel()::pluck('name', 'id')
+                                    : collect())
+                                ->hidden(fn(): bool => !(static::shield()->isCentralApp() && Utils::isTenancyEnabled()))
+                                ->dehydrated(fn(): bool => !(static::shield()->isCentralApp() && Utils::isTenancyEnabled())),
 
-                                ShieldSelectAllToggle::make('select_all')
-                                    ->onIcon('heroicon-s-shield-check')
-                                    ->offIcon('heroicon-s-shield-exclamation')
-                                    ->label(__('filament-shield::filament-shield.field.select_all.name'))
-                                    ->helperText(fn(): HtmlString => new HtmlString(__('filament-shield::filament-shield.field.select_all.message')))
-                                    ->dehydrated(fn(bool $state): bool => $state),
-                            ])
-                            ->columns([
-                                'sm' => 2,
-                                'lg' => 3,
-                            ]),
-                    ]),
-                static::getShieldFormComponents(),
-            ]);
-    }
+                            ShieldSelectAllToggle::make('select_all')
+                                ->onIcon('heroicon-s-shield-check')
+                                ->offIcon('heroicon-s-shield-exclamation')
+                                ->label(__('filament-shield::filament-shield.field.select_all.name'))
+                                ->helperText(fn(): HtmlString => new HtmlString(__('filament-shield::filament-shield.field.select_all.message')))
+                                ->dehydrated(fn(bool $state): bool => $state),
+                        ])
+                        ->columns([
+                            'sm' => 2,
+                            'lg' => 3,
+                        ]),
+                ]),
+            static::getShieldFormComponents(),
+        ]);
+}
+
 
     public static function table(Table $table): Table
     {

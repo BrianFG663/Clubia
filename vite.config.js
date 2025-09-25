@@ -16,7 +16,7 @@ export default defineConfig({
                 'resources/css/notaCredito.css',
                 'resources/css/panel-subactividades.css',
                 'resources/css/parametros.css',
-                'resources/css/registrar-ordenes.css',
+                'resources/css/registrar-ordendes.css',
                 'resources/css/registrar-ventas.css',
                 'resources/css/registroCajasDiarias.css',
                 'resources/css/sweet-alert.css',

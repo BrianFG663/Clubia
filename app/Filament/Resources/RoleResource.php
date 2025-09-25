@@ -77,9 +77,7 @@ public static function form(Form $form): Form
             Forms\Components\CheckboxList::make('permissions')
                 ->label('Permisos personalizados')
                 ->options($customPermissions)
-                ->default(['access_admin_panel']) // fuerza selección
-                ->disabled() // bloquea edición
-                ->dehydrated(false) // evita que se borre al guardar
+                ->default(fn($record) => $record?->permissions->pluck('name')->contains('access_admin_panel') ? ['access_admin_panel'] : ['access_admin_panel'])
                 ->columns(2),
         ]);
 }

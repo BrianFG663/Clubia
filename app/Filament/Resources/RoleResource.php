@@ -18,7 +18,6 @@ use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Unique;
-use Spatie\Permission\Models\Permission;
 
 class RoleResource extends Resource implements HasShieldPermissions
 {
@@ -40,35 +39,6 @@ class RoleResource extends Resource implements HasShieldPermissions
             'update',
             'delete',
             'delete_any',
-        ];
-    }
-
-    public static function getShieldFormComponents(): array
-    {
-        // Asegurarse de que el permiso exista
-        Permission::firstOrCreate(['name' => 'access_admin_panel']);
-
-        // Obtener los permisos que Shield ya genera
-        $shieldPermissions = Permission::query()
-            ->where(function ($query) {
-                $query->where('name', 'like', 'page_%')
-                      ->orWhere('name', 'like', 'resource_%')
-                      ->orWhere('name', 'like', 'widget_%');
-            })
-            ->pluck('name', 'name');
-
-        // Agregar el permiso personalizado
-        $customPermissions = Permission::where('name', 'access_admin_panel')->pluck('name', 'name');
-
-        // Combinar todos los permisos
-        $allPermissions = $shieldPermissions->merge($customPermissions)->unique();
-
-        return [
-            Forms\Components\CheckboxList::make('permissions')
-                ->label(__('filament-shield::filament-shield.field.permissions'))
-                ->options($allPermissions)
-                ->default(fn($record) => $record?->permissions->pluck('name')->toArray() ?? ['access_admin_panel'])
-                ->columns(2),
         ];
     }
 
@@ -118,8 +88,7 @@ class RoleResource extends Resource implements HasShieldPermissions
                                 'sm' => 2,
                                 'lg' => 3,
                             ]),
-                    ]),
-                ...static::getShieldFormComponents(),
+                    ])
             ]);
     }
 

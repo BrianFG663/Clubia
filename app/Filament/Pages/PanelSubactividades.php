@@ -22,7 +22,7 @@ class PanelSubactividades extends Page
         return $user?->can('page_PanelSubactividades') ?? false;
     }
 
-    protected static string $view = 'filament.pages.panel-subactividades';
+    protected static string $view = 'filament.pages.panel-subActividades';
 
     public function getTitle(): string
     {

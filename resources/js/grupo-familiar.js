@@ -1,18 +1,66 @@
-document.getElementById('filtroNombre').addEventListener('input', function() {
-    const filtro = this.value.toLowerCase();
-    const filas = document.querySelectorAll('#tablaCuerpo tr');
+window.buscarGrupoFamiliar = function () {
+    const valor = document.getElementById('filtroNombre').value.trim();
 
-    filas.forEach(fila => {
-        const familiar = fila.cells[0].textContent.toLowerCase();
-        const dni = fila.cells[1].textContent.toLowerCase();
+    if (valor === '') {
+        window.location.reload();
+        return;
+    }
 
-        if (familiar.includes(filtro) || dni.includes(filtro)) {
-            fila.style.display = '';
-        } else {
-            fila.style.display = 'none';
+    fetch('/grupo-familiar/buscar', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({ filtro: valor })
+    })
+    .then((res) => res.json())
+    .then(data => {
+        const cuerpoTabla = document.getElementById('tablaCuerpo');
+        
+        if (data.mensaje === false) {
+            cuerpoTabla.innerHTML = `
+                <tr>
+                    <td colspan="6" style="text-align:center;">${data.message ?? 'No se encontraron familiares.'}</td>
+                </tr>`;
+            return;
         }
+
+        if (!data.jefes || !data.jefes.length) {
+            cuerpoTabla.innerHTML = `
+                <tr>
+                    <td colspan="6" style="text-align:center;">No se encontraron familiares.</td>
+                </tr>`;
+            return;
+        }
+
+        const filasHTML = data.jefes.map(jefe => `
+            <tr>
+                <td class="nombre">${jefe.nombre} ${jefe.apellido}</td>
+                <td>${jefe.dni ?? '-'}</td>
+                <td class="email">${jefe.email ?? '-'}</td>
+                <td>${jefe.telefono ?? '-'}</td>
+                <td class="btn">
+                    <button onclick="detalleFamilia(${jefe.id})">
+                        <i class="fa-solid fa-eye"></i>
+                    </button>
+                </td>
+                <td class="btn">
+                    <button onclick="agregarIntegrante(${jefe.id})">
+                        <i class="fa-solid fa-user-plus"></i>
+                    </button>
+                </td>
+            </tr>
+        `).join('');
+
+        cuerpoTabla.innerHTML = filasHTML;
+    })
+    .catch(error => {
+        console.error("Error al buscar grupo familiar:", error);
     });
-});
+};
 
 
 function calcularEdad(fechaNacimiento) {

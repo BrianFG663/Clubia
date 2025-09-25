@@ -8,16 +8,14 @@
 
         <div class="filtro-container">
             <div class="input-icon-wrapper">
-                <input
-                type="text"
-                id="filtroNombre"
-                placeholder="Buscar Familiar/DNI"
-                aria-label="Filtro por nombre"
-                class="filtro-input"
-                />
+                <input type="text" id="filtroNombre" placeholder="Buscar Familiar/DNI" aria-label="Filtro por nombre" class="filtro-input"/>
                 <i class="fa-solid fa-magnifying-glass icon"></i>
             </div>
+            <div>
+                <button class="btn-buscar" onclick="buscarGrupoFamiliar()">Buscar</button>
+            </div>
         </div>
+
 
         <div id="overlay" class="modal-overlay hidden"></div>
         <div class="familiares" id="familiares">

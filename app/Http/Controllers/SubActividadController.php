@@ -32,5 +32,41 @@ class SubActividadController extends Controller
 
         return response()->json(['mensaje' => true]);
     }
+
+    public function buscarSubactvidad(Request $request)
+        {
+            $query = trim($request->input('filtro'));
+
+            $subactividades = SubActivity::withCount('partners')
+                ->where('nombre', 'like', "%{$query}%")
+                ->orWhereHas('activity', function ($q) use ($query) {
+                    $q->where('nombre', 'like', "%{$query}%");
+                })
+                ->limit(20)
+                ->get();
+
+            if ($subactividades->isEmpty()) {
+                return response()->json([
+                    'mensaje' => false,
+                    'message' => 'No se encontraron subactividades.'
+                ]);
+            }
+
+            $resultado = $subactividades->map(function ($sub) {
+                return [
+                    'id'             => $sub->id,
+                    'nombre'         => $sub->nombre,
+                    'actividad'      => $sub->activity->nombre,
+                    'monto'          => $sub->monto,
+                    'cantidad_socios' => $sub->partners_count,
+                ];
+            });
+
+            return response()->json([
+                'mensaje'         => true,
+                'subactividades'  => $resultado,
+            ]);
+        }
+
 }
 

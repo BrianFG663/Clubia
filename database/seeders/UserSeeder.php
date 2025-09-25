@@ -5,12 +5,24 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission; // <- corregido
 
 class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        $superAdminRole = Role::where('name', 'super_admin')->first();
+        // Crear o conseguir el permiso access_admin_panel
+        $accessAdmin = Permission::firstOrCreate([
+            'name' => 'access_admin_panel',
+            'guard_name' => 'web',
+        ]);
+
+        // Crear o conseguir el rol admin y asignarle el permiso
+        $adminRole = Role::firstOrCreate([
+            'name' => 'admin',
+            'guard_name' => 'web',
+        ]);
+        $adminRole->givePermissionTo($accessAdmin);
 
         $users = [
             [
@@ -36,11 +48,12 @@ class UserSeeder extends Seeder
             ],
         ];
 
-
         foreach ($users as $data) {
-            $user = User::create($data);
-            $user->assignRole($superAdminRole);
+            $user = User::firstOrCreate(
+                ['email' => $data['email']],
+                $data
+            );
+            $user->assignRole($adminRole);
         }
-
     }
 }

@@ -124,4 +124,38 @@ class PartnerController extends Controller
             return response()->json(['mensaje' => false]);
         }
     }
+
+    public function buscarGrupo(Request $request)
+    {
+        $query = trim($request->input('filtro'));
+
+        $jefes = Partner::whereRaw("CONCAT(nombre, ' ', apellido) LIKE ?", ["%{$query}%"])
+            ->orWhere('dni', 'like', "%{$query}%")
+            ->limit(20)
+            ->get();
+
+
+        if ($jefes->isEmpty()) {
+            return response()->json([
+                'mensaje' => false,
+                'message' => 'No se encontraron familiares.'
+            ]);
+        }
+
+        $resultado = $jefes->map(function ($jefe) {
+            return [
+                'id' => $jefe->id,
+                'nombre' => $jefe->nombre,
+                'apellido' => $jefe->apellido,
+                'dni' => $jefe->dni,
+                'email' => $jefe->email,
+                'telefono' => $jefe->telefono,
+            ];
+        });
+
+        return response()->json([
+            'mensaje' => true,
+            'jefes' => $resultado
+        ]);
+    }
 }

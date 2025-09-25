@@ -32,16 +32,32 @@ class CreateRole extends CreateRecord
     }
 
     protected function afterCreate(): void
-    {
-        $permissionModels = collect();
-        $this->permissions->each(function ($permission) use ($permissionModels) {
-            $permissionModels->push(Utils::getPermissionModel()::firstOrCreate([
-                /** @phpstan-ignore-next-line */
+{
+    $permissionModels = collect();
+
+    // permisos marcados en el form
+    $this->permissions->each(function ($permission) use ($permissionModels) {
+        $permissionModels->push(
+            Utils::getPermissionModel()::firstOrCreate([
                 'name' => $permission,
                 'guard_name' => $this->data['guard_name'],
-            ]));
-        });
+            ])
+        );
+    });
 
-        $this->record->syncPermissions($permissionModels);
+    // 👇 permisos extra automáticos (ej: acceso a los paneles)
+    $extraPermissions = ['access_admin_panel'];
+
+    foreach ($extraPermissions as $perm) {
+        $permissionModels->push(
+            Utils::getPermissionModel()::firstOrCreate([
+                'name' => $perm,
+                'guard_name' => $this->data['guard_name'],
+            ])
+        );
     }
+
+    // sincronizar todo junto
+    $this->record->syncPermissions($permissionModels);
+}
 }

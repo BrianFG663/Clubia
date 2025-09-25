@@ -8,6 +8,7 @@ use App\Models\Invoice;
 use App\Models\MemberType;
 use App\Models\Partner;
 use App\Models\SubActivity;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\VarDumper\VarDumper;
 
@@ -240,8 +241,8 @@ class InvoiceConstroller extends Controller
 
     }
 
-    public function pagarFacturas(Request $request)
-    {
+    public function pagarFacturas(Request $request){
+
         $ids = $request->input('facturas');
         if (!$ids || !is_array($ids)) {
             return response()->json(['mensaje' => false]); 
@@ -252,7 +253,8 @@ class InvoiceConstroller extends Controller
         if ($actualizadas > 0) {
             return response()->json(['mensaje' => true]);
         }
-        return response()->json(['mensaje' => false], 404); 
+
+        return response()->json(['mensaje' => false], 404);
     }
 
 
@@ -305,6 +307,25 @@ class InvoiceConstroller extends Controller
             'facturasFamiliares' => $facturasFamiliares,
         ]);
     }
+
+    public function pagarFacturasProveedor(Request $request){
+
+        $factura = Invoice::find($request->id);
+
+        $factura->estado_pago = 1;
+        //$factura->save();
+
+        return response()->json(['mensaje' => true]);
+    }
+
+    public function exportPdf($id){
+
+        $factura = Invoice::with('order')->findOrFail($id);
+        $order = $factura->order;
+        $pdf = Pdf::loadView('pdf.pdfFacturas', compact('order'));
+        return $pdf->download("factura-{$factura->id}.pdf");
+
+    } 
 
 
 }

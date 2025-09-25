@@ -43,15 +43,15 @@ select.addEventListener('change', function () {
 
             if (dni == '') {
                 Swal.fire({
-                text: 'Por favor ingrese un numero de documento.',
-                showConfirmButton: true,
-                confirmButtonText: 'Entendido',
-                backdrop: false,
-                allowOutsideClick: false,
-                allowEscapeKey: false,
-                imageWidth: 100,
-                imageHeight: 100,
-                imageUrl: "/images/alertas/advertencia.png"
+                    text: 'Por favor ingrese un numero de documento.',
+                    showConfirmButton: true,
+                    confirmButtonText: 'Entendido',
+                    backdrop: false,
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    imageWidth: 100,
+                    imageHeight: 100,
+                    imageUrl: "/images/alertas/advertencia.png"
                 });
 
                 return

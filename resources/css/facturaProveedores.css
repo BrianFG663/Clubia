@@ -1,0 +1,218 @@
+.contenedor-general{
+    height: 70vh;
+    display: flex;
+    flex-direction: column;
+        background-color: #111827;
+    border: 1px solid #c28840;
+    border-radius: 5px;
+}
+
+.contenedor-selects{
+    width: 100%;
+    height: 30%;
+    display: flex;
+
+    flex-direction: row;
+}
+
+.select-actividad,.select-js{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+.facturas{
+    height: 60%;
+    overflow-y: scroll;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.tabla-ventas{
+    position: relative;
+    top: 1vh;
+}
+
+.select-actividad,.select-js > label{
+    color: #ccc;
+}
+
+
+
+select {
+    width: 90%;
+    background-color: rgba(128, 128, 128, 0.366);
+    border-radius: 2px;
+    outline: none;
+    appearance: none;  
+    -webkit-appearance: none;
+    -moz-appearance: none;    
+
+}
+
+select:focus {
+    border: 1px solid #c28840;
+    box-shadow: none;
+    outline: none;
+}
+
+
+select option {
+    background-color: #111827;
+    color: white;
+    border: none;
+    padding: 5px;
+    font-size: 14px;
+    transition: background-color 0.5s ease;
+}
+
+select option:hover {
+    background-color: #d4d4d4;
+}
+
+.dni{
+    border-radius:2px;
+    background-color: rgba(71, 71, 71, 0.685);
+    padding: 0.5rem 0.75rem;
+    width: 68%;
+    transition: 0.3s;
+    outline: none;
+    height: 65%;
+}
+
+.btn-dni{
+    position: relative;
+    border: 1px solid #c28840;
+    background-color: transparent;
+    width: 30%;
+    height: 65%;
+    border-radius: 5px;
+    transition: 0.2s;
+}
+
+.btn-dni:hover {
+    cursor: pointer;
+    background-color: #c288406e;
+}
+
+.div-input-button{
+    width: 90%;
+}
+
+.input-vista{
+    border-radius:2px;
+    background-color: rgba(71, 71, 71, 0.685);
+    padding: 0.5rem 0.75rem;
+    width: 68%;
+    transition: 0.3s;
+    outline: none;
+    width: 90%;
+}
+
+.label-vista{
+    color: rgb(61, 61, 61);
+}
+
+.dni:focus {
+    border-color: transparent;
+    border-radius: 1px;
+    outline: none;
+    box-shadow: 0 0 1px 1px rgba(158, 140, 61, 0.596);
+}
+
+.facturas-pagas,.facturas-no-pagas{
+  background-color: #202e4b;
+    height: 90%;
+    width: 48%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: scroll;
+    padding: 1vh;
+    border-radius: 4px;
+    border: 1px solid #c28840;
+}
+
+.titulo-facturas-pagas,.titulo-facturas-inpagas{
+  font-weight: 600;
+  margin-bottom: 0.5vh;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #c28840;
+    border-radius: 10px;
+}
+
+.carrito-vacio{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 60%;
+    height: 25%;
+    position: relative;
+    opacity: 0.5;
+    top: 35%;
+}
+
+.carrito-vacio >span{
+    font-weight: 1vw;
+    text-align: center;
+    width: 100%;
+}
+
+.img-vacio{
+    height: 8vh;
+    width: auto; 
+}
+
+
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  border: 2px solid #838383;
+  background-color: transparent; /* Fondo transparente */
+  font-family: Arial, sans-serif;
+}
+
+th, td {
+  border: 1px solid #838383;
+  padding: 8px 12px;
+  text-align: left;
+  text-align: center;       /* Centra horizontalmente */
+  vertical-align: middle;
+  background-color: transparent; /* Fondo transparente en celdas */
+}
+
+th {
+  color: #c28840; /* Texto en color del borde para que destaque */
+}
+
+tr:nth-child(even) {
+  background-color: transparent; /* Sin color de fondo alternado */
+}
+
+button.btn-borrar svg.icon-trash {
+  stroke: #c28840;
+  transition: stroke 0.3s ease;
+}
+
+button.btn-borrar:hover svg.icon-trash {
+  stroke: #8b6329; /* tono más oscuro al hover */
+}

@@ -83,3 +83,7 @@ Route::patch('/invoices/pagar', [InvoiceConstroller::class, 'pagarFacturas']); /
 Route::post('/parametros/buscar', [ParameterController::class, 'buscarParametros']);
 Route::post('/parametro/cuota/cambio', [ParameterController::class, 'cambiarParametroSocial']);
 Route::post('/parametro/actividad/cambio', [ParameterController::class, 'cambiarParametroActividad']);
+
+//Ruta pdf factura
+Route::post('/facturas/pagar', [InvoiceConstroller::class, 'pagarFacturasProveedor'])->name('factura.pagar');
+Route::get('/factura/{id}/pdf', [InvoiceConstroller::class, 'exportPdf'])->name('factura.pdf');

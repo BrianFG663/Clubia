@@ -252,12 +252,12 @@ class InvoiceConstroller extends Controller
         if ($actualizadas > 0) {
             return response()->json(['mensaje' => true]);
         }
-        return response()->json(['mensaje' => false], 404); 
+        return response()->json(['mensaje' => false]); 
     }
 
 
 
- public function facturasPagas(Partner $partner)
+    public function facturasPagas(Partner $partner)
     {
         // Facturas del titular
         $facturasTitular = $partner->invoices()
@@ -303,6 +303,58 @@ class InvoiceConstroller extends Controller
             'partner' => $partner->nombre . ' ' . $partner->apellido,
             'facturasTitular' => $facturasTitular,
             'facturasFamiliares' => $facturasFamiliares,
+        ]);
+    }
+
+    public function buscarSocio(Request $request)
+    {
+        $query = trim($request->input('filtro'));
+
+
+$socios = Partner::withCount(['facturasImpagas', 'facturasPagas'])
+    ->whereRaw("CONCAT(nombre, ' ', apellido) LIKE ?", ["%{$query}%"])
+    ->orWhere('dni', 'like', "%{$query}%")
+    ->limit(20)
+    ->get();
+
+
+
+        if ($socios->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No se encontraron socios.'
+            ]);
+        }
+
+        $resultado = $socios->map(function ($socio) {
+            $totalImpagas = $socio->facturas_impagas_count;
+            $totalPagas   = $socio->facturas_pagas_count;
+
+            if ($socio->jefe_grupo) {
+                $dependientes = Partner::where('responsable_id', $socio->id)
+                    ->withCount(['facturasImpagas', 'facturasPagas'])
+                    ->get();
+
+                foreach ($dependientes as $dep) {
+                    $totalImpagas += $dep->facturas_impagas_count;
+                    $totalPagas   += $dep->facturas_pagas_count;
+                }
+            }
+
+            return [
+                'id'            => $socio->id,
+                'nombre'        => $socio->nombre,
+                'apellido'      => $socio->apellido,
+                'dni'           => $socio->dni,
+                'jefe_grupo'    => $socio->jefe_grupo,
+                'total_impagas' => $totalImpagas,
+                'total_pagas'   => $totalPagas,
+            ];
+        });
+
+        return response()->json([
+            'success' => true,
+            'socios'  => $resultado,
         ]);
     }
 

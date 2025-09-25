@@ -1,21 +1,67 @@
-document.getElementById('filtroNombre').addEventListener('input', function() {
-    const filtro = this.value.toLowerCase();
-    const filas = document.querySelectorAll('#tablaCuerpo tr');
+window.buscarSocio = function () {
+    const valor = document.getElementById('filtroNombre').value.trim();
 
-    filas.forEach(fila => {
-        const nombre = fila.cells[0].textContent.toLowerCase();
-        const dni = fila.cells[1].textContent; // dejamos sin toLowerCase porque son números
+    if (valor === '') {
+        window.location.reload();
+        return;
 
-        // Para DNI, que coincida desde el inicio
-        const dniCoincide = dni.startsWith(filtro);
+    } 
+    console.log(valor);
 
-        if (nombre.includes(filtro) || dniCoincide) {
-            fila.style.display = '';
-        } else {
-            fila.style.display = 'none';
+    fetch('/buscar/socio', {
+    method: 'POST',
+    credentials: 'same-origin',
+    headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+    },
+    body: JSON.stringify({ filtro: valor })
+})
+
+    .then((res) => res.json())
+    .then(data => {
+        console.log(data);
+        const cuerpoTabla = document.getElementById('tablaCuerpo');
+
+        if (data.success === false) {
+            cuerpoTabla.innerHTML = `<tr><td colspan="5" style="text-align:center;">${data.message}</td></tr>`;
+            return;
         }
+
+        if (!data.socios || !data.socios.length) {
+            cuerpoTabla.innerHTML = `<tr><td colspan="5" style="text-align:center;">No se encontraron socios.</td></tr>`;
+            return;
+        }
+
+        const filasHTML = data.socios.map(socio => `
+            <tr>
+                <td>${socio.nombre} ${socio.apellido}</td>
+                <td>${socio.dni}</td>
+                <td>${socio.jefe_grupo ? 'Sí' : 'No'}</td>
+                <td>
+                    ${socio.total_impagas}
+                    ${socio.total_impagas > 0 ? `
+                        <button class="btn-ver" onclick="verFacturasImpagas(${socio.id})">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>` : ''}
+                </td>
+                <td>
+                    ${socio.total_pagas}
+                    ${socio.total_pagas > 0 ? `
+                        <button class="btn-ver" onclick="verFacturasPagas(${socio.id})">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>` : ''}
+                </td>
+            </tr>
+        `).join('');
+
+        cuerpoTabla.innerHTML = filasHTML;
+    })
+    .catch(error => {
+        console.error("Error al buscar socios:", error);
     });
-});
+};
 
 
 window.verFacturasImpagas = function(partnerId) {

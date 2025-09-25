@@ -8,18 +8,16 @@
 
     <div class="contenedor">
 
-         <div class="filtro-container">
+        <div class="filtro-container">
             <div class="input-icon-wrapper">
-                <input
-                type="text"
-                id="filtroNombre"
-                placeholder="Buscar Subactividad"
-                aria-label="Filtro por nombre"
-                class="filtro-input"
-                />
+                <input type="text" id="filtroNombre" placeholder="Buscar Subactividad"   aria-label="Filtro por nombre"class="filtro-input"/>
                 <i class="fa-solid fa-magnifying-glass icon"></i>
             </div>
+            <div>
+                <button class="btn-buscar" onclick="buscarSubactividad()">Buscar</button>
+            </div>
         </div>
+
 
         <div id="detalle-socios" class="detalle-socios">
             <button id="cerrar-detalle" class="cerrar-detalle"><i class="fa-solid fa-xmark" ></i></button>

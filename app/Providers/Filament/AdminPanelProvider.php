@@ -38,9 +38,6 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
-            ->assets([
-            Css::make('custom', public_path('css/custom.css')),
-        ])
             ->colors([
             'primary' => Color::hex('#c28840'),
             'success' => Color::Green,

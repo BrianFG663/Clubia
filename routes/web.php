@@ -76,3 +76,5 @@ Route::delete('/cajadiaria/eliminar/registro/vacio', [CashRecordController::clas
 Route::get('/invoices/impagas/{partner}', [InvoiceConstroller::class, 'facturasImpagas']);// ver todas las facturas impagas de un socio
 Route::get('/invoices/pagas/{partner}', [InvoiceConstroller::class, 'facturasPagas']);
 Route::patch('/invoices/pagar', [InvoiceConstroller::class, 'pagarFacturas']); //Pagar facturas
+
+

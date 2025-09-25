@@ -1,12 +1,67 @@
-document.getElementById('filtroNombre').addEventListener('input', function() {
-    const filtro = this.value.toLowerCase();
-    const filas = document.querySelectorAll('#tablaCuerpo tr');
+window.buscarSubactividad = function () {
+    const valor = document.getElementById('filtroNombre').value.trim();
 
-    filas.forEach(fila => {
-        const nombreSubactividad = fila.cells[1].textContent.toLowerCase(); 
-        fila.style.display = nombreSubactividad.includes(filtro) ? '' : 'none';
+    if (valor === '') {
+        window.location.reload();
+        return;
+    }
+
+    fetch('/subactividad/buscar', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json', 
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({ filtro: valor })
+    })
+    .then((res) => res.json())
+    .then(data => {
+        const cuerpoTabla = document.getElementById('tablaCuerpo');
+
+        if (data.mensaje === false) {
+            cuerpoTabla.innerHTML = `
+                <tr>
+                    <td colspan="5" style="text-align:center;">
+                        ${data.message ?? 'No se encontraron subactividades.'}
+                    </td>
+                </tr>`;
+            return;
+        }
+
+        if (!data.subactividades || !data.subactividades.length) {
+            cuerpoTabla.innerHTML = `
+                <tr>
+                    <td colspan="5" style="text-align:center;">
+                        No se encontraron subactividades.
+                    </td>
+                </tr>`;
+            return;
+        }
+
+        const filasHTML = data.subactividades.map(sub => `
+            <tr>
+                <td>${sub.actividad}</td>
+                <td>${sub.nombre}</td>
+                <td>${sub.monto}</td>
+                <td style="text-align:center;">${sub.cantidad_socios}</td>
+                <td>
+                    <button onclick="mostrarSocios(${sub.id})" class="btn">
+                        <i class="fa-solid fa-eye"></i>
+                    </button>
+                </td>
+            </tr>
+        `).join('');
+
+        cuerpoTabla.innerHTML = filasHTML;
+    })
+    .catch(error => {
+        console.error("Error al buscar subactividad:", error);
     });
-});
+};
+
+
 
 window.mostrarSocios = function(subactividadId) {
     fetch("/panel-subactividades", {

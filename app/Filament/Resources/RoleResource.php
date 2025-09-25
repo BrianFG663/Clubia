@@ -43,14 +43,13 @@ class RoleResource extends Resource implements HasShieldPermissions
         ];
     }
 
+
 public static function form(Form $form): Form
 {
     // Asegurarse de que el permiso exista
     Permission::firstOrCreate(['name' => 'access_admin_panel']);
 
-    $customPermissions = Permission::whereIn('name', [
-        'access_admin_panel',
-    ])->pluck('name', 'name');
+    $customPermissions = Permission::where('name', 'access_admin_panel')->pluck('name', 'name');
 
     return $form
         ->schema([
@@ -74,13 +73,16 @@ public static function form(Form $form): Form
                         ]),
                 ]),
             static::getShieldFormComponents(),
+
+            // Permiso adicional: access_admin_panel
             Forms\Components\CheckboxList::make('permissions')
-                ->label('Permisos personalizados')
+                ->label('Permisos adicionales')
                 ->options($customPermissions)
-                ->default(fn($record) => $record?->permissions->pluck('name')->contains('access_admin_panel') ? ['access_admin_panel'] : ['access_admin_panel'])
+                ->default(fn($record) => $record?->permissions->pluck('name')->contains('access_admin_panel') ? ['access_admin_panel'] : [])
                 ->columns(2),
         ]);
 }
+
 
 
 

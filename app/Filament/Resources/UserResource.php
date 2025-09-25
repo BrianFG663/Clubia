@@ -39,60 +39,72 @@ class UserResource extends Resource implements HasShieldPermissions
     }
 
     public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('nombre')->required()
-                    ->afterStateHydrated(function (TextInput $component, $state) {
-                        $component->state(ucfirst(strtolower($state)));
-                    })
-                    ->dehydrateStateUsing(fn($state) => ucfirst(strtolower($state))),
-                Forms\Components\TextInput::make('apellido')->required()
-                    ->afterStateHydrated(function (TextInput $component, $state) {
-                        $component->state(ucfirst(strtolower($state)));
-                    })
-                    ->dehydrateStateUsing(fn($state) => ucfirst(strtolower($state))),
-                Forms\Components\TextInput::make('email')
-                    ->label('Email')
-                    ->email()
-                    ->required()
-                    ->rule(function (callable $get) {
-                        return function (string $attribute, $value, \Closure $fail) use ($get) {
-                            $recordId = $get('id');
+{
+    return $form
+        ->schema([
+            Forms\Components\TextInput::make('nombre')->required()
+                ->afterStateHydrated(function (TextInput $component, $state) {
+                    $component->state(ucfirst(strtolower($state)));
+                })
+                ->dehydrateStateUsing(fn($state) => ucfirst(strtolower($state))),
 
-                            $emailDuplicado = \App\Models\User::where('email', $value)
-                                ->when($recordId, fn($query) => $query->where('id', '!=', $recordId))
-                                ->exists();
+            Forms\Components\TextInput::make('apellido')->required()
+                ->afterStateHydrated(function (TextInput $component, $state) {
+                    $component->state(ucfirst(strtolower($state)));
+                })
+                ->dehydrateStateUsing(fn($state) => ucfirst(strtolower($state))),
 
-                            if ($emailDuplicado) {
-                                $fail('El email ya está registrado por otro usuario.');
-                            }
-                        };
-                    }),
-                Forms\Components\TextInput::make('password')
-                    ->password()
-                    ->dehydrateStateUsing(fn($state) => !empty($state) ? Hash::make($state) : null)
-                    ->required(fn(string $context) => $context === 'create')
-                    ->dehydrated(fn($state) => filled($state)),
-                Forms\Components\Hidden::make('state_id')
-                    ->default(1)
-                    ->dehydrated(true),
+            Forms\Components\TextInput::make('email')
+                ->label('Email')
+                ->email()
+                ->required()
+                ->rule(function (callable $get) {
+                    return function (string $attribute, $value, \Closure $fail) use ($get) {
+                        $recordId = $get('id');
 
+                        $emailDuplicado = \App\Models\User::where('email', $value)
+                            ->when($recordId, fn($query) => $query->where('id', '!=', $recordId))
+                            ->exists();
+
+                        if ($emailDuplicado) {
+                            $fail('El email ya está registrado por otro usuario.');
+                        }
+                    };
+                }),
+
+            Forms\Components\TextInput::make('password')
+                ->password()
+                ->dehydrateStateUsing(fn($state) => !empty($state) ? Hash::make($state) : null)
+                ->required(fn(string $context) => $context === 'create')
+                ->dehydrated(fn($state) => filled($state)),
+
+            Forms\Components\Hidden::make('state_id')
+                ->default(1)
+                ->dehydrated(true),
+
+            Forms\Components\Grid::make(2)->schema([
                 Forms\Components\Select::make('add_role')
                     ->label('Agregar rol')
                     ->options(Role::all()->pluck('name', 'id'))
                     ->native(false),
 
-                Forms\Components\Select::make('remove_role')
-                    ->label('Eliminar rol')
-                    ->options(fn($record) => $record?->roles?->pluck('name', 'id') ?? [])
+                Forms\Components\Select::make('institution_id')
+                    ->label('Institución')
+                    ->options(\App\Models\Institution::all()->pluck('nombre', 'id'))
+                    ->required()
                     ->searchable()
-                    ->native(false)
-                    ->visible(fn(string $operation) => $operation === 'edit'),
+                    ->native(false),
+            ]),
 
+            Forms\Components\Select::make('remove_role')
+                ->label('Eliminar rol')
+                ->options(fn($record) => $record?->roles?->pluck('name', 'id') ?? [])
+                ->searchable()
+                ->native(false)
+                ->visible(fn(string $operation) => $operation === 'edit'),
+        ]);
+}
 
-            ]);
-    }
 
     public static function table(Table $table): Table
     {

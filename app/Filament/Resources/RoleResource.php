@@ -49,7 +49,20 @@ public static function form(Form $form): Form
     // Asegurarse de que el permiso exista
     Permission::firstOrCreate(['name' => 'access_admin_panel']);
 
+    // Obtener todos los permisos generados por Shield
+    $shieldPermissions = Permission::query()
+        ->where(function ($query) {
+            $query->where('name', 'like', 'page_%')
+                  ->orWhere('name', 'like', 'resource_%')
+                  ->orWhere('name', 'like', 'widget_%');
+        })
+        ->pluck('name', 'name');
+
+    // Agregar el permiso personalizado
     $customPermissions = Permission::where('name', 'access_admin_panel')->pluck('name', 'name');
+
+    // Combinar ambos
+    $allPermissions = $shieldPermissions->merge($customPermissions)->unique();
 
     return $form
         ->schema([
@@ -72,13 +85,10 @@ public static function form(Form $form): Form
                             'lg' => 3,
                         ]),
                 ]),
-            static::getShieldFormComponents(),
-
-            // Permiso adicional: access_admin_panel
             Forms\Components\CheckboxList::make('permissions')
-                ->label('Permisos adicionales')
-                ->options($customPermissions)
-                ->default(fn($record) => $record?->permissions->pluck('name')->contains('access_admin_panel') ? ['access_admin_panel'] : [])
+                ->label('Permisos')
+                ->options($allPermissions)
+                ->default(fn($record) => $record?->permissions->pluck('name')->toArray() ?? [])
                 ->columns(2),
         ]);
 }

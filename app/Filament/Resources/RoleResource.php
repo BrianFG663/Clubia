@@ -10,7 +10,6 @@ use BezhanSalleh\FilamentShield\Traits\HasShieldFormComponents;
 use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
-use Spatie\Permission\Models\Permission;
 use Filament\Pages\SubNavigationPosition;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -25,11 +24,11 @@ class RoleResource extends Resource implements HasShieldPermissions
     use HasShieldFormComponents;
 
     protected static ?string $recordTitleAttribute = 'name';
+
     public static function getNavigationGroup(): ?string
     {
         return '⚙️Permisos del Administrador';
     }
-
 
     public static function getPermissionPrefixes(): array
     {
@@ -43,58 +42,56 @@ class RoleResource extends Resource implements HasShieldPermissions
         ];
     }
 
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Forms\Components\Grid::make()
+                    ->schema([
+                        Forms\Components\Section::make()
+                            ->schema([
+                                Forms\Components\TextInput::make('name')
+                                    ->label(__('filament-shield::filament-shield.field.name'))
+                                    ->unique(
+                                        ignoreRecord: true,
+                                        modifyRuleUsing: fn(Unique $rule) => Utils::isTenancyEnabled()
+                                            ? $rule->where(Utils::getTenantModelForeignKey(), Filament::getTenant()?->id)
+                                            : $rule
+                                    )
+                                    ->required()
+                                    ->maxLength(255),
 
-public static function form(Form $form): Form
-{
-    // Asegurarse de que el permiso exista
-    Permission::firstOrCreate(['name' => 'access_admin_panel']);
+                                Forms\Components\TextInput::make('guard_name')
+                                    ->label(__('filament-shield::filament-shield.field.guard_name'))
+                                    ->default(Utils::getFilamentAuthGuard())
+                                    ->nullable()
+                                    ->maxLength(255),
 
-    // Obtener todos los permisos generados por Shield
-    $shieldPermissions = Permission::query()
-        ->where(function ($query) {
-            $query->where('name', 'like', 'page_%')
-                  ->orWhere('name', 'like', 'resource_%')
-                  ->orWhere('name', 'like', 'widget_%');
-        })
-        ->pluck('name', 'name');
+                                Forms\Components\Select::make(config('permission.column_names.team_foreign_key'))
+                                    ->label(__('filament-shield::filament-shield.field.team'))
+                                    ->placeholder(__('filament-shield::filament-shield.field.team.placeholder'))
+                                    ->default([Filament::getTenant()?->id])
+                                    ->options(fn(): Arrayable => Utils::getTenantModel()
+                                        ? Utils::getTenantModel()::pluck('name', 'id')
+                                        : collect())
+                                    ->hidden(fn(): bool => !(static::shield()->isCentralApp() && Utils::isTenancyEnabled()))
+                                    ->dehydrated(fn(): bool => !(static::shield()->isCentralApp() && Utils::isTenancyEnabled())),
 
-    // Agregar el permiso personalizado
-    $customPermissions = Permission::where('name', 'access_admin_panel')->pluck('name', 'name');
-
-    // Combinar ambos
-    $allPermissions = $shieldPermissions->merge($customPermissions)->unique();
-
-    return $form
-        ->schema([
-            Forms\Components\Grid::make()
-                ->schema([
-                    Forms\Components\Section::make()
-                        ->schema([
-                            Forms\Components\TextInput::make('name')
-                                ->label('Nombre del rol')
-                                ->required()
-                                ->maxLength(255),
-
-                            Forms\Components\TextInput::make('guard_name')
-                                ->label('Guard')
-                                ->default('web')
-                                ->maxLength(255),
-                        ])
-                        ->columns([
-                            'sm' => 2,
-                            'lg' => 3,
-                        ]),
-                ]),
-            Forms\Components\CheckboxList::make('permissions')
-                ->label('Permisos')
-                ->options($allPermissions)
-                ->default(fn($record) => $record?->permissions->pluck('name')->toArray() ?? [])
-                ->columns(2),
-        ]);
-}
-
-
-
+                                ShieldSelectAllToggle::make('select_all')
+                                    ->onIcon('heroicon-s-shield-check')
+                                    ->offIcon('heroicon-s-shield-exclamation')
+                                    ->label(__('filament-shield::filament-shield.field.select_all.name'))
+                                    ->helperText(fn(): HtmlString => new HtmlString(__('filament-shield::filament-shield.field.select_all.message')))
+                                    ->dehydrated(fn(bool $state): bool => $state),
+                            ])
+                            ->columns([
+                                'sm' => 2,
+                                'lg' => 3,
+                            ]),
+                    ]),
+                static::getShieldFormComponents(),
+            ]);
+    }
 
     public static function table(Table $table): Table
     {
@@ -105,10 +102,12 @@ public static function form(Form $form): Form
                     ->label(__('filament-shield::filament-shield.column.name'))
                     ->formatStateUsing(fn($state): string => Str::headline($state))
                     ->searchable(),
+
                 Tables\Columns\TextColumn::make('guard_name')
                     ->badge()
                     ->color('warning')
                     ->label(__('filament-shield::filament-shield.column.guard_name')),
+
                 Tables\Columns\TextColumn::make('team.name')
                     ->default('Global')
                     ->badge()
@@ -116,11 +115,13 @@ public static function form(Form $form): Form
                     ->label(__('filament-shield::filament-shield.column.team'))
                     ->searchable()
                     ->visible(fn(): bool => static::shield()->isCentralApp() && Utils::isTenancyEnabled()),
+
                 Tables\Columns\TextColumn::make('permissions_count')
                     ->badge()
                     ->label(__('filament-shield::filament-shield.column.permissions'))
                     ->counts('permissions')
                     ->colors(['success']),
+
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label(__('filament-shield::filament-shield.column.updated_at'))
                     ->dateTime(),
@@ -218,6 +219,8 @@ public static function form(Form $form): Form
 
     public static function canGloballySearch(): bool
     {
-        return Utils::isResourceGloballySearchable() && count(static::getGloballySearchableAttributes()) && static::canViewAny();
+        return Utils::isResourceGloballySearchable()
+            && count(static::getGloballySearchableAttributes())
+            && static::canViewAny();
     }
 }

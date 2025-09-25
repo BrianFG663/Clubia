@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Permission;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
@@ -13,9 +14,15 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Gate::before(function ($user, $ability) {
-            Log::info("Gate::before ejecutado para {$user->email} con habilidad {$ability}");
-            return $user->hasRole('super_admin') ? true : null;
+            $knownAbilities = Permission::pluck('name')->toArray();
+
+            if (in_array($ability, $knownAbilities)) {
+                return $user->hasRole('super_admin') ? true : null;
+            }
+
+            return null;
         });
+
 
     }
 }

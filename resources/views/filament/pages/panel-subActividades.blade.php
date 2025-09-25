@@ -3,7 +3,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @vite('resources/css/panel-subactividades.css')
     @vite('resources/css/sweet-alert.css')
-    @vite('resources/js/panel-subActividades.js')
+    @vite('resources/js/panel-subactividades.js')
 
 
     <div class="contenedor">

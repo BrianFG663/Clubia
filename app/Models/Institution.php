@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Institution extends Model
 {
@@ -40,5 +41,10 @@ class Institution extends Model
     public function cashRecords(): HasMany
     {
         return $this->hasMany(CashRecord::class);
+    }
+
+    public function parameter(): HasOne
+    {
+        return $this->hasOne(Parameter::class);
     }
 }

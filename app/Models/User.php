@@ -14,12 +14,19 @@ use Filament\Models\Contracts\HasName;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Auth\Access\Authorizable;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 
-class User extends Authenticatable implements HasName, AuthorizableContract
+class User extends Authenticatable implements HasName, AuthorizableContract, FilamentUser
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use Notifiable;
     use HasRoles;
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->hasRole('super_admin');
+    }
 
     /**
      * The attributes that are mass assignable.

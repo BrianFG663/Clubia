@@ -6,6 +6,7 @@ use Filament\Pages\Page;
 
 class Dashboard extends Page
 {
+
     public function getTitle(): string
     {
         return '';

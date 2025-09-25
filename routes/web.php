@@ -11,6 +11,7 @@ use App\Http\Controllers\SupplierController;
 use App\Models\Partner;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ParameterController;
 
 Route::redirect('/', '/admin'); //redireccionar al login
 
@@ -77,4 +78,18 @@ Route::get('/invoices/impagas/{partner}', [InvoiceConstroller::class, 'facturasI
 Route::get('/invoices/pagas/{partner}', [InvoiceConstroller::class, 'facturasPagas']);
 Route::patch('/invoices/pagar', [InvoiceConstroller::class, 'pagarFacturas']); //Pagar facturas
 
+
+//Rutas parametros
+Route::post('/parametros/buscar', [ParameterController::class, 'buscarParametros']);
+Route::post('/parametro/cuota/cambio', [ParameterController::class, 'cambiarParametroSocial']);
+Route::post('/parametro/actividad/cambio', [ParameterController::class, 'cambiarParametroActividad']);
+
+//Ruta pdf factura
+Route::post('/facturas/pagar', [InvoiceConstroller::class, 'pagarFacturasProveedor'])->name('factura.pagar');
+Route::get('/factura/{id}/pdf', [InvoiceConstroller::class, 'exportPdf'])->name('factura.pdf');
+
+//Ruta para los filtros
+Route::post('/buscar/socio', [InvoiceConstroller::class, 'buscarSocio']);
+Route::post('/subactividad/buscar', [SubActividadController::class, 'buscarSubactvidad']);
+Route::post('/grupo-familiar/buscar', [PartnerController::class, 'buscarGrupo']);
 

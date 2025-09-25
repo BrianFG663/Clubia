@@ -1,6 +1,6 @@
 /* ---------- CONTENEDOR PRINCIPAL ---------- */
 .contenedor {
-     border: 0.125rem solid #1c202a; /* 2px = 0.125rem */
+     border: 1px solid #1c202a; /* 2px = 0.125rem */
     background-color: #111827;
     border-radius: 0.625rem; /* 10px */
     padding-top: 0.5rem;

@@ -8,22 +8,28 @@ use App\Models\Partner;
 use Filament\Pages\Page;
 use Livewire\WithPagination;
 
-class cobroFacturas extends Page
-{
+class cobroFacturas extends Page{
 
     use WithPagination;
 
-    protected static ?string $navigationIcon = 'heroicon-o-credit-card';
+    protected static ?string $navigationIcon = 'heroicon-o-currency-dollar';
     protected static ?string $navigationGroup = '🧾Facturacion';
-    protected static ?string $navigationLabel = 'Estados y cobro';
+    protected static ?string $navigationLabel = 'Estado de Cuenta del Socio';
     protected static ?int $navigationSort = 5;
-    protected static ?string $title = 'Estados y cobro';
+    protected static ?string $title = 'Estado de Cuenta del Socio';
 
     protected static string $view = 'filament.pages.cobro-facturas';
 
+    public static function canAccess(): bool{
+        /** @var \App\Models\User|null $user */
+        $user = \Illuminate\Support\Facades\Auth::user();
 
-protected function getViewData(): array
-{
+        return $user?->can('page_cobroFacturas') ?? false;
+    }
+
+
+    protected function getViewData(): array{
+
     $partners = Partner::withCount(['facturasImpagas', 'facturasPagas'])
     ->where(function ($q) {
         $q->whereNull('responsable_id')   

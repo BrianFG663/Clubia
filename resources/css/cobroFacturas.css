@@ -120,7 +120,7 @@ font-family: sans-serif;
     border-color: #c28840 !important;
     outline: none;
     box-shadow: none;
-    border: solid 2px;
+    border: solid 1px;
 }
 
 .icon {
@@ -184,7 +184,7 @@ font-family: sans-serif;
     height: auto;
     overflow-y: auto;
     background-color: #111827; /* mismo fondo que tabla y contenedor */
-    border: 2px solid #c28840cc; /* borde dorado semitransparente */
+    border: 1px solid #c28840cc; /* borde dorado semitransparente */
     border-radius: 12px;
     color: #e0e0e0;
     font-family: 'Inter', sans-serif;
@@ -267,7 +267,7 @@ font-family: sans-serif;
 .contenedor-modal::-webkit-scrollbar-thumb {
     background-color: #888;
     border-radius: 0.625rem;
-    border: 0.2rem solid transparent; /* crea separación */
+    border: 1px solid transparent; /* crea separación */
     background-clip: padding-box;     /* evita que el color rellene el borde */
 }
 
@@ -345,7 +345,7 @@ font-family: sans-serif;
   height: 18px;
   width: 18px;
   background-color: #111827;
-  border: 2px solid #c28840;
+  border: 1px solid #c28840;
   border-radius: 4px;
   display: inline-block;
 }

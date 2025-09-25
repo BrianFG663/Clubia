@@ -1,5 +1,5 @@
 .contenedor {
-    border: 0.125rem solid #1c202a; /* 2px = 0.125rem */
+    border: 1px solid #1c202a; /* 2px = 0.125rem */
     background-color: #111827;
     border-radius: 0.625rem; /* 10px */
     padding-top: 0.5rem;
@@ -194,7 +194,7 @@ font-family: sans-serif;
 .detalle-orden::-webkit-scrollbar-thumb {
     background-color: #888;
     border-radius: 0.625rem;
-    border: 0.2rem solid transparent; /* crea separación */
+    border: 1px solid transparent; /* crea separación */
     background-clip: padding-box;     /* evita que el color rellene el borde */
 }
 
@@ -208,7 +208,7 @@ font-family: sans-serif;
     max-height: 70vh;
     overflow-y: auto;
     background-color: #111827; /* mismo fondo que tabla y contenedor */
-    border: 2px solid #c28840cc; /* borde dorado semitransparente */
+    border: 1px solid #c28840cc; /* borde dorado semitransparente */
     border-radius: 12px;
     padding-top: 1.5rem;
     padding-bottom: 1.5rem;

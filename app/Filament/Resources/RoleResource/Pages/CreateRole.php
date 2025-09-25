@@ -40,7 +40,6 @@ class CreateRole extends CreateRecord
     {
         $permissionModels = collect();
 
-        // permisos elegidos en el form
         $this->permissions->each(function ($permission) use ($permissionModels) {
             $permissionModels->push(
                 Utils::getPermissionModel()::firstOrCreate([
@@ -50,7 +49,6 @@ class CreateRole extends CreateRecord
             );
         });
 
-        // permisos extra automáticos
         $extraPermissions = ['access_admin_panel', 'access_users_panel'];
 
         foreach ($extraPermissions as $perm) {
@@ -62,7 +60,6 @@ class CreateRole extends CreateRecord
             );
         }
 
-        // sincronizar todo
         $this->record->syncPermissions($permissionModels);
     }
 }

@@ -75,7 +75,6 @@ class EditRole extends EditRecord
     {
         $permissionModels = collect();
 
-        // permisos marcados en el form
         $this->permissions->each(function ($permission) use ($permissionModels) {
             $permissionModels->push(
                 Utils::getPermissionModel()::firstOrCreate([
@@ -85,7 +84,6 @@ class EditRole extends EditRecord
             );
         });
 
-        // 👇 permisos extra automáticos (igual que en afterCreate)
         $extraPermissions = ['access_admin_panel'];
 
         foreach ($extraPermissions as $perm) {
@@ -97,7 +95,6 @@ class EditRole extends EditRecord
             );
         }
 
-        // sincronizar todo junto
         $this->record->syncPermissions($permissionModels);
     }
 }

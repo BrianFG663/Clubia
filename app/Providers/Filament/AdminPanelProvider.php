@@ -11,6 +11,7 @@ use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Assets\Css;
+use Illuminate\Support\Facades\Auth;
 use Filament\Support\Assets\Js;
 use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Colors\Color;
@@ -33,7 +34,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->brandLogo(fn () => view('components.logo-topbar'))
             ->brandLogoHeight('3.8vw')
-            ->brandName('')
+            ->brandName('Clubia')
             ->darkMode(true, true)
             ->id('admin')
             ->path('admin')
@@ -68,9 +69,9 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
-            ->plugins([
-                FilamentShieldPlugin::make(),
-            ])
+            //->plugins([
+            //    FilamentShieldPlugin::make(),
+            //])
             ->authMiddleware([
                 Authenticate::class,
             ]);

@@ -46,24 +46,24 @@ class RoleResource extends Resource implements HasShieldPermissions
 public static function form(Form $form): Form
 {
     // Asegurarse de que el permiso exista
-    Permission::firstOrCreate(['name' => 'access_admin_panel']);
+    \Spatie\Permission\Models\Permission::firstOrCreate(['name' => 'access_admin_panel']);
 
-    $customPermissions = Permission::whereIn('name', [
+    $customPermissions = \Spatie\Permission\Models\Permission::whereIn('name', [
         'access_admin_panel',
     ])->pluck('name', 'name');
 
     return $form
         ->schema([
-            Forms\Components\Grid::make()
+            \Filament\Forms\Components\Grid::make()
                 ->schema([
-                    Forms\Components\Section::make()
+                    \Filament\Forms\Components\Section::make()
                         ->schema([
-                            Forms\Components\TextInput::make('name')
+                            \Filament\Forms\Components\TextInput::make('name')
                                 ->label('Nombre del rol')
                                 ->required()
                                 ->maxLength(255),
 
-                            Forms\Components\TextInput::make('guard_name')
+                            \Filament\Forms\Components\TextInput::make('guard_name')
                                 ->label('Guard')
                                 ->default('web')
                                 ->maxLength(255),
@@ -74,7 +74,7 @@ public static function form(Form $form): Form
                         ]),
                 ]),
             static::getShieldFormComponents(),
-            Forms\Components\CheckboxList::make('permissions')
+            \Filament\Forms\Components\CheckboxList::make('permissions')
                 ->label('Permisos personalizados')
                 ->options($customPermissions)
                 ->default(['access_admin_panel']) // siempre seleccionado
@@ -82,6 +82,7 @@ public static function form(Form $form): Form
                 ->columns(2),
         ]);
 }
+
 
 
     public static function table(Table $table): Table

@@ -6,14 +6,12 @@
     <div class="contenedor">
         <div class="filtro-container">
             <div class="input-icon-wrapper">
-                <input
-                    type="text"
-                    id="filtroNombre"
-                    placeholder="Buscar Nombre/DNI"
-                    aria-label="Filtro por nombre/DNI"
-                    class="filtro-input"
-                />
+                <input type="text" id="filtroNombre" placeholder="Buscar Nombre/DNI"
+                    aria-label="Filtro por nombre/DNI"class="filtro-input"/>
                 <i class="fa-solid fa-magnifying-glass icon"></i>
+            </div>
+            <div>
+                <button class="btn-buscar" onclick="buscarSocio()">Buscar</button>
             </div>
         </div>
 
@@ -33,13 +31,11 @@
                         @php
                             $totalImpagas = $partner->facturasImpagas->count();
                             $totalPagas   = $partner->facturasPagas->count();
-
-                            // Si es jefe de grupo, sumamos facturas de familiares
+                            // Si es jefe de grupo, se suman las  facturas de familiares
                             if ($partner->jefe_grupo) {
                                 $dependientes = \App\Models\Partner::where('responsable_id', $partner->id)
                                     ->with(['facturasImpagas', 'facturasPagas'])
                                     ->get();
-
                                 foreach ($dependientes as $cantidad) {
                                     $totalImpagas += $cantidad->facturasImpagas->count();
                                     $totalPagas   += $cantidad->facturasPagas->count();

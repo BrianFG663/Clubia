@@ -42,6 +42,8 @@ class RoleResource extends Resource implements HasShieldPermissions
         ];
     }
 
+    
+
     public static function form(Form $form): Form
     {
         return $form
@@ -88,7 +90,8 @@ class RoleResource extends Resource implements HasShieldPermissions
                                 'sm' => 2,
                                 'lg' => 3,
                             ]),
-                    ])
+                    ]),
+                static::getShieldFormComponents(),
             ]);
     }
 
@@ -139,7 +142,9 @@ class RoleResource extends Resource implements HasShieldPermissions
 
     public static function getRelations(): array
     {
-        return [];
+        return [
+            //
+        ];
     }
 
     public static function getPages(): array

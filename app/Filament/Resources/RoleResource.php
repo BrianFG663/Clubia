@@ -46,24 +46,24 @@ class RoleResource extends Resource implements HasShieldPermissions
 public static function form(Form $form): Form
 {
     // Asegurarse de que el permiso exista
-    \Spatie\Permission\Models\Permission::firstOrCreate(['name' => 'access_admin_panel']);
+    Permission::firstOrCreate(['name' => 'access_admin_panel']);
 
-    $customPermissions = \Spatie\Permission\Models\Permission::whereIn('name', [
+    $customPermissions = Permission::whereIn('name', [
         'access_admin_panel',
     ])->pluck('name', 'name');
 
     return $form
         ->schema([
-            \Filament\Forms\Components\Grid::make()
+            Forms\Components\Grid::make()
                 ->schema([
-                    \Filament\Forms\Components\Section::make()
+                    Forms\Components\Section::make()
                         ->schema([
-                            \Filament\Forms\Components\TextInput::make('name')
+                            Forms\Components\TextInput::make('name')
                                 ->label('Nombre del rol')
                                 ->required()
                                 ->maxLength(255),
 
-                            \Filament\Forms\Components\TextInput::make('guard_name')
+                            Forms\Components\TextInput::make('guard_name')
                                 ->label('Guard')
                                 ->default('web')
                                 ->maxLength(255),
@@ -74,11 +74,12 @@ public static function form(Form $form): Form
                         ]),
                 ]),
             static::getShieldFormComponents(),
-            \Filament\Forms\Components\CheckboxList::make('permissions')
+            Forms\Components\CheckboxList::make('permissions')
                 ->label('Permisos personalizados')
                 ->options($customPermissions)
-                ->default(['access_admin_panel']) // siempre seleccionado
-                ->disabled() // no se puede desmarcar
+                ->default(['access_admin_panel']) // fuerza selección
+                ->disabled() // bloquea edición
+                ->dehydrated(false) // evita que se borre al guardar
                 ->columns(2),
         ]);
 }

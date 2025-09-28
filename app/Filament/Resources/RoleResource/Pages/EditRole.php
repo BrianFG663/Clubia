@@ -25,10 +25,12 @@ class EditRole extends EditRecord
             DeleteAction::make()
                 ->label('Eliminar rol')
                 ->modalHeading('¿Eliminar rol?')
-                ->modalDescription('¡Esta accion no tiene vuelta atras!')
-                ->successNotificationTitle('Rol eliminada correctamente.'),
+                ->modalDescription('¡Esta acción no tiene vuelta atrás!')
+                ->successNotificationTitle('Rol eliminado correctamente.')
+                ->visible(fn($record) => $record->name !== 'admin'),
         ];
     }
+
 
     public function getTitle(): string
     {

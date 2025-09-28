@@ -35,11 +35,11 @@ class UserResource extends Resource implements HasShieldPermissions
 
     public static function getNavigationBadgeColor(): string | array | null
     {
-        return 'primary'; // Podés usar 'success', 'warning', 'danger', etc.
+        return 'primary'; 
     }
 
     public static function form(Form $form): Form
-{
+    {
     return $form
         ->schema([
             Forms\Components\TextInput::make('nombre')->required()
@@ -88,10 +88,13 @@ class UserResource extends Resource implements HasShieldPermissions
                     ->options(Role::all()->pluck('name', 'id'))
                     ->native(false),
 
-                Forms\Components\Select::make('institution_id')
+            Forms\Components\Select::make('institution_id')
                     ->label('Institución')
                     ->options(\App\Models\Institution::all()->pluck('nombre', 'id'))
                     ->required()
+                    ->validationMessages([
+                        'required' => 'La institución es obligatoria.',
+                    ])
                     ->searchable()
                     ->native(false),
             ]),

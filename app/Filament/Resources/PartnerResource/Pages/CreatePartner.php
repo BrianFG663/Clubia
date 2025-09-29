@@ -5,6 +5,7 @@ namespace App\Filament\Resources\PartnerResource\Pages;
 use App\Filament\Resources\PartnerResource;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification;
+use Illuminate\Validation\ValidationException;
 use Filament\Resources\Pages\CreateRecord;
 
 
@@ -16,6 +17,32 @@ class CreatePartner extends CreateRecord
     {
         return 'Crear nuevo socio';
     }
+
+public function mutateFormDataBeforeCreate(array $data): array
+{
+    $telefono = '('.$data['telefono_marcacion'] . ')' . $data['telefono_caracteristica'] . '-' . $data['telefono_numero'];
+
+    // Validar duplicado
+    if (\App\Models\Partner::where('telefono', $telefono)->exists()) {
+        throw ValidationException::withMessages([
+            'telefono_marcacion' => ['Ya existe un socio con ese número de teléfono.'],
+        ]);
+    }
+
+    $data['telefono'] = $telefono;
+
+    // Lógica del responsable
+    if (!empty($data['responsable_id'])) {
+        $responsable = \App\Models\Partner::find($data['responsable_id']);
+        if ($responsable && !$responsable->jefe_grupo) {
+            $responsable->jefe_grupo = true;
+            $responsable->save();
+        }
+    }
+
+    return $data;
+}
+
 
     protected function getRedirectUrl(): string
     {

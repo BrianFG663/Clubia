@@ -5,6 +5,7 @@ namespace App\Filament\Resources\PartnerResource\Pages;
 use App\Filament\Resources\PartnerResource;
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
+use Illuminate\Validation\ValidationException;
 use Filament\Actions\Action;
 
 class EditPartner extends EditRecord
@@ -15,6 +16,25 @@ class EditPartner extends EditRecord
     {
         return 'Editar socio: ' . $this->record->nombre . ' ' . $this->record->apellido;
     }
+
+    public function mutateFormDataBeforeSave(array $data): array
+{
+    $telefono = '('.$data['telefono_marcacion'] . ')' . $data['telefono_caracteristica'] . '-' . $data['telefono_numero'];
+
+    // Validar duplicado excluyendo el actual
+    $idActual = $this->record->id;
+
+    if (\App\Models\Partner::where('telefono', $telefono)->where('id', '!=', $idActual)->exists()) {
+        throw ValidationException::withMessages([
+            'telefono_marcacion' => ['Ya existe un socio con ese número de teléfono.'],
+        ]);
+    }
+
+    $data['telefono'] = $telefono;
+
+    return $data;
+}
+
 
     protected function getHeaderActions(): array
     {

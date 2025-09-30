@@ -311,7 +311,6 @@ class InvoiceConstroller extends Controller
     {
         $query = trim($request->input('filtro'));
 
-
         $socios = Partner::withCount(['facturasImpagas', 'facturasPagas'])
             ->whereRaw("CONCAT(nombre, ' ', apellido) LIKE ?", ["%{$query}%"])
             ->orWhere('dni', 'like', "%{$query}%")
@@ -379,3 +378,4 @@ class InvoiceConstroller extends Controller
         return $pdf->download("factura-{$factura->id}.pdf");
     }
 }
+

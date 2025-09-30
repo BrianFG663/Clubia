@@ -8,7 +8,7 @@
 
         <div class="filtro-container">
             <div class="input-icon-wrapper">
-                <input type="text" id="filtroNombre" placeholder="Buscar Familiar/DNI" aria-label="Filtro por nombre" class="filtro-input"/>
+                <input type="text" id="filtroNombre" placeholder="Buscar DNI" aria-label="Filtro por nombre" class="filtro-input"/>
                 <i class="fa-solid fa-magnifying-glass icon"></i>
             </div>
             <div>

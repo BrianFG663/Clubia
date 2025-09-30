@@ -48,7 +48,7 @@ function facturasProveedor(proveedorid) {
                         <td>${p.fecha_factura}</td>
                         <td>${p.monto_total}</td>
                         <td>
-                            <button class="btn-borrar" title="Pagar factura" onclick="pagarFactura(${p.id},'proveedor','${proveedor}')" style="background:none; border:none; cursor:pointer;">
+                            <button class="btn-borrar" title="Pagar factura" onclick="pagarFactura(${p.id},'${proveedor}')" style="background:none; border:none; cursor:pointer;">
                                 <i class="fa-solid fa-wallet"></i>
                             </button>
                         </td>
@@ -62,7 +62,7 @@ function facturasProveedor(proveedorid) {
                         <td>${p.fecha_factura}</td>
                         <td>${p.monto_total}</td>
                         <td>
-                            <button class="btn-borrar" title="Generar PDF" onclick="generarPdf(${p.id},'proveedor','${proveedor}')" style="background:none; border:none; cursor:pointer;">
+                            <button class="btn-borrar" title="Generar PDF" onclick="generarPdf(${p.id})" style="background:none; border:none; cursor:pointer;">
                                 <i class="fa-solid fa-file-pdf"></i>
                             </button>
                         </td>
@@ -136,10 +136,11 @@ function facturasProveedor(proveedorid) {
 }
 
 
-window.pagarFactura = function (id) {
+window.pagarFactura = function (id,proveedorId) {
     const idFactura = id;
+    const proveedor = proveedorId;
 
-    console.log(idFactura)
+    console.log(proveedorId)
 
     Swal.fire({
         imageWidth: 100,
@@ -178,7 +179,34 @@ window.pagarFactura = function (id) {
                     cancelButtonColor: "#ffd087",
                 }).then((result) => {
                     if (result.isConfirmed) {
+                        Swal.fire({
+                            title: 'Factura marcada con exito',
+                            text: 'se marco como paga la factura seleccionada',
+                            imageUrl: "/images/alertas/check.png",
+                            confirmButtonText: 'Entendido',
+                            confirmButtonColor: '#3085d6',
+                            backdrop: false,
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                            imageWidth: 100,
+                            imageHeight: 100,
+                        });
+                        facturasProveedor(proveedor)
                         window.location.href = `/factura/${idFactura}/pdf`;
+                    }else{
+                        facturasProveedor(proveedor)
+                        Swal.fire({
+                            title: 'Factura marcada con exito',
+                            text: 'se marco como paga la factura seleccionada',
+                            imageUrl: "/images/alertas/check.png",
+                            confirmButtonText: 'Entendido',
+                            confirmButtonColor: '#3085d6',
+                            backdrop: false,
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                            imageWidth: 100,
+                            imageHeight: 100,
+                        });
                     }
                 })
             })
@@ -186,4 +214,10 @@ window.pagarFactura = function (id) {
     })
 }
 
+
+window.generarPdf = function(id){
+
+    const idFactura = id;
+    window.location.href = `/factura/${idFactura}/pdf`;
+}
 

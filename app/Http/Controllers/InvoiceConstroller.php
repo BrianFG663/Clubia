@@ -371,7 +371,6 @@ class InvoiceConstroller extends Controller
 
     public function exportPdf($id)
     {
-
         $factura = Invoice::with('order')->findOrFail($id);
         $order = $factura->order;
         $pdf = Pdf::loadView('pdf.pdfFacturas', compact('order'));

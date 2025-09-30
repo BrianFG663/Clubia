@@ -14,7 +14,7 @@ use Symfony\Component\VarDumper\VarDumper;
 
 class InvoiceConstroller extends Controller
 {
-//FUNCIONES PARA PANEL DONDE SE GENERAN LAS FACTURAS 
+    //FUNCIONES PARA PANEL DONDE SE GENERAN LAS FACTURAS 
     public function facturacionMasivaMensualSocio(Request $request)
     {
         $institutionId = $request->input('institution_id');
@@ -172,18 +172,18 @@ class InvoiceConstroller extends Controller
     }
 
 
-    public function notaCreditoFactura(Request $request){
-        
+    public function notaCreditoFactura(Request $request)
+    {
+
         $idFactura = $request->id;
 
         $factura = Invoice::find($idFactura);
 
-        if($factura){
+        if ($factura) {
 
             $factura->delete();
             return response()->json(['mensaje' => true]);
-
-        }else{
+        } else {
             return response()->json(['mensaje' => false]);
         }
     }
@@ -238,14 +238,14 @@ class InvoiceConstroller extends Controller
             'facturasTitular' => $facturasTitular,
             'facturasFamiliares' => $facturasFamiliares,
         ]);
-
     }
 
-    public function pagarFacturas(Request $request){
+    public function pagarFacturas(Request $request)
+    {
 
         $ids = $request->input('facturas');
         if (!$ids || !is_array($ids)) {
-            return response()->json(['mensaje' => false]); 
+            return response()->json(['mensaje' => false]);
         }
         $actualizadas = Invoice::whereIn('id', $ids)
             ->update(['estado_pago' => true]);
@@ -253,12 +253,7 @@ class InvoiceConstroller extends Controller
         if ($actualizadas > 0) {
             return response()->json(['mensaje' => true]);
         }
-<<<<<<< HEAD
-        return response()->json(['mensaje' => false]); 
-=======
-
-        return response()->json(['mensaje' => false], 404);
->>>>>>> 8ceaaddaa429a23a35bc38923b57459143e455c9
+        return response()->json(['mensaje' => false]);
     }
 
 
@@ -312,17 +307,16 @@ class InvoiceConstroller extends Controller
         ]);
     }
 
-<<<<<<< HEAD
     public function buscarSocio(Request $request)
     {
         $query = trim($request->input('filtro'));
 
 
-$socios = Partner::withCount(['facturasImpagas', 'facturasPagas'])
-    ->whereRaw("CONCAT(nombre, ' ', apellido) LIKE ?", ["%{$query}%"])
-    ->orWhere('dni', 'like', "%{$query}%")
-    ->limit(20)
-    ->get();
+        $socios = Partner::withCount(['facturasImpagas', 'facturasPagas'])
+            ->whereRaw("CONCAT(nombre, ' ', apellido) LIKE ?", ["%{$query}%"])
+            ->orWhere('dni', 'like', "%{$query}%")
+            ->limit(20)
+            ->get();
 
 
 
@@ -365,26 +359,23 @@ $socios = Partner::withCount(['facturasImpagas', 'facturasPagas'])
         ]);
     }
 
-=======
-    public function pagarFacturasProveedor(Request $request){
+    public function pagarFacturasProveedor(Request $request)
+    {
 
         $factura = Invoice::find($request->id);
 
         $factura->estado_pago = 1;
-        //$factura->save();
+        $factura->save();
 
         return response()->json(['mensaje' => true]);
     }
 
-    public function exportPdf($id){
+    public function exportPdf($id)
+    {
 
         $factura = Invoice::with('order')->findOrFail($id);
         $order = $factura->order;
         $pdf = Pdf::loadView('pdf.pdfFacturas', compact('order'));
         return $pdf->download("factura-{$factura->id}.pdf");
-
-    } 
-
->>>>>>> 8ceaaddaa429a23a35bc38923b57459143e455c9
-
+    }
 }

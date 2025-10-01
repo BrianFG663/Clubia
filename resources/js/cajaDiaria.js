@@ -12,7 +12,7 @@ window.agregarMovimiento = function (){
 
     if (tipo == false) {
         Swal.fire({
-            text: `Por favor seleccione un tipo de movimiento`,
+            text: `Por favor, seleccione un tipo de movimiento`,
             backdrop: false,
             allowOutsideClick: false,
             allowEscapeKey: false,
@@ -28,7 +28,7 @@ window.agregarMovimiento = function (){
 
     if(total == '' || descripcion == ''){
         Swal.fire({
-            text: `Por favor complete el formulario`,
+            text: `Por favor, complete el formulario`,
             backdrop: false,
             allowOutsideClick: false,
             allowEscapeKey: false,
@@ -174,7 +174,7 @@ window.cajaDiaria = function (fechaFiltro,institucionId) {
                     const detalles = records.flatMap(record => record.cash_records_details || []);
 
                     if (detalles.length === 0) {
-                        return `<tr><td colspan="5" style="text-align:center;">No se han hecho movimientos el dia de hoy</td></tr>`;
+                        return `<tr><td colspan="5" style="text-align:center;">No se han hecho movimientos el día de hoy</td></tr>`;
                     }
 
                     return detalles.slice().reverse().map(detail => {
@@ -230,7 +230,7 @@ window.eliminarMovimiento = function (id) {
         imageHeight: 100,
         imageUrl: "/images/alertas/advertencia.png",
         title: '¿Está seguro que desea eliminar este movimiento?',
-        text: `Atencion: esta accion no tiene vuelta atras`,
+        text: `Atención: esta acción no tiene vuelta atrás`,
         cancelButtonText: "CANCELAR",
         confirmButtonText: "CONFIRMAR",
         showCancelButton: true,
@@ -337,7 +337,7 @@ document.getElementById('btn-registrar').addEventListener("click", function() {
     if(institucion == false){
         
         Swal.fire({
-            text: `Por favor selecciona una institucion`,
+            text: `Por favor, seleccione una institución`,
             backdrop: false,
             allowOutsideClick: false,
             allowEscapeKey: false,

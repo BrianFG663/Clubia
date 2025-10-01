@@ -19,5 +19,6 @@ class Estadisticas extends Page
 
     protected static ?string $navigationIcon = 'heroicon-o-chart-pie';
     protected static string $view = 'filament.pages.estadisticas';  
+    protected static ?string $navigationLabel = 'Estadisticas';
     protected static ?int $navigationSort = 5;
 }

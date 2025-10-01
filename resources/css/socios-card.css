@@ -1,0 +1,50 @@
+.custom-card {
+    text-align: center;
+    padding: 1.5rem 1rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border-radius: 0.5rem;
+    border: 1px solid #e2e8f0;
+    background-color: #fff;
+    max-width: 320px;
+    margin: 0 auto;
+}
+
+.custom-card-icon {
+    color:#c28840; 
+    margin-bottom: 0.75rem;
+
+}
+
+.custom-card-icon svg {
+    width: 8rem;   
+    height: 8rem;
+}
+
+
+.custom-card-title {
+    font-weight: 600; 
+    font-size: 0.875rem; 
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-align: center;   
+    width: 100%;          
+}
+
+
+.custom-card-number {
+    margin-bottom: 1rem;
+    font-size: 8rem; 
+    font-weight: 800;
+    color:#c28840; 
+    line-height: 1;
+}
+
+.custom-card-info {
+    display: flex;
+    flex-direction: row;      
+    justify-content: center;  
+    align-items: center;      
+    gap: 1rem;                
+    margin-top: 1.5rem;
+}
+

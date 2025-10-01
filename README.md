@@ -1,7 +1,6 @@
 Correr migraciones : php artisan migrate:fresh
 Generar roles y permisos : php artisan shield:install
 
-
 permisos super-admin
 php artisan shield:generate --resource=UserResource
 php artisan shield:generate --resource=PartnerResource

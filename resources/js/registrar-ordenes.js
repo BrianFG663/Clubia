@@ -83,7 +83,7 @@ window.generarFactura = function(orderId) {
     })
     .then(res => res.json())
     .then(data => {
-       
+        console.log(data);
          if (data.success) {
             Swal.fire({
                 icon: 'success',

@@ -23,6 +23,7 @@ export default defineConfig({
                 'resources/css/registrar-ventas.css',
                 'resources/css/registroCajasDiarias.css',
                 'resources/css/sweet-alert.css',
+                'resources/css/socios-card.css',
                 'resources/js/app.js',
                 'resources/js/bootstrap.js',
                 'resources/js/cajaDiaria.js',

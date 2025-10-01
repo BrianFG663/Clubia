@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Models\OrderDetail;
 use Illuminate\Validation\ValidationException;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
@@ -38,8 +39,10 @@ class OrderController extends Controller
 
     public function generarFactura($id)
     {
+        Log::info('generarFactura llamado con ID:', ['order_id' => $id]);
         $order = Order::with('orderDetails')->findOrFail($id);
         $facturaExistente = Invoice::where('order_id', $order->id)->exists();
+    
 
         if (!$facturaExistente) {
             $factura = Invoice::create([
@@ -53,7 +56,6 @@ class OrderController extends Controller
             return response()->json(['success' => true,]);
         }
 
-       
         return response()->json(['success' => false,]);
     }
 } 

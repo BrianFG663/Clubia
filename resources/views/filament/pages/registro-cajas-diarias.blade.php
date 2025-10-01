@@ -24,7 +24,7 @@
             <table class="tabla">
                 <thead>
                     <tr>
-                        <th>Institucion</th>
+                        <th>Institución</th>
                         <th>Fecha de registro</th>
                         <th>Balance de caja</th>
                         <th>Movimientos</th>

@@ -202,10 +202,10 @@ window.cajaDiaria = function (fechaFiltro,institucionId) {
                         <thead>
                             <tr>
                                 <th>Responsable</th>
-                                <th>Descripcion</th>
+                                <th>Descripción</th>
                                 <th>Total</th>
-                                <th>tipo de movimiento</th>
-                                <th>Accion</th>
+                                <th>Tipo de movimiento</th>
+                                <th>Acción</th>
                             </tr>
                         </thead>
                         <tbody>

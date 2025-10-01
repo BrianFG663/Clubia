@@ -14,7 +14,7 @@ class Estadisticas extends Page
         /** @var \App\Models\User|null $user */
         $user = \Illuminate\Support\Facades\Auth::user();
 
-        return $user?->can('page_Estadisticas') ?? false;
+        return $user?->can('page_estadisticas') ?? false;
     }
 
     protected static ?string $navigationIcon = 'heroicon-o-chart-pie';

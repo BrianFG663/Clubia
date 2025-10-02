@@ -60,30 +60,11 @@
                 </tbody>
             </table>
         </div>
-
-        <div class="firma-container">
-            <div class="firma-line">Firma</div>
-            <div class="firma-line">Aclaración</div>
-        </div>
     </main>
 
 </body>
 
 <style>
-   
-    .firma-container {
-        margin-top: 120px;
-        margin-left: 410px;
-        text-align: right;
-    }
-
-    .firma-line {
-        width: 250px;
-        border-bottom: 1px dotted #000;
-        text-align: center;
-        margin-bottom: 35px;
-    }
-
     @page {
         margin: 160px 40px 80px 40px;
     }

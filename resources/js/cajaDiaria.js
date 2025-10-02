@@ -7,8 +7,12 @@ document.getElementById('institucion').addEventListener('change', function () {
 window.agregarMovimiento = function (){
 
     const descripcion = document.getElementById('descripcion').value
-    const total= document.getElementById('total').value
+    const rawValue = document.getElementById('total').value;
+    const total = rawValue.replace(/\D/g, '');
+
     const tipo= document.getElementById('tipo').value
+
+    console.log(total);
 
     if (tipo == false) {
         Swal.fire({
@@ -44,8 +48,7 @@ window.agregarMovimiento = function (){
 
     console.log(tipo)
     console.log(total)
-    console.log(descripcion)
-    console.log(institucion.value)
+
 
 
     fetch("/cajadiaria/registrar", {
@@ -183,7 +186,7 @@ window.cajaDiaria = function (fechaFiltro,institucionId) {
                             <tr data-id="${detail.id}">
                                 <td>${detail.responsable?.nombre ?? ''} ${detail.responsable?.apellido ?? ''}</td>
                                 <td>${detail.descripcion ?? ''}</td>
-                                <td>${signo}$${detail.total ?? ''}</td>
+                                <td>${signo}${new Intl.NumberFormat('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(detail.total)}</td>
                                 <td>${detail.tipo}</td>
                                 <td>
                                     <button class="btn-borrar" title="Eliminar" onclick="eliminarMovimiento(${detail.id})" style="background:none; border:none; cursor:pointer;">

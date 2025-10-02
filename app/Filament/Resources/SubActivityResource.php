@@ -20,7 +20,7 @@ class SubActivityResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-sparkles';
     protected static ?int $navigationSort = 6;
-            protected static ?string $navigationGroup = '📅Administracion de Actividades';
+            protected static ?string $navigationGroup = '🧍Socios y Actividades';
 
     protected static ?string $navigationLabel = 'Sub-activivdades';
 

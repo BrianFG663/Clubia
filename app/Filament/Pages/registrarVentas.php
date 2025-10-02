@@ -17,7 +17,7 @@ class RegistrarVentas extends Page
     protected static ?string $permission = 'view_registrar_ventas';
     protected static ?string $navigationIcon = 'heroicon-o-shopping-cart';
     protected static string $view = 'filament.pages.registrar-ventas';
-    protected static ?string $navigationGroup = '🛒Administracion de Ventas';    
+    protected static ?string $navigationGroup = '💸Ventas e Inventario';    
     protected static ?string $navigationLabel = 'Realizar ventas';
     protected static ?int $navigationSort = 6;
 

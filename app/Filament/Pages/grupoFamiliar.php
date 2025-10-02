@@ -10,7 +10,7 @@ use Livewire\WithPagination;
 class grupoFamiliar extends Page
 {
     protected static ?string $navigationIcon = 'heroicon-o-users';
-    protected static ?string $navigationGroup = '👥Administracion de Socios';
+    protected static ?string $navigationGroup = '🧍Socios y Actividades';
     protected static ?string $navigationLabel = 'Grupos familiares';
     protected static ?int $navigationSort = 5;
     protected static string $view = 'filament.pages.grupo-familiar';

@@ -11,7 +11,7 @@ class PanelSubactividades extends Page
     use WithPagination;
 
     protected static ?string $navigationIcon = 'heroicon-o-book-open';
-    protected static ?string $navigationGroup = '👥Administracion de Socios';
+    protected static ?string $navigationGroup = '🧍Socios y Actividades';
     protected static ?string $navigationLabel = 'Panel socios-subactividades';
     protected static ?int $navigationSort = 5;
 

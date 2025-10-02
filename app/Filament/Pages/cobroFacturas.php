@@ -13,7 +13,7 @@ class cobroFacturas extends Page{
     use WithPagination;
 
     protected static ?string $navigationIcon = 'heroicon-o-currency-dollar';
-    protected static ?string $navigationGroup = '🧾Facturacion';
+    protected static ?string $navigationGroup = '🧾Gestión Económica';
     protected static ?string $navigationLabel = 'Estado de Cuenta del Socio';
     protected static ?int $navigationSort = 5;
     protected static ?string $title = 'Estado de Cuenta del Socio';

@@ -30,7 +30,7 @@ class OrderResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-document-currency-dollar';
     protected static ?string $navigationLabel = 'Crear orden de compra';
-    protected static ?string $navigationGroup = '📦Ordenes de compra';
+    protected static ?string $navigationGroup = '📦Inventario y Compras';
     
     protected static ?int $navigationSort = 8;
     

@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class InstitutionResource extends Resource
 {
     protected static ?string $model = Institution::class;
-    protected static ?string $navigationGroup = '🏛️Administración Institucional';
+    protected static ?string $navigationGroup = '🏢Institucional';
 
     protected static ?string $navigationIcon = 'heroicon-o-building-library';
     protected static ?string $navigationLabel = 'Instituciones';

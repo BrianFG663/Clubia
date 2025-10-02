@@ -20,7 +20,7 @@ class RegistroCajasDiarias extends Page
     }
 
     protected static ?string $navigationIcon = 'heroicon-o-archive-box';
-    protected static ?string $navigationGroup = '💰Administracion de caja diaria';
+    protected static ?string $navigationGroup = '📊Reportes y Registros';
     protected static ?string $navigationLabel = 'Registros de caja diaria';
     protected static ?int $navigationSort = 1;
     protected static ?string $title = 'Registros de caja diaria';

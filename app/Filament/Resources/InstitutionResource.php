@@ -5,6 +5,9 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\InstitutionResource\Pages;
 use App\Filament\Resources\InstitutionResource\RelationManagers;
 use App\Models\Institution;
+use Filament\Forms\Components\Fieldset;
+use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Select;
 use Filament\Forms;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -23,7 +26,7 @@ class InstitutionResource extends Resource
     protected static ?string $navigationLabel = 'Instituciones';
     protected static ?int $navigationSort = 1;
 
-     public static function getNavigationBadge(): ?string
+    public static function getNavigationBadge(): ?string
     {
         return (string) Institution::count();
     }
@@ -35,6 +38,11 @@ class InstitutionResource extends Resource
 
     public static function form(Form $form): Form
     {
+
+        $path = public_path('json/marcacion.json');
+        $marcacionesRaw = json_decode(file_get_contents($path), true);
+        $marcaciones = array_flip($marcacionesRaw);
+
         return $form
             ->schema([
                 Forms\Components\TextInput::make('nombre')->required()
@@ -51,22 +59,47 @@ class InstitutionResource extends Resource
                     ->afterStateHydrated(function (TextInput $component, $state) {
                         $component->state(ucwords(strtolower($state)));
                     })
+                    ->columnSpan(2)
                     ->dehydrateStateUsing(fn($state) => ucwords(strtolower($state))),
-                Forms\Components\TextInput::make('telefono')
-                    ->required()
-                    ->rule(function (callable $get) {
-                        return function (string $attribute, $value, \Closure $fail) use ($get) {
-                            $idActual = $get('id');
+                Fieldset::make('Teléfono')
+                    ->schema([
+                        Select::make('telefono_marcacion')
+                            ->label('Marcación')
+                            ->options($marcaciones)
+                            ->required()
+                            ->dehydrated(true),
 
-                            $telefonoExistente = \App\Models\Institution::where('telefono', $value)
-                                ->when($idActual, fn($query) => $query->where('id', '!=', $idActual))
-                                ->exists();
+                        TextInput::make('telefono_caracteristica')
+                            ->label('Característica')
+                            ->numeric()
+                            ->required()
+                            ->dehydrated(true),
 
-                            if ($telefonoExistente) {
-                                $fail('Teléfono ya vinculado con otra institución.');
-                            }
-                        };
-                    })
+                        TextInput::make('telefono_numero')
+                            ->label('Número')
+                            ->numeric()
+                            ->required()
+                            ->dehydrated(true)
+                            ->rule(function (callable $get) {
+                                return function ($attribute, $value, \Closure $fail) use ($get) {
+                                    if (strlen($value) > 10) {
+                                        $fail('El número no puede tener más de 10 dígitos.');
+                                    }
+
+                                    $telefono = '(' . $get('telefono_marcacion') . ')' . $get('telefono_caracteristica') . '-' . $value;
+                                    $idActual = $get('id');
+
+                                    $existe = \App\Models\Institution::where('telefono', $telefono)
+                                        ->when($idActual, fn($query) => $query->where('id', '!=', $idActual))
+                                        ->exists();
+
+                                    if ($existe) {
+                                        $fail('Ya existe un socio con ese número de teléfono.');
+                                    }
+                                };
+                            }),
+                    ])
+                    ->columns(3),
 
             ]);
     }
@@ -109,7 +142,7 @@ class InstitutionResource extends Resource
                         ->label('Eliminar seleccionados')
                         ->icon('heroicon-o-trash'),
                 ])
-                ->label('Acciones en grupo'),
+                    ->label('Acciones en grupo'),
             ]);
     }
 

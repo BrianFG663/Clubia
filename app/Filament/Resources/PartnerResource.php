@@ -41,25 +41,19 @@ class PartnerResource extends Resource
     public static function form(Form $form): Form
     {
 
-        $marcaciones = [
-            '+54' => 'Argentina',
-            '+591' => 'Bolivia',
-            '+55' => 'Brasil',
-            '+56' => 'Chile',
-            '+57' => 'Colombia',
-            '+593' => 'Ecuador',
-            '+592' => 'Guyana',
-            '+595' => 'Paraguay',
-            '+51' => 'Perú',
-            '+597' => 'Surinam',
-            '+598' => 'Uruguay',
-            '+58' => 'Venezuela',
-        ];
-
-
+        $path = public_path('json/marcacion.json');
+        $marcacionesRaw = json_decode(file_get_contents($path), true);
+        $marcaciones = array_flip($marcacionesRaw);
 
         return $form->schema([
             Forms\Components\TextInput::make('nombre')->required()
+                ->rule(function (callable $get) {
+                    return function (string $attribute, mixed $value, \Closure $fail) {
+                        if (!preg_match('/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/', $value)) {
+                            $fail('No se aceptan nombres con números.');
+                        }
+                    };
+                })
                 ->afterStateHydrated(fn($component, $state) => $component->state(ucfirst(strtolower($state))))
                 ->dehydrateStateUsing(fn($state) => ucfirst(strtolower($state))),
 

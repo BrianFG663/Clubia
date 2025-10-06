@@ -23,18 +23,31 @@ class PartnerController extends Controller
 
     public function eliminarIntegrante(Request $request)
     {
-
         $integrante = Partner::find($request->id);
-        $responsable = $integrante->responsable_id;
 
-        if ($integrante) {
-            $integrante->responsable_id = NULL;
-            $integrante->save();
-            return response()->json(['mensaje' => true, 'responsable' => $responsable]);
-        } else {
+        if (! $integrante) {
             return response()->json(['mensaje' => false]);
         }
+
+        $responsableId = $integrante->responsable_id;
+
+        $tieneIntegrantes = Partner::where('responsable_id', $responsableId)
+            ->where('id', '<>', $integrante->id)
+            ->exists();
+
+        Partner::where('id', $responsableId)->update([
+            'jefe_grupo' => $tieneIntegrantes ? 1 : 0
+        ]);
+
+        $integrante->responsable_id = null;
+        $integrante->save();
+
+        return response()->json([
+            'mensaje' => true,
+            'responsable' => $responsableId
+        ]);
     }
+
 
     public function buscarIntegrante(Request $request)
     {
@@ -46,6 +59,10 @@ class PartnerController extends Controller
             'responsable'
         ])->where('dni', $request->dni)->first();
 
+        if($integrante->jefe_grupo == 1){
+
+            return response()->json(['mensaje' =>true, 'jefe'=>true, 'integrante'=>$integrante]);
+        }
 
         if ($integrante) {
             if (!empty($integrante->responsable)) {
@@ -53,10 +70,9 @@ class PartnerController extends Controller
                     'familyMembers',
                 ])->where('id', $integrante->responsable->id)->firstOrFail();
                 $familiares =  $jefe->familyMembers;
-
-                return response()->json(['mensaje' => true, 'integrante' => $integrante, 'familiares' => $familiares]);
+                return response()->json(['mensaje' => true, 'responsable'=>true, 'integrante' => $integrante, 'familiares' => $familiares]);
             } else {
-                return response()->json(['mensaje' => true, 'integrante' => $integrante, 'familiares' => []]);
+                return response()->json(['mensaje' => true,'responsable'=>false ,'integrante' => $integrante, 'familiares' => []]);
             }
         } else {
             return response()->json(['mensaje' => false]);
@@ -67,6 +83,8 @@ class PartnerController extends Controller
     {
 
         $integrante = Partner::firstWhere('dni', $request->dni);
+
+
 
         if ($integrante) {
             $integrante->responsable_id = $request->responsable_id;

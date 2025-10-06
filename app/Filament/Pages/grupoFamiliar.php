@@ -34,9 +34,13 @@ class grupoFamiliar extends Page
     protected function getViewData(): array
     {
         return [
-            'jefes' => Partner::where('jefe_grupo', 1)
-                ->with('familyMembers')
-                ->paginate(10),
-        ];
+    'jefes' => Partner::where('jefe_grupo', 1)
+        ->whereHas('familyMembers', function ($query) {
+            $query->whereColumn('responsable_id', 'partners.id')
+                  ->whereColumn('id', '<>', 'partners.id');
+        })
+        ->paginate(10)
+];
+
     }
 }

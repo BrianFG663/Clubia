@@ -31,6 +31,11 @@ class PartnerController extends Controller
         $integrante = Partner::findOrFail($request->id);
         $responsableId = $integrante->responsable_id;
 
+        if (! $responsableId) {
+            return response()->json(['mensaje' => false, 'error' => 'Responsable no definido'], 400);
+        }
+
+
         $tieneIntegrantes = Partner::where('responsable_id', $responsableId)
             ->where('id', '<>', $integrante->id)
             ->exists();

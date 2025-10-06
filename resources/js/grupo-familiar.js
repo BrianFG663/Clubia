@@ -172,7 +172,7 @@ window.eliminarIntegrante = function (id) {
         if (result.isConfirmed) {
             console.log(id);
             fetch("/detalles-familiares/eliminar-integrante", {
-                method: "patch",
+                method: "PATCH",
                 credentials: "same-origin",
                 headers: {
                     "Content-Type": "application/json",

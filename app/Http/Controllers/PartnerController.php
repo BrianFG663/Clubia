@@ -22,11 +22,62 @@ class PartnerController extends Controller
     }
 
     public function eliminarIntegrante(Request $request)
-{
-    dd('¡LLEGA AL CONTROLADOR!', $request->all());  // Muestra en respuesta si llega
-    
-    // Resto de tu código...
-}
+    {
+        try {
+            // Log de llegada (ahora sí debería aparecer)
+            Log::info('Llega a eliminarIntegrante', [
+                'url' => $request->fullUrl(),
+                'method' => $request->method(),
+                'body' => $request->all(),  // Debe ser ['id' => 1]
+                'id' => $request->id,
+            ]);
+
+            $integrante = Partner::find($request->id);
+
+            if (!$integrante) {
+                Log::warning('Integrante no encontrado', ['id' => $request->id]);
+                return response()->json(['mensaje' => false, 'error' => 'Integrante no existe']);
+            }
+
+            $responsableId = $integrante->responsable_id;
+
+            $tieneIntegrantes = Partner::where('responsable_id', $responsableId)
+                ->where('id', '<>', $integrante->id)
+                ->exists();
+
+            // Log antes de update
+            Log::info('Actualizando jefe_grupo', [
+                'responsableId' => $responsableId,
+                'tieneIntegrantes' => $tieneIntegrantes ? 'Sí' : 'No'
+            ]);
+
+            Partner::where('id', $responsableId)->update([
+                'jefe_grupo' => $tieneIntegrantes ? 1 : 0
+            ]);
+
+            $integrante->responsable_id = null;
+            $integrante->save();  // Aquí podría fallar (DB constraint)
+
+            Log::info('Eliminación exitosa', ['id' => $integrante->id]);
+
+            return response()->json([
+                'mensaje' => true,
+                'responsable' => $responsableId
+            ]);
+
+        } catch (\Exception $e) {
+            // Captura TODO: DB errors, model issues, etc.
+            Log::error('Error en eliminarIntegrante', [
+                'id' => $request->id ?? 'N/A',
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()  // Stack trace para debug
+            ]);
+            return response()->json([
+                'mensaje' => false,
+                'error' => $e->getMessage()  // Muestra en JS para Swal
+            ], 500);
+        }
+    }
 
 
     public function buscarIntegrante(Request $request)

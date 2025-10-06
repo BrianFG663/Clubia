@@ -198,18 +198,10 @@ window.eliminarIntegrante = function (id) {
                 body: body,
             })
             .then((res) => {
-                console.log('Respuesta Status:', res.status, 'OK:', res.ok);  // Log status
-                if (!res.ok) {
-                    // Si error, lee como TEXT (HTML/JSON) y loguea
-                    return res.text().then(text => {
-                        console.error('Error completo (no JSON):', text.substring(0, 300));  // Log para debug
-                        throw new Error(`Error ${res.status}: ${text.substring(0, 100)}...`);
-                    });
-                }
                 return res.json();
             })
             .then((data) => {
-                console.log('Datos recibidos:', data);  // Log éxito
+
                 if (data.mensaje == true) {
                     Swal.fire({
                         text: "Integrante eliminado del grupo familiar",
@@ -224,22 +216,8 @@ window.eliminarIntegrante = function (id) {
                     setTimeout(() => {
                         detalleFamilia(data.responsable);
                     }, 2000);
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        text: data.mensaje || 'Error desconocido al eliminar.',
-                        confirmButtonText: 'OK'
-                    });
                 }
             })
-            .catch((err) => {
-                console.error('Error en fetch:', err);  // Log catch global
-                Swal.fire({
-                    icon: 'error',
-                    text: 'Error al eliminar integrante. Revisa la consola para detalles o recarga la página.',
-                    confirmButtonText: 'OK'
-                });
-            });
         }
     });
 };

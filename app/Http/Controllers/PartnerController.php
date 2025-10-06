@@ -32,7 +32,7 @@ class PartnerController extends Controller
         ]);
         $integrante = Partner::find($request->id);
 
-        if (! $integrante) {
+        if (!$integrante) {
             return response()->json(['mensaje' => false]);
         }
 

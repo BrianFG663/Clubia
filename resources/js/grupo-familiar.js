@@ -157,23 +157,11 @@ window.detalleFamilia = function (id) {
 };
 
 window.eliminarIntegrante = function (id) {
-    const familiarId = Number(id);  // Fuerza a número entero para evitar issues de tipo
+    const familiarId = Number(id);  
 
-    // Log para debug: verifica token y body antes de enviar
     const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-    console.log('ID a eliminar:', familiarId, 'Tipo:', typeof familiarId);
-    console.log('CSRF Token:', csrfToken ? csrfToken.substring(0, 20) + '...' : 'FALTA TOKEN - RECARGA LA PÁGINA');
-    if (!csrfToken) {
-        Swal.fire({
-            icon: 'error',
-            text: 'Error de seguridad: Recarga la página e inténtalo de nuevo.',
-            confirmButtonText: 'OK'
-        });
-        return;  // Sale si no hay token
-    }
-
     const body = JSON.stringify({ id: familiarId });
-    console.log('Body a enviar:', body);
+
 
     Swal.fire({
         imageWidth: 100,
@@ -193,7 +181,7 @@ window.eliminarIntegrante = function (id) {
                 headers: {
                     "Content-Type": "application/json",
                     "X-CSRF-TOKEN": csrfToken,
-                    "Accept": "application/json"  // Fuerza respuesta JSON en errores
+                    "Accept": "application/json"  
                 },
                 body: body,
             })

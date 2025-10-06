@@ -56,6 +56,9 @@ class SaleController extends Controller
                 'total' => $request->total,
                 'fecha'=> Carbon::today()->toDateString()
             ]);
+
+            $cajaHoy->total += $request->total;
+            $cajaHoy->save();
         }else{
 
             Log::info('Fecha que se va a guardar: ' . Carbon::today()->toDateString());

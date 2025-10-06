@@ -22,38 +22,11 @@ class PartnerController extends Controller
     }
 
     public function eliminarIntegrante(Request $request)
-    {
-
-        Log::info('Llega a eliminarIntegrante', [
-            'url' => $request->fullUrl(),
-            'method' => $request->method(),
-            'body' => $request->all(),  // Debe mostrar ['id' => X]
-            'headers' => $request->headers->all(),
-        ]);
-        $integrante = Partner::find($request->id);
-
-        if (!$integrante) {
-            return response()->json(['mensaje' => false]);
-        }
-
-        $responsableId = $integrante->responsable_id;
-
-        $tieneIntegrantes = Partner::where('responsable_id', $responsableId)
-            ->where('id', '<>', $integrante->id)
-            ->exists();
-
-        Partner::where('id', $responsableId)->update([
-            'jefe_grupo' => $tieneIntegrantes ? 1 : 0
-        ]);
-
-        $integrante->responsable_id = null;
-        $integrante->save();
-
-        return response()->json([
-            'mensaje' => true,
-            'responsable' => $responsableId
-        ]);
-    }
+{
+    dd('¡LLEGA AL CONTROLADOR!', $request->all());  // Muestra en respuesta si llega
+    
+    // Resto de tu código...
+}
 
 
     public function buscarIntegrante(Request $request)

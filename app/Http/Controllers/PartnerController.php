@@ -22,19 +22,21 @@ class PartnerController extends Controller
     }
 
     public function eliminarIntegrante(Request $request)
-{
-    try {
-        $request->validate([
-            'id' => 'required|integer|exists:partners,id',
+    {
+
+        Log::info('Llega a eliminarIntegrante', [
+            'url' => $request->fullUrl(),
+            'method' => $request->method(),
+            'body' => $request->all(),  // Debe mostrar ['id' => X]
+            'headers' => $request->headers->all(),
         ]);
+        $integrante = Partner::find($request->id);
 
-        $integrante = Partner::findOrFail($request->id);
-        $responsableId = $integrante->responsable_id;
-
-        if (! $responsableId) {
-            return response()->json(['mensaje' => false, 'error' => 'Responsable no definido'], 400);
+        if (! $integrante) {
+            return response()->json(['mensaje' => false]);
         }
 
+        $responsableId = $integrante->responsable_id;
 
         $tieneIntegrantes = Partner::where('responsable_id', $responsableId)
             ->where('id', '<>', $integrante->id)
@@ -51,11 +53,7 @@ class PartnerController extends Controller
             'mensaje' => true,
             'responsable' => $responsableId
         ]);
-    } catch (\Throwable $e) {
-        Log::error('Error al eliminar integrante', ['error' => $e->getMessage()]);
-        return response()->json(['mensaje' => false, 'error' => 'Error interno'], 500);
     }
-}
 
 
     public function buscarIntegrante(Request $request)

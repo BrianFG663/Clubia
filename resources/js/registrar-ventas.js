@@ -42,9 +42,10 @@ input.addEventListener("input", function () {
                         precio.className =
                             "precio-articulo";
                         precio.textContent =
-                            producto.precio !== undefined
-                                ? `$${parseFloat(producto.precio)}`
-                                : "Precio no disponible";
+                        producto.precio !== undefined
+                            ? `$${parseFloat(producto.precio).toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+                            : "Precio no disponible";
+
 
                         info.appendChild(titulo);
                         info.appendChild(descripcion);
@@ -151,41 +152,59 @@ function renderizarCarrito() {
     }
 
     productosCarrito.forEach((producto, index) => {
-        console.log(producto);
-        totalCalculado += producto.precio * producto.cantidad;
-        contador++;
-        const li = document.createElement("div");
-        li.innerHTML = `
-            <div class="articulos">
-                <h3 class="titulo-articulo">
-                    ${producto.nombre}
-                </h3>
-                <p class="descripcion-articulo">
-                    ${producto.descripcion || "Sin descripción"}
-                </p>
-                <div class="acciones-articulo">
-                    <span class="precio-articulo font-bold text-primary-400">
-                        $${producto.precio}
-                    </span>
-                    <div class="botones-articulo flex items-center gap-2">
-                        <div class="precio">TOTAL: $${(parseFloat(producto.precio) * producto.cantidad).toFixed(2)}</div>
-                        <button class="btn-quitar" data-id="${producto.id}">−</button>
-                        <span class="cantidad-articulo">
-                            ${producto.cantidad}
-                        </span>
-                        <button class="btn-agregar" data-id="${producto.id}">+</button>
-                        <button class="btn-eliminar" data-id="${producto.id}"><i class="fas fa-trash"></i></button>                   
-                    </div>
-                </div>
-            </div>
+    console.log(producto);
+    totalCalculado += producto.precio * producto.cantidad;
+    contador++;
 
-        `;
-        carrito.appendChild(li);
+    // Formateo del precio unitario
+    const precioFormateado = parseFloat(producto.precio).toLocaleString('es-AR', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
     });
 
-    // Mostrar el total en pantalla
+    // Formateo del total por cantidad
+    const totalProducto = (parseFloat(producto.precio) * producto.cantidad).toLocaleString('es-AR', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+    });
+
+    const li = document.createElement("div");
+    li.innerHTML = `
+        <div class="articulos">
+            <h3 class="titulo-articulo">
+                ${producto.nombre}
+            </h3>
+            <p class="descripcion-articulo">
+                ${producto.descripcion || "Sin descripción"}
+            </p>
+            <div class="acciones-articulo">
+                <span class="precio-articulo font-bold text-primary-400">
+                    $${precioFormateado}
+                </span>
+                <div class="botones-articulo flex items-center gap-2">
+                    <div class="precio">TOTAL: $${totalProducto}</div>
+                    <button class="btn-quitar" data-id="${producto.id}">−</button>
+                    <span class="cantidad-articulo">
+                        ${producto.cantidad}
+                    </span>
+                    <button class="btn-agregar" data-id="${producto.id}">+</button>
+                    <button class="btn-eliminar" data-id="${producto.id}"><i class="fas fa-trash"></i></button>                   
+                </div>
+            </div>
+        </div>
+    `;
+    carrito.appendChild(li);
+});
+
+
     const totalDiv = document.getElementById("total-carrito");
-    totalDiv.innerHTML = `<span>TOTAL: $${totalCalculado.toFixed(2)}</span>`;
+
+    const totalFormateado = totalCalculado.toLocaleString('es-AR', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+    });
+
+    totalDiv.innerHTML = `<span>TOTAL: $${totalFormateado}</span>`;
 
     // Actualizar la variable total
     total = totalCalculado;

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CashRecord;
+use App\Models\CashRecordDetail;
 use App\Models\Invoice;
 use App\Models\Partner;
 use App\Models\Product;
@@ -32,6 +34,44 @@ class SaleController extends Controller
 
         $fecha = Carbon::now()->format('m-Y');
         $user = User::with('institution')->find(Auth::id());
+
+        $caja = CashRecord::where('institution_id', $request->institucion)->first();
+        
+        if(!$caja){
+            
+            Log::info('Fecha que se va a guardar: ' . Carbon::today()->toDateString());
+
+
+            $cajaHoy = CashRecord::create([
+                'institution_id_id' => $request->institucion,
+                'total' => 0,
+                'fecha'=> Carbon::today()->toDateString()
+            ]);
+
+            CashRecordDetail::create([
+                'user_id' => $user->id,
+                'cash_record_id' => $cajaHoy->id,
+                'descripcion' => 'Venta',
+                'tipo'=> 'entrada',
+                'total' => $request->total,
+                'fecha'=> Carbon::today()->toDateString()
+            ]);
+        }else{
+
+            Log::info('Fecha que se va a guardar: ' . Carbon::today()->toDateString());
+
+            CashRecordDetail::create([
+                'user_id' => $user->id,
+                'cash_record_id' => $caja->id,
+                'descripcion' => 'Venta',
+                'tipo'=> 'entrada',
+                'total' => $request->total,
+                'fecha'=> Carbon::today()->toDateString()
+            ]);
+
+            $caja->total += $request->total;
+            $caja->save();
+        }
 
 
         $venta = Sale::create([

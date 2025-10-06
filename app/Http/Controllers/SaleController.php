@@ -43,7 +43,7 @@ class SaleController extends Controller
 
 
             $cajaHoy = CashRecord::create([
-                'institution_id_id' => $request->institucion,
+                'institution_id' => $request->institucion,
                 'total' => 0,
                 'fecha'=> Carbon::today()->toDateString()
             ]);

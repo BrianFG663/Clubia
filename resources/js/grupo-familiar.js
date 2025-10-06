@@ -157,7 +157,23 @@ window.detalleFamilia = function (id) {
 };
 
 window.eliminarIntegrante = function (id) {
-    const familiarId = id;
+    const familiarId = Number(id);  // Fuerza a número entero para evitar issues de tipo
+
+    // Log para debug: verifica token y body antes de enviar
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+    console.log('ID a eliminar:', familiarId, 'Tipo:', typeof familiarId);
+    console.log('CSRF Token:', csrfToken ? csrfToken.substring(0, 20) + '...' : 'FALTA TOKEN - RECARGA LA PÁGINA');
+    if (!csrfToken) {
+        Swal.fire({
+            icon: 'error',
+            text: 'Error de seguridad: Recarga la página e inténtalo de nuevo.',
+            confirmButtonText: 'OK'
+        });
+        return;  // Sale si no hay token
+    }
+
+    const body = JSON.stringify({ id: familiarId });
+    console.log('Body a enviar:', body);
 
     Swal.fire({
         imageWidth: 100,
@@ -170,36 +186,60 @@ window.eliminarIntegrante = function (id) {
         cancelButtonColor: "#ffd087",
     }).then((result) => {
         if (result.isConfirmed) {
-            console.log(id);
+            console.log('Iniciando fetch para eliminar ID:', familiarId);
             fetch("/detalles-familiares/eliminar-integrante", {
                 method: "PATCH",
                 credentials: "same-origin",
                 headers: {
                     "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": document
-                        .querySelector('meta[name="csrf-token"]')
-                        .getAttribute("content"),
+                    "X-CSRF-TOKEN": csrfToken,
+                    "Accept": "application/json"  // Fuerza respuesta JSON en errores
                 },
-                body: JSON.stringify({ id: familiarId }),
+                body: body,
             })
-                .then((res) => res.json())
-                .then((data) => {
-                    if (data.mensaje == true) {
-                        Swal.fire({
-                            text: "Integrante eliminado del grupo familiar",
-                            showConfirmButton: false,
-                            timer: 2000,
-                            backdrop: false,
-                            allowOutsideClick: false,
-                            imageWidth: 100,
-                            imageHeight: 100,
-                            imageUrl: "/images/alertas/check.png",
-                        });
-                        setTimeout(() => {
-                            detalleFamilia(data.responsable);
-                        }, 2000);
-                    }
+            .then((res) => {
+                console.log('Respuesta Status:', res.status, 'OK:', res.ok);  // Log status
+                if (!res.ok) {
+                    // Si error, lee como TEXT (HTML/JSON) y loguea
+                    return res.text().then(text => {
+                        console.error('Error completo (no JSON):', text.substring(0, 300));  // Log para debug
+                        throw new Error(`Error ${res.status}: ${text.substring(0, 100)}...`);
+                    });
+                }
+                return res.json();
+            })
+            .then((data) => {
+                console.log('Datos recibidos:', data);  // Log éxito
+                if (data.mensaje == true) {
+                    Swal.fire({
+                        text: "Integrante eliminado del grupo familiar",
+                        showConfirmButton: false,
+                        timer: 2000,
+                        backdrop: false,
+                        allowOutsideClick: false,
+                        imageWidth: 100,
+                        imageHeight: 100,
+                        imageUrl: "/images/alertas/check.png",
+                    });
+                    setTimeout(() => {
+                        detalleFamilia(data.responsable);
+                    }, 2000);
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        text: data.mensaje || 'Error desconocido al eliminar.',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            })
+            .catch((err) => {
+                console.error('Error en fetch:', err);  // Log catch global
+                Swal.fire({
+                    icon: 'error',
+                    text: 'Error al eliminar integrante. Revisa la consola para detalles o recarga la página.',
+                    confirmButtonText: 'OK'
                 });
+            });
         }
     });
 };

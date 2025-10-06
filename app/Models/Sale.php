@@ -15,6 +15,7 @@ class Sale extends Model
     protected $fillable = [
         'user_id',
         'total',
+        'institution_id'
     ];
 
     public function user(): BelongsTo

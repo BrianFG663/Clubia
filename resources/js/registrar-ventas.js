@@ -235,6 +235,11 @@ function renderizarCarrito() {
 // Evento para el botón de enviar carrito
 
 enviarBtn.addEventListener("click", function () {
+
+    const institucion = document.getElementById('institucion').value
+
+    console.log(institucion)
+
     if (productosCarrito.length === 0) {
         Swal.fire({
             title: "Carrito de venta vacio",
@@ -244,6 +249,18 @@ enviarBtn.addEventListener("click", function () {
             imageWidth: 100,
             imageHeight: 100,
             imageUrl: "/images/html/carro-vacio.png",
+        });
+        return;
+    }
+
+    if (institucion == false) {
+        Swal.fire({
+            text: "Seleccione una institucion para continuar.",
+            showConfirmButton: true,
+            confirmButtonText: "ACEPTAR",
+            imageWidth: 100,
+            imageHeight: 100,
+            imageUrl: "/images/alertas/advertencia.png",
         });
         return;
     }
@@ -271,6 +288,7 @@ enviarBtn.addEventListener("click", function () {
                 body: JSON.stringify({
                     total: total,
                     productos: productosCarrito,
+                    institucion: institucion
                 }),
             })
                 .then((response) => {

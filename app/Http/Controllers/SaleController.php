@@ -36,7 +36,8 @@ class SaleController extends Controller
 
         $venta = Sale::create([
             'user_id' => $user->id,
-            'total' => $request->total
+            'total' => $request->total,
+            'institution_id'=> $request->institucion
         ]);
 
         $factura = Invoice::create([

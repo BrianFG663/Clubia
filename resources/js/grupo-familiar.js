@@ -174,7 +174,6 @@ window.eliminarIntegrante = function (id) {
         cancelButtonColor: "#ffd087",
     }).then((result) => {
         if (result.isConfirmed) {
-            console.log('Iniciando fetch para eliminar ID:', familiarId);
             fetch("/detalles-familiares/eliminar-integrante", {
                 method: "PATCH",
                 credentials: "same-origin",

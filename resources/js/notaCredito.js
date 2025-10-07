@@ -366,8 +366,6 @@ function facturasProveedor(proveedorid) {
             document.getElementById('facturas-pagas').appendChild(crearMensajeVacio("Este proveedor no tiene facturas"));
             document.getElementById('facturas-no-pagas').innerHTML = '';
             document.getElementById('facturas-no-pagas').appendChild(crearMensajeVacio("Este proveedor no tiene facturas"))
-
-
         }
     })
 }

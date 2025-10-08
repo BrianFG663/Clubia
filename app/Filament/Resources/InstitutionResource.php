@@ -45,22 +45,45 @@ class InstitutionResource extends Resource
 
         return $form
             ->schema([
-                Forms\Components\TextInput::make('nombre')->required()
+                Forms\Components\TextInput::make('nombre')
+                    ->required()
                     ->afterStateHydrated(function (TextInput $component, $state) {
                         $component->state(ucwords(strtolower($state)));
                     })
-                    ->dehydrateStateUsing(fn($state) => ucwords(strtolower($state))),
-                Forms\Components\TextInput::make('ciudad')->required()
-                    ->afterStateHydrated(function (TextInput $component, $state) {
-                        $component->state(ucwords(strtolower($state)));
-                    })
-                    ->dehydrateStateUsing(fn($state) => ucwords(strtolower($state))),
-                Forms\Components\TextInput::make('direccion')->required()
-                    ->afterStateHydrated(function (TextInput $component, $state) {
-                        $component->state(ucwords(strtolower($state)));
-                    })
+                    ->dehydrateStateUsing(fn($state) => ucwords(strtolower($state)))
+                    ->rule(function () {
+                        return function (string $attribute, $value, \Closure $fail) {
+                            if (!preg_match('/^[a-zA-Z0-9\s]+$/u', $value)) {
+                                $fail('El nombre no debe contener caracteres especiales.');
+                            }
+                        };
+                    }),
+
+                Forms\Components\TextInput::make('ciudad')
+                    ->required()
+                    ->afterStateHydrated(fn($component, $state) => $component->state(ucwords(strtolower($state))))
+                    ->dehydrateStateUsing(fn($state) => ucwords(strtolower($state)))
+                    ->rule(function () {
+                        return function (string $attribute, $value, \Closure $fail) {
+                            if (!preg_match('/^[a-zA-Z0-9\s]+$/u', $value)) {
+                                $fail('La ciudad no debe contener caracteres especiales.');
+                            }
+                        };
+                    }),
+
+                Forms\Components\TextInput::make('direccion')
+                    ->required()
                     ->columnSpan(2)
-                    ->dehydrateStateUsing(fn($state) => ucwords(strtolower($state))),
+                    ->afterStateHydrated(fn($component, $state) => $component->state(ucwords(strtolower($state))))
+                    ->dehydrateStateUsing(fn($state) => ucwords(strtolower($state)))
+                    ->rule(function () {
+                        return function (string $attribute, $value, \Closure $fail) {
+                            if (!preg_match('/^[a-zA-Z0-9\s]+$/u', $value)) {
+                                $fail('La direccion no debe contener caracteres especiales.');
+                            }
+                        };
+                    }),
+
                 Fieldset::make('Teléfono')
                     ->schema([
                         Select::make('telefono_marcacion')

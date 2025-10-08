@@ -64,18 +64,23 @@ class OrderResource extends Resource
                                     ->numeric()
                                     ->prefix('$')
                                     ->required()
-                                    ->minValue(0)
                                     ->columnSpan('full')
                                     ->rule(function ($get) {
                                         $totalCalculado = collect($get('orderDetails') ?? [])
                                             ->sum(fn($item) => ($item['cantidad'] ?? 0) * ($item['precio_unitario'] ?? 0));
 
                                         return function ($attribute, $value, $fail) use ($totalCalculado) {
+                                            if ($value < 0) {
+                                                $fail("El total no puede negativo.");
+                                                return;
+                                            }
+
                                             if ($value != $totalCalculado) {
                                                 $fail("El total ingresado ($value) no coincide con la suma de los detalles ($totalCalculado).");
                                             }
                                         };
                                     }),
+
                             ])
                             ->columns(1),
 

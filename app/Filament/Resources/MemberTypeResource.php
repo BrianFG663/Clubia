@@ -19,7 +19,7 @@ class MemberTypeResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-adjustments-horizontal';
     protected static ?string $navigationLabel = 'Tipos de socio';
-        protected static ?string $navigationGroup = '🧍Socios y Actividades';
+    protected static ?string $navigationGroup = '🧍Socios y Actividades';
     protected static ?int $navigationSort = 5;
 
     public static function form(Form $form): Form
@@ -30,12 +30,15 @@ class MemberTypeResource extends Resource
                     ->rule(function (callable $get) {
                         return function (string $attribute, $value, \Closure $fail) use ($get) {
                             $idActual = $get('id');
-                            $actividadExistente = \App\Models\Activity::where('nombre', $value)
+                            $institucionId = $get('institution_id');
+
+                            $existe = \App\Models\MemberType::where('nombre', $value)
+                                ->where('institution_id', $institucionId)
                                 ->when($idActual, fn($query) => $query->where('id', '!=', $idActual))
                                 ->exists();
 
-                            if ($actividadExistente) {
-                                $fail('Ya hay una actividad creada con este nombre.');
+                            if ($existe) {
+                                $fail('Ya existe un tipo de socio con ese nombre en esta institución.');
                             }
                         };
                     }),
@@ -95,7 +98,7 @@ class MemberTypeResource extends Resource
                         ->label('Eliminar seleccionados')
                         ->icon('heroicon-o-trash'),
                 ])
-                ->label('Acciones en grupo'),
+                    ->label('Acciones en grupo'),
             ]);
     }
 

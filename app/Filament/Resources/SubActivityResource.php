@@ -57,7 +57,14 @@ class SubActivityResource extends Resource
                 Forms\Components\TextInput::make('monto')
                     ->required()
                     ->numeric()
-                    ->maxValue(2147483647),
+                    ->maxValue(2147483647)
+                    ->rule(function () {
+                        return function (string $attribute, $value, \Closure $fail) {
+                            if ($value < 0) {
+                                $fail('El precio del arancel no puede ser negativo.');
+                            }
+                        };
+                    }),
 
                 Forms\Components\Select::make('activity_id')
                     ->label('Seleccione Actividad')

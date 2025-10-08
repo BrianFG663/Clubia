@@ -42,11 +42,20 @@ class UserResource extends Resource implements HasShieldPermissions
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('nombre')->required()
+                Forms\Components\TextInput::make('nombre')
+                    ->required()
                     ->afterStateHydrated(function (TextInput $component, $state) {
                         $component->state(ucfirst(strtolower($state)));
                     })
-                    ->dehydrateStateUsing(fn($state) => ucfirst(strtolower($state))),
+                    ->dehydrateStateUsing(fn($state) => ucfirst(strtolower($state)))
+                    ->rule(function () {
+                        return function (string $attribute, $value, \Closure $fail) {
+                            if (!preg_match('/^[\p{L}\s]+$/u', $value)) {
+                                $fail('No se aceptan caracteres o numeros en este campo');
+                            }
+                        };
+                    }),
+
 
                 Forms\Components\TextInput::make('apellido')->required()
                     ->afterStateHydrated(function (TextInput $component, $state) {
@@ -69,7 +78,7 @@ class UserResource extends Resource implements HasShieldPermissions
 
                             if (!str_contains($value, '@')) {
                                 $fail('El correo debe ser valido.');
-                                
+
                                 return;
                             }
 

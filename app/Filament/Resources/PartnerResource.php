@@ -139,18 +139,32 @@ class PartnerResource extends Resource
 
 
 
-            Forms\Components\TextInput::make('email')->required()
+            Forms\Components\TextInput::make('email')
+                ->required()
                 ->rule(function (callable $get) {
                     return function ($attribute, $value, \Closure $fail) use ($get) {
                         $idActual = $get('id');
+
+                        if (trim($value) === '') {
+                            $fail('El campo de correo electrónico es obligatorio.');
+                            return;
+                        }
+
+                        if (!str_contains($value, '@')) {
+                            $fail('El correo electrónico debe contener el símbolo "@".');
+                            return;
+                        }
+
                         $emailExistente = \App\Models\Partner::where('email', $value)
                             ->when($idActual, fn($query) => $query->where('id', '!=', $idActual))
                             ->exists();
+
                         if ($emailExistente) {
                             $fail('Correo electrónico ya vinculado con otro socio.');
                         }
                     };
                 }),
+
 
             Forms\Components\DatePicker::make('fecha_nacimiento')
                 ->label('Fecha de nacimiento')

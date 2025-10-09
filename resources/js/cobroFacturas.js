@@ -4,10 +4,7 @@ window.buscarSocio = function () {
     if (valor === '') {
         window.location.reload();
         return;
-
     } 
-    console.log(valor);
-
     fetch('/buscar/socio', {
     method: 'POST',
     credentials: 'same-origin',
@@ -55,7 +52,6 @@ window.buscarSocio = function () {
                 </td>
             </tr>
         `).join('');
-
         cuerpoTabla.innerHTML = filasHTML;
     })
     .catch(error => {
@@ -65,7 +61,7 @@ window.buscarSocio = function () {
 
 
 window.verFacturasImpagas = function(partnerId) {
-    fetch(`/invoices/impagas/${partnerId}`, {
+    fetch(`/facturas/impagas/${partnerId}`, {
         method: 'GET',
         credentials: 'same-origin',
         headers: {
@@ -75,7 +71,8 @@ window.verFacturasImpagas = function(partnerId) {
     })
     .then(res => res.json())
     .then(data => {
-        console.log(data.facturasFamiliares);
+        console.log('TITULAR' ,data.facturasTitular);
+        console.log('FAMILIAR ',data.facturasFamiliares);
 
         if ((!data.facturasTitular || data.facturasTitular.length === 0) &&
             (!data.facturasFamiliares || data.facturasFamiliares.length === 0)) {
@@ -83,7 +80,6 @@ window.verFacturasImpagas = function(partnerId) {
             return;
         }
 
-        // Función para generar filas de facturas
         const generarFilas = (facturas, tipo) => facturas.map(f => {
             return `
                 <tr>
@@ -163,115 +159,152 @@ window.verFacturasImpagas = function(partnerId) {
                 <div class="total-text">
                     <strong>Total a pagar: $<span id="total-pagar">0.00</span></strong>
                 </div>
+                <div class="pago-select">
+                    <label for="metodo-pago" style="margin-right: 0.5rem;">Método de pago:</label>
+                    <select id="metodo-pago" class="select-pago">
+                        <option value="">Cargando métodos...</option>
+                    </select>
+                </div>
                 <button id="btn-pagar-facturas" class="btn-pagar">Cobrar</button>
             </div>`;
 
+
         abrirModal("detalle-factura", "overlay-factura", contenidoHTML);
 
-        // Checkboxes y total
-            const checkboxes = document.querySelectorAll('.check-factura');
-            const totalSpan = document.getElementById('total-pagar');
 
-            checkboxes.forEach(chk => {
-                chk.addEventListener('change', () => {
-                    const total = Array.from(checkboxes)
+        const selectPago = document.getElementById('metodo-pago');
+        if (data.paymentTypes && data.paymentTypes.length > 0) {
+            selectPago.innerHTML = '<option value="">Seleccionar...</option>';
+            data.paymentTypes.forEach(tipo => {
+                const opcion = document.createElement('option');
+                opcion.value = tipo.id;
+                opcion.textContent = tipo.nombre;
+                selectPago.appendChild(opcion);
+            });
+        } else {
+            selectPago.innerHTML = '<option value="">Sin métodos disponibles</option>';
+        }
+
+      // Checkboxes y total
+            const casillas = document.querySelectorAll('.check-factura');   
+            const totalAPagar = document.getElementById('total-pagar');    
+            casillas.forEach(casilla => {
+                casilla.addEventListener('change', () => {
+                    const total = Array.from(casillas)
                         .filter(c => c.checked)
-                        .reduce((sum, c) => sum + parseFloat(c.dataset.monto), 0);
-                    totalSpan.textContent = ' ' + new Intl.NumberFormat('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(total);
+                        .reduce((suma, c) => suma + parseFloat(c.dataset.monto), 0);
+                    totalAPagar.textContent = total.toFixed(2);
                 });
             });
 
+            // Botón seleccionar/deseleccionar todos
+            const botonAlternar = document.getElementById("btn-toggle");
+            botonAlternar.addEventListener("click", () => {
+                const todasSeleccionadas = Array.from(casillas).every(c => c.checked);
+                casillas.forEach(c => c.checked = !todasSeleccionadas);
 
-        // Botón seleccionar/deseleccionar todos
-        const btnToggle = document.getElementById("btn-toggle");
-        btnToggle.addEventListener("click", () => {
-            const allChecked = Array.from(checkboxes).every(cb => cb.checked);
-            checkboxes.forEach(cb => cb.checked = !allChecked);
+                // Actualizar total
+                const total = Array.from(casillas)
+                    .filter(c => c.checked)
+                    .reduce((suma, c) => suma + parseFloat(c.dataset.monto), 0);
+                totalAPagar.textContent = total.toFixed(2);
 
-            // Actualizar total
-            const total = Array.from(checkboxes)
-                .filter(c => c.checked)
-                .reduce((sum, c) => sum + parseFloat(c.dataset.monto), 0);
-            totalSpan.textContent = ' ' + new Intl.NumberFormat('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(total);
+                botonAlternar.textContent = todasSeleccionadas ? "Seleccionar todas" : "Deseleccionar todas";
+            });
 
 
-            btnToggle.textContent = allChecked ? "Seleccionar todos" : "Deseleccionar todos";
-        });
+       // Botón cobrar con SweetAlert
+            const btnPagar = document.getElementById("btn-pagar-facturas");
+            btnPagar.addEventListener("click", () => {
+                const todasLasFacturas = document.querySelectorAll('.check-factura');
+                const facturasSeleccionadas = [];
 
-        // Botón cobrar con SweetAlert
-        const btnPagar = document.getElementById("btn-pagar-facturas");
-        btnPagar.addEventListener("click", () => {
-            const seleccionadas = Array.from(document.querySelectorAll('.check-factura'))
-                .filter(cb => cb.checked)
-                .map(cb => cb.dataset.id);
-
-            console.log("Facturas seleccionadas para pagar:", seleccionadas);
-
-            if (seleccionadas.length === 0) {
-                Swal.fire({
-                    text: "Debe seleccionar al menos una factura.",
-                    icon: "warning",
-                    confirmButtonText: "OK"
+                todasLasFacturas.forEach(factura => {
+                    if (factura.checked) {
+                        facturasSeleccionadas.push(factura.dataset.id);
+                    }
                 });
-                return;
-            }
 
-            Swal.fire({
-                imageUrl: "/images/alertas/advertencia.png",
-                imageWidth: 100,
-                imageHeight: 100,
-                text: "¿Desea cobrar las facturas seleccionadas?",
-                cancelButtonText: "CANCELAR",
-                confirmButtonText: "CONFIRMAR",
-                showCancelButton: true
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    fetch('/invoices/pagar', {
-                        method: 'PATCH',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                        },
-                        body: JSON.stringify({ facturas: seleccionadas })
-                    })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.mensaje === true) {
-                            Swal.fire({
-                                text: "Facturas pagadas correctamente",
-                                showConfirmButton: false,
-                                timer: 2000,
-                                backdrop: false,
-                                allowOutsideClick: false,
-                                imageWidth: 100,
-                                imageHeight: 100,
-                                imageUrl: "/images/alertas/check.png",
-                            });
+                console.log("Facturas seleccionadas para pagar:", facturasSeleccionadas);
 
-                            setTimeout(() => {
-                                cerrarModal("detalle-factura", "overlay-factura");
-                                location.reload(); 
-                            }, 2000);
-                        } else {
+                if (facturasSeleccionadas.length === 0) {
+                    Swal.fire({
+                        text: "Debe seleccionar al menos una factura.",
+                        icon: "warning",
+                        confirmButtonText: "OK"
+                    });
+                    return;
+                }
+
+                const metodoPago = document.getElementById('metodo-pago').value;
+                if (!metodoPago) {
+                    Swal.fire({
+                        text: "Debe seleccionar un método de pago.",
+                        icon: "warning",
+                        confirmButtonText: "OK"
+                    });
+                    return;
+                }
+
+                Swal.fire({
+                    imageUrl: "/images/alertas/advertencia.png",
+                    imageWidth: 100,
+                    imageHeight: 100,
+                    text: "¿Desea cobrar las facturas seleccionadas?",
+                    cancelButtonText: "CANCELAR",
+                    confirmButtonText: "CONFIRMAR",
+                    showCancelButton: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        fetch('/pagos/pagar-facturas', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                            },
+                            body: JSON.stringify({
+                                facturas: facturasSeleccionadas,
+                                payment_type_id: metodoPago,
+                                partner_id: partnerId
+                            })
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.mensaje === true) {
+                                Swal.fire({
+                                    text: "Facturas pagadas correctamente",
+                                    showConfirmButton: false,
+                                    timer: 2000,
+                                    backdrop: false,
+                                    allowOutsideClick: false,
+                                    imageWidth: 100,
+                                    imageHeight: 100,
+                                    imageUrl: "/images/alertas/check.png",
+                                });
+
+                                setTimeout(() => {
+                                    cerrarModal("detalle-factura", "overlay-factura");
+                                    location.reload(); 
+                                }, 2000);
+                            } else {
+                                Swal.fire({
+                                    text: "No se pudieron pagar las facturas",
+                                    icon: "error",
+                                    confirmButtonText: "OK"
+                                });
+                            }
+                        })
+                        .catch(err => {
+                            console.error(err);
                             Swal.fire({
-                                text: "No se pudieron pagar las facturas",
+                                text: "Error al procesar el pago",
                                 icon: "error",
                                 confirmButtonText: "OK"
                             });
-                        }
-                    })
-                    .catch(err => {
-                        console.error(err);
-                        Swal.fire({
-                            text: "Error al procesar el pago",
-                            icon: "error",
-                            confirmButtonText: "OK"
                         });
-                    });
-                }
+                    }
+                });
             });
-        });
-
     })
     .catch(err => {
         console.error(err);
@@ -281,7 +314,7 @@ window.verFacturasImpagas = function(partnerId) {
 
 
 window.verFacturasPagas = function(partnerId) {
-    fetch(`/invoices/pagas/${partnerId}`, {
+    fetch(`/facturas/pagas/${partnerId}`, {
         method: 'GET',
         credentials: 'same-origin',
         headers: {
@@ -361,7 +394,6 @@ window.verFacturasPagas = function(partnerId) {
                 </div>
             `;
         }
-
         abrirModal("detalle-factura", "overlay-factura", contenidoHTML);
     })
     .catch(err => {
@@ -378,10 +410,8 @@ function abrirModal(modalId, overlayId, contenidoHTML) {
     if (contenidoHTML) {
         modal.querySelector("#contenedor-informacion").innerHTML = contenidoHTML;
     }
-
     modal.classList.add("mostrar");
     overlay.classList.add("mostrar");
-
     const cerrarBtn = modal.querySelector(".cerrar-factura");
     cerrarBtn?.addEventListener("click", () => cerrarModal(modalId, overlayId));
     overlay?.addEventListener("click", () => cerrarModal(modalId, overlayId));
@@ -390,7 +420,6 @@ function abrirModal(modalId, overlayId, contenidoHTML) {
 function cerrarModal(modalId, overlayId) {
     const modal = document.getElementById(modalId);
     const overlay = document.getElementById(overlayId);
-
     modal.classList.remove("mostrar");
     overlay.classList.remove("mostrar");
     modal.querySelector("#contenedor-informacion").innerHTML = "";

@@ -5,6 +5,10 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\SupplierResource\Pages;
 use App\Models\Supplier;
 use Filament\Forms;
+use Filament\Forms\Components\Fieldset;
+use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -14,14 +18,22 @@ class SupplierResource extends Resource
 {
     protected static ?string $model = Supplier::class;
 
+    public static function getPluralModelLabel(): string{
+        return 'Proveedores';
+    }
+
     protected static ?string $navigationIcon = 'heroicon-o-truck';
     protected static ?string $navigationLabel = 'Proveedores';
-
-    protected static ?string $navigationGroup = '📦Ordenes de compra';
+    protected static ?string $navigationGroup = '📦Inventario y Compras';
     protected static ?int $navigationSort = 10;
 
     public static function form(Form $form): Form
     {
+
+        $path = public_path('json/marcacion.json');
+        $marcacionesRaw = json_decode(file_get_contents($path), true);
+        $marcaciones = array_flip($marcacionesRaw);
+
         return $form
             ->schema([
                 Forms\Components\TextInput::make('nombre')
@@ -32,7 +44,6 @@ class SupplierResource extends Resource
                         $component->state(ucwords(strtolower($state)));
                     })
                     ->dehydrateStateUsing(fn($state) => ucwords(strtolower($state)))
-                    ->rule('regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/')
                     ->rule(function (callable $get) {
                         return function (string $attribute, $value, \Closure $fail) use ($get) {
                             $idActual = $get('id');
@@ -46,43 +57,31 @@ class SupplierResource extends Resource
                         };
                     }),
 
-                Forms\Components\TextInput::make('telefono')
-                ->label('Teléfono')
-                ->required()
-                ->maxLength(20)
-                ->tel()
-                ->rule('regex:/^\+?[0-9\s\-]{7,20}$/')  
-                ->rule(function (callable $get) {         
-                    return function (string $attribute, $value, \Closure $fail) use ($get) {
-                        $idActual = $get('id');
-                        $existe = Supplier::where('telefono', $value)
-                            ->when($idActual, fn($query) => $query->where('id', '!=', $idActual))
-                            ->exists();
-
-                        if ($existe) {
-                            $fail('El teléfono ya está registrado para otro proveedor.');
-                        }
-                    };
-                }),
-
                 Forms\Components\TextInput::make('cuit')
-                ->label('Cuit')
-                ->required()
-                ->maxLength(20)
-                ->tel()
-                ->rule('regex:/^\+?[0-9\s\-]{7,20}$/')  
-                ->rule(function (callable $get) {         
-                    return function (string $attribute, $value, \Closure $fail) use ($get) {
-                        $idActual = $get('id');
-                        $existe = Supplier::where('cuit', $value)
-                            ->when($idActual, fn($query) => $query->where('id', '!=', $idActual))
-                            ->exists();
+                    ->label('Cuit/Cuil')
+                    ->required()
+                    ->maxLength(14)
+                    ->rule(function (callable $get) {
+                        return function (string $attribute, mixed $value, \Closure $fail) use ($get) {
+                            // Validación de formato
+                            if (!preg_match('/^\d{2}-\d{8}-\d{1}$/', $value)) {
+                                $fail('El CUIT debe tener el formato XX-XXXXXXXX-X (11 dígitos con guiones).');
+                                return;
+                            }
 
-                        if ($existe) {
-                            $fail('El Cuit ya está registrado para otro proveedor.');
-                        }
-                    };
-                }),
+                            // Validación de unicidad
+                            $idActual = $get('id');
+                            $existe = \App\Models\Supplier::where('cuit', $value)
+                                ->when($idActual, fn($query) => $query->where('id', '!=', $idActual))
+                                ->exists();
+
+                            if ($existe) {
+                                $fail('El CUIT ya está registrado para otro proveedor.');
+                            }
+                        };
+                    }),
+
+
 
                 Forms\Components\TextInput::make('direccion')
                     ->label('Dirección')
@@ -94,13 +93,54 @@ class SupplierResource extends Resource
                     ->dehydrateStateUsing(fn($state) => ucwords(strtolower($state))),
 
 
-            Forms\Components\Select::make('condicion_id')
-                ->label('Condición IVA')
-                ->relationship('condition', 'nombre') 
-                ->required()
-                ->searchable()
-                ->preload() 
-                ]);
+                Forms\Components\Select::make('condicion_id')
+                    ->label('Condición IVA')
+                    ->relationship('condition', 'nombre')
+                    ->required()
+                    ->searchable()
+                    ->preload(),
+
+
+                Fieldset::make('Teléfono')
+                    ->schema([
+                        Select::make('telefono_marcacion')
+                            ->label('Marcación')
+                            ->options($marcaciones)
+                            ->required()
+                            ->columnSpan(2)
+                            ->dehydrated(true),
+
+                        TextInput::make('telefono_caracteristica')
+                            ->label('Característica')
+                            ->numeric()
+                            ->required()
+                            ->dehydrated(true),
+
+                        TextInput::make('telefono_numero')
+                            ->label('Número')
+                            ->numeric()
+                            ->required()
+                            ->dehydrated(true)
+                            ->rule(function (callable $get) {
+                                return function ($attribute, $value, \Closure $fail) use ($get) {
+                                    if (strlen($value) > 10) {
+                                        $fail('El número no puede tener más de 10 dígitos.');
+                                    }
+
+                                    $telefono = '(' . $get('telefono_marcacion') . ')' . $get('telefono_caracteristica') . '-' . $value;
+                                    $idActual = $get('id');
+
+                                    $existe = \App\Models\Supplier::where('telefono', $telefono)
+                                        ->when($idActual, fn($query) => $query->where('id', '!=', $idActual))
+                                        ->exists();
+
+                                    if ($existe) {
+                                        $fail('Ya existe un socio con ese número de teléfono.');
+                                    }
+                                };
+                            }),
+                    ]),
+            ]);
     }
 
 

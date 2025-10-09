@@ -19,7 +19,7 @@ class CategoryResource extends Resource
     protected static ?string $model = Category::class;
     protected static ?string $navigationIcon = 'heroicon-o-list-bullet';
     protected static ?string $navigationLabel = 'Categorias de productos';
-    protected static ?string $navigationGroup = '🛒Administracion de Ventas';
+    protected static ?string $navigationGroup = '💸Ventas e Inventario';
     protected static ?int $navigationSort = 8;
 
     public static function form(Form $form): Form

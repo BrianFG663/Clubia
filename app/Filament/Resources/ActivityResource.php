@@ -20,7 +20,7 @@ class ActivityResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-bolt';
     protected static ?string $navigationLabel = 'Actividades';
-    protected static ?string $navigationGroup = '📅Administracion de Actividades';
+    protected static ?string $navigationGroup = '🧍Socios y Actividades';
     protected static ?int $navigationSort = 5;
 
     public static function form(Form $form): Form

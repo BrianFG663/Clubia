@@ -20,8 +20,8 @@ class Parametros extends Page
     protected static ?string $navigationIcon = 'heroicon-o-adjustments-vertical';
     protected static ?string $navigationLabel = 'Parametros';
     protected static ?string $title = 'Cambio de parametros';
-    protected static ?string $navigationGroup = '⚙️Permisos del Administrador';
-    protected static ?int $navigationSort = 0;
+    protected static ?string $navigationGroup = '🏢Institucional';
+    protected static ?int $navigationSort = 3;
     
 
     protected static string $view = 'filament.pages.parametros';

@@ -16,7 +16,7 @@ class CajaDiaria extends Page
     }
 
     protected static ?string $navigationIcon = 'heroicon-o-banknotes';
-    protected static ?string $navigationGroup = '💰Administracion de caja diaria';
+    protected static ?string $navigationGroup = '🧾Gestión Económica';
     protected static ?string $navigationLabel = 'Movimientos en caja diaria';
     protected static ?int $navigationSort = 1;
     protected static ?string $title = 'Registrar movimientos en caja';

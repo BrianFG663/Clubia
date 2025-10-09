@@ -43,6 +43,11 @@
     transition: background-color 0.3s;
 }
 
+.text-center{
+    position: relative;
+    bottom: 4%;
+}
+
 .btn-registrar{
     border: 1px solid #c28840;
     background-color: transparent;
@@ -67,6 +72,8 @@
     border-radius: 5px;
     background-color: #111827;
     padding: 1%;
+    position: relative;
+    bottom: 2%;
 }
 
 .btn-registrar:hover{
@@ -103,21 +110,21 @@
 }
 
 .input-busqueda{
-    border-radius: 5px;
+    border-radius: 2px;
     background-color: rgba(71, 71, 71, 0.685);
 }
 
 .input-busqueda {
-  border-radius: 0.375rem; /* rounded */
-  padding: 0.5rem 0.75rem; /* py-2 px-3 */
-  width: 100%;
-  transition: 0.3s;
-  outline: none;    
+    border-radius: 2px;
+    padding: 0.5rem 0.75rem; /* py-2 px-3 */
+    width: 100%;
+    transition: 0.3s;
+    outline: none;    
 }
 
 .input-busqueda:focus {
   border-color: transparent;
-  border-radius: 4px;
+  border-radius: 2px;
   outline: none;
   box-shadow: 0 0 1px 1px rgba(158, 140, 61, 0.596); /* sombra blanca por defecto */
 }
@@ -133,13 +140,13 @@
 
 .total-carrito{
     color: #c28840;
-    width: 15%;
+    width: 25%;
     height: 5%;
     font-size: 1.5vw;
     text-align: center;
     position: relative;
-    left: 80%;
-    bottom: 10%;
+    left: 75%;
+    bottom: 14%;
 }
 
 @keyframes fadeInUp {
@@ -152,6 +159,35 @@
     transform: translateY(0);
   }
 }
+
+select {
+    position: relative;
+    width: 100%;
+    background-color: rgba(128, 128, 128, 0.366);
+    border-radius: 2px;
+    outline: none;
+    color: rgb(128, 128, 128);
+    appearance: none;  
+    -webkit-appearance: none;
+    -moz-appearance: none;    
+}
+
+option {
+  background-color: #121826;
+  color: #f0f0f0;
+  border-bottom: 1px solid #2b3245;
+}
+
+option:hover {
+  background-color: #1c2435; /* Un tono más claro al pasar el mouse */
+}
+
+select:focus {
+    border: 1px solid #c28840;
+    box-shadow: none;
+    outline: none;
+}
+
 
 .articulo{
     display: flex;
@@ -236,7 +272,7 @@
 }
 
 .descripcion-articulo{
-    font-size: 0.75rem;  
+    font-size: 0.95rem;  
     color: #868e9e;          
     overflow: hidden;          
     text-overflow: ellipsis;  

@@ -22,6 +22,7 @@ use Filament\Support\Enums\Theme;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
+
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Filament\Navigation\NavigationItem;
 use App\Filament\Pages\Dashboard as CustomDashboard;
@@ -30,11 +31,29 @@ class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
+
+ 
+        FilamentAsset::register([
+            new Css('scrollbar', 'css/app/scrollbar.css'),
+        ]);
+
         return $panel
+
+            ->navigationGroups([
+                '🧍Socios y Actividades',
+                '💸Ventas e Inventario',
+                '🧾Gestión Económica',
+                '🏢Institucional',
+                '📦Inventario y Compras',
+                '🔐Seguridad y Accesos',
+                '📊Reportes y Registros',
+            ])
             ->default()
+            
             ->brandLogo(fn () => view('components.logo-topbar'))
             ->brandLogoHeight('3.8vw')
             ->brandName('Clubia')
+            ->sidebarCollapsibleOnDesktop()
             ->darkMode(true, true)
             ->id('admin')
             ->path('admin')

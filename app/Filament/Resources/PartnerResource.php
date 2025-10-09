@@ -24,7 +24,7 @@ class PartnerResource extends Resource
 {
     protected static ?string $model = Partner::class;
     protected static ?string $navigationLabel = 'Socios';
-    protected static ?string $navigationGroup = '👥Administracion de Socios';
+    protected static ?string $navigationGroup = '🧍Socios y Actividades';
     protected static ?string $navigationIcon = 'heroicon-o-identification';
     protected static ?int $navigationSort = 3;
 
@@ -41,29 +41,30 @@ class PartnerResource extends Resource
     public static function form(Form $form): Form
     {
 
-        $marcaciones = [
-            '+54' => 'Argentina',
-            '+591' => 'Bolivia',
-            '+55' => 'Brasil',
-            '+56' => 'Chile',
-            '+57' => 'Colombia',
-            '+593' => 'Ecuador',
-            '+592' => 'Guyana',
-            '+595' => 'Paraguay',
-            '+51' => 'Perú',
-            '+597' => 'Surinam',
-            '+598' => 'Uruguay',
-            '+58' => 'Venezuela',
-        ];
-
-
+        $path = public_path('json/marcacion.json');
+        $marcacionesRaw = json_decode(file_get_contents($path), true);
+        $marcaciones = array_flip($marcacionesRaw);
 
         return $form->schema([
             Forms\Components\TextInput::make('nombre')->required()
+                ->rule(function (callable $get) {
+                    return function (string $attribute, mixed $value, \Closure $fail) {
+                        if (!preg_match('/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/', $value)) {
+                            $fail('No se aceptan nombres con números.');
+                        }
+                    };
+                })
                 ->afterStateHydrated(fn($component, $state) => $component->state(ucfirst(strtolower($state))))
                 ->dehydrateStateUsing(fn($state) => ucfirst(strtolower($state))),
 
             Forms\Components\TextInput::make('apellido')->required()
+                ->rule(function (callable $get) {
+                    return function (string $attribute, mixed $value, \Closure $fail) {
+                        if (!preg_match('/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/', $value)) {
+                            $fail('No se aceptan apellidos con números.');
+                        }
+                    };
+                })
                 ->afterStateHydrated(fn($component, $state) => $component->state(ucfirst(strtolower($state))))
                 ->dehydrateStateUsing(fn($state) => ucfirst(strtolower($state))),
 
@@ -83,6 +84,11 @@ class PartnerResource extends Resource
                 })
                 ->rule(function () {
                     return function ($attribute, $value, \Closure $fail) {
+                        if (!preg_match('/^\d+$/', $value)) {
+                            $fail('El DNI solo puede contener números, sin letras ni símbolos.');
+                            return;
+                        }
+
                         $length = strlen((string) $value);
                         if ($length < 7) {
                             $fail('El número ingresado debe tener al menos 7 dígitos (X.XXX.XXX).');
@@ -93,15 +99,34 @@ class PartnerResource extends Resource
                     };
                 }),
 
+
             Forms\Components\Hidden::make('state_id')->default(1),
 
-            Forms\Components\TextInput::make('direccion')->required()
+            Forms\Components\TextInput::make('direccion')
+                ->required()
                 ->afterStateHydrated(fn($component, $state) => $component->state(ucwords(strtolower($state))))
-                ->dehydrateStateUsing(fn($state) => ucwords(strtolower($state))),
+                ->dehydrateStateUsing(fn($state) => ucwords(strtolower($state)))
+                ->rule(function () {
+                    return function (string $attribute, $value, \Closure $fail) {
+                        if (!preg_match('/^[\p{L}\p{N}\s]+$/u', $value)) {
+                            $fail('La dirección no puede contener simbolos especiales.');
+                        }
+                    };
+                }),
 
-            Forms\Components\TextInput::make('ciudad')->required()
+
+            Forms\Components\TextInput::make('ciudad')
+                ->required()
                 ->afterStateHydrated(fn($component, $state) => $component->state(ucwords(strtolower($state))))
-                ->dehydrateStateUsing(fn($state) => ucwords(strtolower($state))),
+                ->dehydrateStateUsing(fn($state) => ucwords(strtolower($state)))
+                ->rule(function () {
+                    return function (string $attribute, $value, \Closure $fail) {
+                        if (!preg_match('/^[\p{L}\p{N}\s]+$/u', $value)) {
+                            $fail('La ciudad no puede contener simbolos especiales.');
+                        }
+                    };
+                }),
+
 
             Fieldset::make('Teléfono')
                 ->schema([
@@ -145,23 +170,44 @@ class PartnerResource extends Resource
 
 
 
-            Forms\Components\TextInput::make('email')->required()
+            Forms\Components\TextInput::make('email')
+                ->required()
                 ->rule(function (callable $get) {
                     return function ($attribute, $value, \Closure $fail) use ($get) {
                         $idActual = $get('id');
+
+                        if (trim($value) === '') {
+                            $fail('El campo de correo electrónico es obligatorio.');
+                            return;
+                        }
+
+                        if (!str_contains($value, '@')) {
+                            $fail('El correo electrónico debe contener el símbolo "@".');
+                            return;
+                        }
+
                         $emailExistente = \App\Models\Partner::where('email', $value)
                             ->when($idActual, fn($query) => $query->where('id', '!=', $idActual))
                             ->exists();
+
                         if ($emailExistente) {
                             $fail('Correo electrónico ya vinculado con otro socio.');
                         }
                     };
                 }),
 
+
             Forms\Components\DatePicker::make('fecha_nacimiento')
                 ->label('Fecha de nacimiento')
                 ->required()
-                ->reactive(),
+                ->reactive()
+                ->rule(function () {
+                    return function (string $attribute, $value, \Closure $fail) {
+                        if (Carbon::parse($value)->isAfter(Carbon::today())) {
+                            $fail('La fecha de nacimiento no puede ser posterior a hoy.');
+                        }
+                    };
+                }),
 
             Forms\Components\Select::make('memberTypes')
                 ->label('Seleccione tipo de socio')

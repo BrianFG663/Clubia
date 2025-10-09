@@ -20,7 +20,7 @@ class ProductResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-cube';
         protected static ?string $navigationLabel = 'Productos';
-        protected static ?string $navigationGroup = '🛒Administracion de Ventas';
+        protected static ?string $navigationGroup = '💸Ventas e Inventario';
 
     protected static ?int $navigationSort = 7;
 
@@ -64,7 +64,14 @@ class ProductResource extends Resource
                     ->label('Precio del producto')
                     ->required()
                     ->numeric()
-                    ->maxValue(2147483647),
+                    ->maxValue(2147483647)
+                    ->rule(function () {
+                        return function (string $attribute, $value, \Closure $fail) {
+                            if ($value < 0) {
+                                $fail('El precio del arancel no puede ser negativo.');
+                            }
+                        };
+                    }),
             ]);
     }
 

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignId('sale_id')->nullable()->constrained()->onDelete('cascade');
             $table->string('tipo_factura');
             $table->decimal('monto_total');
-            $table->string('fecha_factura');
+            $table->string('fecha_factura', 20, 6);
             $table->boolean('estado_pago')->default(false);
             $table->timestamps();
         });

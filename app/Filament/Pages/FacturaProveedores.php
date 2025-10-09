@@ -10,7 +10,7 @@ class FacturaProveedores extends Page
 {
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
     protected static string $view = 'filament.pages.factura-proveedores';
-    protected static ?string $navigationGroup = '🧾Facturacion';
+    protected static ?string $navigationGroup = '🧾Gestión Económica';
     protected static ?string $navigationLabel = 'Facturas proveedores';
     protected static ?int $navigationSort = 5;
 

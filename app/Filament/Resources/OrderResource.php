@@ -30,12 +30,12 @@ class OrderResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-document-currency-dollar';
     protected static ?string $navigationLabel = 'Crear orden de compra';
-    protected static ?string $navigationGroup = '📦Ordenes de compra';
-    
-    protected static ?int $navigationSort = 8;
-    
+    protected static ?string $navigationGroup = '📦Inventario y Compras';
 
-public static function form(Form $form): Form
+    protected static ?int $navigationSort = 8;
+
+
+    public static function form(Form $form): Form
     {
         return $form
             ->schema([
@@ -64,18 +64,23 @@ public static function form(Form $form): Form
                                     ->numeric()
                                     ->prefix('$')
                                     ->required()
-                                    ->minValue(0)
                                     ->columnSpan('full')
                                     ->rule(function ($get) {
-                                        $calculatedTotal = collect($get('orderDetails') ?? [])
+                                        $totalCalculado = collect($get('orderDetails') ?? [])
                                             ->sum(fn($item) => ($item['cantidad'] ?? 0) * ($item['precio_unitario'] ?? 0));
 
-                                        return function ($attribute, $value, $fail) use ($calculatedTotal) {
-                                            if ($value != $calculatedTotal) {
-                                                $fail("El total ingresado ($value) no coincide con la suma de los detalles ($calculatedTotal).");
+                                        return function ($attribute, $value, $fail) use ($totalCalculado) {
+                                            if ($value < 0) {
+                                                $fail("El total no puede negativo.");
+                                                return;
+                                            }
+
+                                            if ($value != $totalCalculado) {
+                                                $fail("El total ingresado ($value) no coincide con la suma de los detalles ($totalCalculado).");
                                             }
                                         };
                                     }),
+
                             ])
                             ->columns(1),
 
@@ -87,22 +92,42 @@ public static function form(Form $form): Form
                                     ->schema([
                                         TextInput::make('nombre_producto')
                                             ->label('Producto')
-                                            ->required()
                                             ->maxLength(255)
-                                            ->columnSpan('full'),
-
+                                            ->columnSpan('full')
+                                            ->rule(function () {
+                                                return function (string $attribute, $value, \Closure $fail) {
+                                                    if (trim($value) === '') {
+                                                        $fail('El nombre del producto es obligatorio.');
+                                                    }
+                                                };
+                                            }),
                                         TextInput::make('cantidad')
                                             ->label('Cantidad')
                                             ->numeric()
                                             ->required()
-                                            ->columnSpan('full'),
+                                            ->columnSpan('full')
+                                            ->rule(function () {
+                                                return function (string $attribute, $value, \Closure $fail) {
+                                                    if ($value < 0) {
+                                                        $fail('La cantidad no puede ser negativa.');
+                                                    }
+                                                };
+                                            }),
 
                                         TextInput::make('precio_unitario')
                                             ->label('Precio Unitario')
                                             ->numeric()
                                             ->required()
                                             ->columnSpan('full')
-                                            ->reactive(),
+                                            ->reactive()
+                                            ->rule(function () {
+                                                return function (string $attribute, $value, \Closure $fail) {
+                                                    if ($value < 0) {
+                                                        $fail('El precio unitario no puede ser negativo.');
+                                                    }
+                                                };
+                                            }),
+
                                     ])
                                     ->createItemButtonLabel('Agregar detalle')
                                     ->columns(1)
@@ -115,69 +140,67 @@ public static function form(Form $form): Form
     }
 
 
-        public static function table(Table $table): Table
-        {
-            return $table
-                ->columns([
-                    Tables\Columns\TextColumn::make('id')
-                        ->label('ID')
-                        ->sortable()
-                        ->alignCenter(),
+    public static function table(Table $table): Table
+    {
+        return $table
+            ->columns([
+                Tables\Columns\TextColumn::make('id')
+                    ->label('ID')
+                    ->sortable()
+                    ->alignCenter(),
 
-                    Tables\Columns\TextColumn::make('supplier.nombre')
-                        ->label('Proveedor')
-                        ->searchable()
-                        ->sortable()
-                        ->alignCenter(),
+                Tables\Columns\TextColumn::make('supplier.nombre')
+                    ->label('Proveedor')
+                    ->searchable()
+                    ->sortable()
+                    ->alignCenter(),
 
-                    Tables\Columns\TextColumn::make('fecha')
-                        ->label('Fecha')
-                        ->date('d/m/Y')
-                        ->sortable()
-                        ->alignCenter(),
+                Tables\Columns\TextColumn::make('fecha')
+                    ->label('Fecha')
+                    ->date('d/m/Y')
+                    ->sortable()
+                    ->alignCenter(),
 
-                    Tables\Columns\TextColumn::make('total')
-                        ->label('Total')
-                        ->money('ARS', true)
-                        ->sortable()
-                        ->alignCenter(),
+                Tables\Columns\TextColumn::make('total')
+                    ->label('Total')
+                    ->money('ARS', true)
+                    ->sortable()
+                    ->alignCenter(),
 
-                    Tables\Columns\TextColumn::make('created_at')
-                        ->label('Creado')
-                        ->dateTime('d/m/Y H:i')
-                        ->toggleable(isToggledHiddenByDefault: true),
-                ])
-                ->filters([
-                    Tables\Filters\SelectFilter::make('supplier_id')
-                        ->label('Proveedor')
-                        ->options(Supplier::pluck('nombre', 'id')),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Creado')
+                    ->dateTime('d/m/Y H:i')
+                    ->toggleable(isToggledHiddenByDefault: true),
+            ])
+            ->filters([
+                Tables\Filters\SelectFilter::make('supplier_id')
+                    ->label('Proveedor')
+                    ->options(Supplier::pluck('nombre', 'id')),
 
-                    Tables\Filters\Filter::make('fecha')
-                        ->form([
-                            Forms\Components\DatePicker::make('from')->label('Desde'),
-                            Forms\Components\DatePicker::make('until')->label('Hasta'),
-                        ])
-                        ->query(function (Builder $query, array $data): Builder {
-                            return $query
-                                ->when($data['from'], fn($q) => $q->whereDate('fecha', '>=', $data['from']))
-                                ->when($data['until'], fn($q) => $q->whereDate('fecha', '<=', $data['until']));
-                        }),
-                ])
-                ->actions([
-                    Tables\Actions\EditAction::make()->label('Modificar'),
-                ])
-                ->bulkActions([
-                    Tables\Actions\DeleteBulkAction::make()->label('Eliminar seleccionados'),
-                ]);
-        }
+                Tables\Filters\Filter::make('fecha')
+                    ->form([
+                        Forms\Components\DatePicker::make('from')->label('Desde'),
+                        Forms\Components\DatePicker::make('until')->label('Hasta'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when($data['from'], fn($q) => $q->whereDate('fecha', '>=', $data['from']))
+                            ->when($data['until'], fn($q) => $q->whereDate('fecha', '<=', $data['until']));
+                    }),
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make()->label('Modificar'),
+            ])
+            ->bulkActions([
+                Tables\Actions\DeleteBulkAction::make()->label('Eliminar seleccionados'),
+            ]);
+    }
 
-    
+
 
     public static function getRelations(): array
     {
-        return [
-        
-        ];
+        return [];
     }
 
 

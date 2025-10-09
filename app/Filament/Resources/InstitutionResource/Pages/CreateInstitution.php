@@ -7,6 +7,10 @@ use Filament\Actions;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
+
+use function Illuminate\Log\log;
 
 class CreateInstitution extends CreateRecord
 {
@@ -39,7 +43,7 @@ class CreateInstitution extends CreateRecord
             Action::make('submitAndCreateAnother')
                 ->label('Guardar y crear otra')
                 ->submit('form')
-                ->action(fn () => $this->submitAndCreateAnother()),
+                ->action(fn() => $this->submitAndCreateAnother()),
 
             Action::make('cancel')
                 ->label('Cancelar registro')
@@ -57,5 +61,23 @@ class CreateInstitution extends CreateRecord
             ->send();
 
         $this->redirect($this->getRedirectUrl('create'));
+    }
+
+
+    public function mutateFormDataBeforeCreate(array $data): array
+    {
+        $telefono = '(' . $data['telefono_marcacion'] . ')' . $data['telefono_caracteristica'] . '-' . $data['telefono_numero'];
+
+
+        Log::warning('Teléfono: ' . $telefono);
+        if (\App\Models\Institution::where('telefono', $telefono)->exists()) {
+            throw ValidationException::withMessages([
+                'telefono_marcacion' => ['Ya existe un socio con ese número de teléfono.'],
+            ]);
+        }
+
+        $data['telefono'] = $telefono;
+
+        return $data;
     }
 }

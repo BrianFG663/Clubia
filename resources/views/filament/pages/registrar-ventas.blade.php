@@ -7,18 +7,25 @@
 
     <div class="contenedor-general space-y-6">
 
-        <!-- Campo de búsqueda -->
+
         <div class="contenedor-busqueda">
             <input type="text" placeholder="Buscar producto..."
                autocomplete="off" id="buscar" class="input-busqueda" />
             <div id="resultados" class="resultados "></div>
         </div>
 
+        <select name="institucion" id="institucion">
+            <option value="{{ false }}" disabled selected hidden>--Seleccione una institucion en la que registrar esta venta--</option>
+            @foreach ($instituciones as $institucion)
+                <option value="{{$institucion->id}}">{{$institucion->nombre }}</option>
+            @endforeach
+        </select>
+
         <h2 class="titulo">Carrito con artículos seleccionados:</h2>
-        <!-- Lista de artículos seleccionados -->
+
         <div id="carrito" class="lista"><div class="carrito-vacio"><img class="img-vacio" src="{{asset('images/html/caja-vacia.png')}}" alt=""><span>Aun no se seleccionaron productos</span></div></div>
 
-        <!-- Botón para registrar venta -->
+
         <div class="text-center">
             <button id="enviar-carrito" class="btn-registrar">Registrar Venta</button>
         </div>

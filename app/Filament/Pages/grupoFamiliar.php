@@ -10,7 +10,7 @@ use Livewire\WithPagination;
 class grupoFamiliar extends Page
 {
     protected static ?string $navigationIcon = 'heroicon-o-users';
-    protected static ?string $navigationGroup = '👥Administracion de Socios';
+    protected static ?string $navigationGroup = '🧍Socios y Actividades';
     protected static ?string $navigationLabel = 'Grupos familiares';
     protected static ?int $navigationSort = 5;
     protected static string $view = 'filament.pages.grupo-familiar';
@@ -34,9 +34,13 @@ class grupoFamiliar extends Page
     protected function getViewData(): array
     {
         return [
-            'jefes' => Partner::where('jefe_grupo', 1)
-                ->with('familyMembers')
-                ->paginate(10),
-        ];
+    'jefes' => Partner::where('jefe_grupo', 1)
+        ->whereHas('familyMembers', function ($query) {
+            $query->whereColumn('responsable_id', 'partners.id')
+                  ->whereColumn('id', '<>', 'partners.id');
+        })
+        ->paginate(10)
+];
+
     }
 }

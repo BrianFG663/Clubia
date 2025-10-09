@@ -20,7 +20,7 @@ class SubActivityResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-sparkles';
     protected static ?int $navigationSort = 6;
-            protected static ?string $navigationGroup = '📅Administracion de Actividades';
+            protected static ?string $navigationGroup = '🧍Socios y Actividades';
 
     protected static ?string $navigationLabel = 'Sub-activivdades';
 
@@ -57,7 +57,14 @@ class SubActivityResource extends Resource
                 Forms\Components\TextInput::make('monto')
                     ->required()
                     ->numeric()
-                    ->maxValue(2147483647),
+                    ->maxValue(2147483647)
+                    ->rule(function () {
+                        return function (string $attribute, $value, \Closure $fail) {
+                            if ($value < 0) {
+                                $fail('El precio del arancel no puede ser negativo.');
+                            }
+                        };
+                    }),
 
                 Forms\Components\Select::make('activity_id')
                     ->label('Seleccione Actividad')

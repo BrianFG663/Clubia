@@ -21,7 +21,7 @@ class Ordenes extends Page
     protected static string $view = 'filament.pages.orders.ordenes';
     protected static ?string $navigationLabel = 'Listado y facturación - Órdenes de compra';
     protected static ?string $title = 'Listado y facturación - Órdenes de compra';
-    protected static ?string $navigationGroup = '📦Ordenes de compra';
+    protected static ?string $navigationGroup = '📊Reportes y Registros';
     protected static ?int $navigationSort = 9;
     
 

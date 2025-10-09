@@ -19,7 +19,7 @@ class SaleResource extends Resource
     protected static ?string $model = Sale::class;
     protected static ?string $navigationLabel = 'Registro de ventas';
     protected static ?string $navigationIcon = 'heroicon-o-archive-box';
-    protected static ?string $navigationGroup = '🛒Administracion de Ventas';
+    protected static ?string $navigationGroup = '💸Ventas e Inventario';
     protected static ?int $navigationSort = 6;
 
     public static function canCreate(): bool

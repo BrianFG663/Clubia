@@ -156,6 +156,9 @@ window.realizarNotaDebito = function (id, tipo, identificador) {
 }
 
 function facturasVentas(){
+
+    document.getElementById('select-js').innerHTML = ``
+
     fetch("/notacredito/ventas/facturas", {
         method: "POST",
         credentials: "same-origin",
@@ -327,20 +330,42 @@ function facturasProveedor(proveedorid) {
         }
 
         if (data.mensaje == false) {
+
+            const crearMensajeVacio = (texto) => {
+                const div = document.createElement("div");
+                div.classList.add("carrito-vacio");
+
+                const img = document.createElement("img");
+                img.src = "/images/html/caja-vacia.png";
+                img.classList.add("img-vacio");
+
+                const span = document.createElement("span");
+                span.textContent = texto;
+
+                div.appendChild(img);
+                div.appendChild(span);
+
+                return div;
+            };
+
+
             Swal.fire({
                 title: 'Atencion',
                 text: 'Este proveedor no tiene facturas registradas',
-                icon: 'info',
+                imageWidth: 100,
+                imageHeight: 100,
+                imageUrl: "/images/alertas/advertencia.png",
                 confirmButtonText: 'Entendido',
                 confirmButtonColor: '#3085d6',
                 backdrop: false,
                 allowOutsideClick: false,
                 allowEscapeKey: false,
-                imageWidth: 100,
-                imageHeight: 100,
             });
+            
             document.getElementById('facturas-pagas').innerHTML = '';
+            document.getElementById('facturas-pagas').appendChild(crearMensajeVacio("Este proveedor no tiene facturas"));
             document.getElementById('facturas-no-pagas').innerHTML = '';
+            document.getElementById('facturas-no-pagas').appendChild(crearMensajeVacio("Este proveedor no tiene facturas"))
         }
     })
 }

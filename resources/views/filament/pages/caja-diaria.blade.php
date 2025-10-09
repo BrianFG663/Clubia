@@ -8,10 +8,10 @@
 
     <div class="contenedor-general" id="contenedor-general">
         <div class="div-select">
-            <label for="institucion">Seleccione institucion para ver su caja</label>
+            <label for="institucion">Seleccione una institución para ver su caja</label>
             <select name="institucion" id="institucion">
                 @foreach ($instituciones as $institucion)
-                    <option value="{{ false }}" disabled selected hidden>--Seleccione una institucion--</option>
+                    <option value="{{ false }}" disabled selected hidden>--Seleccione una institución--</option>
                     <option value="{{$institucion->id}}">{{$institucion->nombre}}</option>
                 @endforeach
             </select>
@@ -23,7 +23,7 @@
     <div class="agregar-movimiento" id="agregar-movimiento">
         <button id="cerrar-alerta"><i class="fa-solid fa-xmark" ></i></button>
         <h2>Agregar un movimiento a caja</h2>
-        <label for="descripcion">Ingrese breve descripcion del movimiento</label>
+        <label for="descripcion">Ingrese breve descripción del movimiento</label>
         <input type="text" id="descripcion">
         <label for="precio">Ingrese monto del movimiento</label>
         <input type="number" id="total">

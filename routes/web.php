@@ -12,6 +12,7 @@ use App\Models\Partner;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ParameterController;
+use App\Http\Controllers\PaymentController;
 
 Route::redirect('/', '/admin'); //redireccionar al login
 
@@ -74,9 +75,9 @@ Route::delete('/cajadiaria/eliminar/registro/vacio', [CashRecordController::clas
 
 
 //Rutas para cobrar facturas de socio
-Route::get('/invoices/impagas/{partner}', [InvoiceConstroller::class, 'facturasImpagas']);// ver todas las facturas impagas de un socio
-Route::get('/invoices/pagas/{partner}', [InvoiceConstroller::class, 'facturasPagas']);
-Route::patch('/invoices/pagar', [InvoiceConstroller::class, 'pagarFacturas']); //Pagar facturas
+Route::get('/facturas/impagas/{partner}', [InvoiceConstroller::class, 'facturasImpagas']);// ver todas las facturas impagas de un socio
+Route::get('/facturas/pagas/{partner}', [InvoiceConstroller::class, 'facturasPagas']);
+Route::post('/pagos/pagar-facturas', [PaymentController::class, 'pagarFacturas']); // Pagar/cobrar facturas
 
 
 //Rutas parametros

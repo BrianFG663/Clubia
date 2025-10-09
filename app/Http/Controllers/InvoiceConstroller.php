@@ -7,6 +7,7 @@ use App\Jobs\FacturarSocio;
 use App\Models\Invoice;
 use App\Models\MemberType;
 use App\Models\Partner;
+use App\Models\PaymentType;
 use App\Models\SubActivity;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Log;
@@ -220,8 +221,8 @@ class InvoiceConstroller extends Controller
                     ->map(fn($factura) => [
                         'id' => $factura->id,
                         'tipo_factura' => $factura->tipo_factura,
-                        'subActivity' => $factura->subActivity?->nombre ?? '-',
-                        'memberType' => $factura->memberType?->nombre ?? '-',
+                        'subActivity'  => $factura->subActivity?->nombre ?? '',
+                        'memberType'   => $factura->memberType?->nombre ?? '',
                         'institution' => $factura->institution?->nombre ?? '-',
                         'fecha_factura' => $factura->fecha_factura,
                         'monto_total' => $factura->monto_total,
@@ -230,33 +231,22 @@ class InvoiceConstroller extends Controller
 
                 $facturasFamiliares = $facturasFamiliares->concat($depFacturas);
             }
+
+               Log::info('Datos del dependiente y facturas', [
+                    'dependiente' => $dep->toArray(),   // todos los datos del dependiente
+                    'facturas'    => $depFacturas->toArray()
+                ]);
         }
 
+        $paymentTypes = PaymentType::select('id', 'nombre')->get();
         return response()->json([
             'partner' => $partner->nombre . ' ' . $partner->apellido,
             'tipo' => $partner->jefe_grupo,
             'facturasTitular' => $facturasTitular,
             'facturasFamiliares' => $facturasFamiliares,
+            'paymentTypes' => $paymentTypes,
         ]);
     }
-
-    public function pagarFacturas(Request $request)
-    {
-
-        $ids = $request->input('facturas');
-        if (!$ids || !is_array($ids)) {
-            return response()->json(['mensaje' => false]);
-        }
-        $actualizadas = Invoice::whereIn('id', $ids)
-            ->update(['estado_pago' => true]);
-
-        if ($actualizadas > 0) {
-            return response()->json(['mensaje' => true]);
-        }
-        return response()->json(['mensaje' => false]);
-    }
-
-
 
     public function facturasPagas(Partner $partner)
     {

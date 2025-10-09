@@ -1,11 +1,11 @@
 .contenedor {
-    border: 0.125rem solid #1c202a; /* 2px = 0.125rem */
+    border: 0.125rem solid #1c202a; 
     background-color: #111827;
-    border-radius: 0.625rem; /* 10px */
+    border-radius: 0.625rem; 
     padding-top: 0.5rem;
-    padding-bottom: 1rem; /* OK */
+    padding-bottom: 1rem; 
     margin: 0 auto;
-    max-width: 65.5rem; /* 1000px */
+    max-width: 65.5rem; 
     width: 100%;
     box-sizing: border-box;
     color: #e0e0e0;
@@ -21,7 +21,7 @@ font-family: sans-serif;
 .tabla {
     width: 100%;
     border-collapse: collapse;
-    min-width: 43.75rem; /* 700px */
+    min-width: 43.75rem; 
     background-color: #111827;
 }
 
@@ -32,12 +32,12 @@ font-family: sans-serif;
 .tabla thead th {
     padding: 0.75rem 1rem;
     color: #c28840 ;
-    border-bottom: 0.0625rem solid #1c202a; /* 1px */
+    border-bottom: 0.0625rem solid #1c202a; 
     text-align: left;
 }
 
 .tabla tbody tr {
-    border-bottom: 0.0625rem solid #1c202a; /* 1px */
+    border-bottom: 0.0625rem solid #1c202a; 
     transition: background-color 0.15s ease-in-out;
 }
 
@@ -81,7 +81,7 @@ font-family: sans-serif;
     margin-top: 1rem;
     margin-bottom: 0.5rem;
     margin-right: 2rem;
-    margin-left: 2rem;  /* 2rem = 32px aprox */
+    margin-left: 2rem;  
     
 }
 
@@ -100,7 +100,7 @@ font-family: sans-serif;
 
 .filtro-input {
     width: 100%;
-    padding: 0.4rem 0.6rem 0.4rem 2.5rem; /* espacio a la izquierda para el icono */
+    padding: 0.4rem 0.6rem 0.4rem 2.5rem; 
     border-radius: 8px;
     border: 1px solid  #6b7280;
     background-color: #1d2332;
@@ -111,7 +111,7 @@ font-family: sans-serif;
 }
 
 .filtro-input::placeholder {
-    color: #6b7280; /* gris medio, parecido a la imagen */
+    color: #6b7280; 
 }
 
 
@@ -128,14 +128,14 @@ font-family: sans-serif;
     top: 50%;
     left: 0.7rem;
     transform: translateY(-50%);
-    color: #6b7280; /* gris medio para el icono */
-    pointer-events: none; /* que no interfiera con el input */
+    color: #6b7280;
+    pointer-events: none;
     font-size: 1.1rem;
 }
 
 .top-bar {
     display: flex;
-    justify-content: space-between; /* título a la izq, botón a la der */
+    justify-content: space-between; 
     align-items: center;
     gap: 1rem;
     margin-bottom: 0.5rem;
@@ -153,8 +153,8 @@ font-family: sans-serif;
 .detalle-orden::-webkit-scrollbar-thumb {
     background-color: #888;
     border-radius: 0.625rem;
-    border: 0.2rem solid transparent; /* crea separación */
-    background-clip: padding-box;     /* evita que el color rellene el borde */
+    border: 0.2rem solid transparent; 
+    background-clip: padding-box;     
 }
 
 
@@ -183,8 +183,8 @@ font-family: sans-serif;
     width: 95%;
     height: auto;
     overflow-y: auto;
-    background-color: #111827; /* mismo fondo que tabla y contenedor */
-    border: 1px solid #c28840cc; /* borde dorado semitransparente */
+    background-color: #111827; 
+    border: 1px solid #c28840cc; 
     border-radius: 12px;
     color: #e0e0e0;
     font-family: 'Inter', sans-serif;
@@ -201,7 +201,7 @@ font-family: sans-serif;
 }
 
 
-/* Overlay detrás del modal */
+
 #overlay-factura {
     position: fixed;
     top: 0;
@@ -214,12 +214,12 @@ font-family: sans-serif;
     display: none;
 }
 
-/* Mostrar overlay */
+
 #overlay-factura.mostrar {
     display: block;
 }
 
-/* Botón cerrar modal */
+
 #cerrar-factura{
      position: absolute;
     right: 0.5rem;
@@ -236,8 +236,6 @@ font-family: sans-serif;
 }
 
 
-
-/* ================= Responsivo ================= */
 @media (max-width: 768px) {
     .contenedor {
         padding: 0.5rem;
@@ -267,8 +265,8 @@ font-family: sans-serif;
 .contenedor-modal::-webkit-scrollbar-thumb {
     background-color: #888;
     border-radius: 0.625rem;
-    border: 1px solid transparent; /* crea separación */
-    background-clip: padding-box;     /* evita que el color rellene el borde */
+    border: 1px solid transparent; 
+    background-clip: padding-box;    
 }
 
 .contenedor-modal {
@@ -289,7 +287,7 @@ font-family: sans-serif;
     overflow: hidden;
     margin: 0 0.5rem 0.5rem 0.5rem;
     width: 99%;
-    background-color: #1c1e26; /* o el que uses */
+    background-color: #1c1e26; 
 }
 
 .contenedor-modal table {
@@ -329,7 +327,7 @@ font-family: sans-serif;
   cursor: pointer;
   user-select: none;
   z-index: 5;
-  /* ajusta padding si quieres */
+
 }
 
 .custom-checkbox input {
@@ -350,7 +348,7 @@ font-family: sans-serif;
   display: inline-block;
 }
 
-/* Estado checked */
+
 .custom-checkbox input:checked + .checkmark {
   background-color: #c28840;
   border-color: #c28840;
@@ -362,7 +360,7 @@ font-family: sans-serif;
   display: none;
 }
 
-/* Palomita visible al estar checked */
+
 .custom-checkbox input:checked + .checkmark::after {
   display: block;
   left: 5px;
@@ -375,12 +373,12 @@ font-family: sans-serif;
 }
 
 th .check-factura {
-  position: static; /* o eliminar position si no es necesario */
+  position: static; 
   z-index: auto;
   width: 18px;
   height: 18px;
-  vertical-align: middle; /* para centrarlo con el texto */
-  margin-right: 0.5rem; /* espacio entre checkbox y texto */
+  vertical-align: middle; 
+  margin-right: 0.5rem; 
   cursor: pointer;
 }
 
@@ -395,10 +393,10 @@ th .check-factura {
 }
 
 .total-text {
-    font-size: 1.25rem; /* Más grande */
+    font-size: 1.25rem; 
     font-weight: 600;
     color: white;
-    margin-left: 0.5rem; /* Separación del borde */
+    margin-left: 0.5rem; 
     font-family: 'Inter', sans-serif;
 }
 
@@ -421,3 +419,44 @@ th .check-factura {
     background-color: #d29c5a;
 }
 
+.select-pago {
+    background-color: #111827;
+    color: #e0e0e0;
+    border: 1px solid #c28840; 
+    border-radius: 0.5rem;
+    padding: 0.35rem 0.75rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    position: relative;
+    z-index: 1001; 
+}
+
+.select-pago:focus {
+    outline: none;
+    border-color: #d29c5a;
+    box-shadow: 0 0 0 2px rgba(194, 136, 64, 0.3);
+}
+
+
+.select-pago-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.select-pago-wrapper::after {
+    content: "▾";
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #c28840;
+    pointer-events: none;
+}
+
+.total-container {
+    overflow: visible;
+}

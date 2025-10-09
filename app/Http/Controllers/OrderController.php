@@ -39,7 +39,7 @@ class OrderController extends Controller
 
     public function generarFactura($id)
     {
-        Log::info('generarFactura llamado con ID:', ['order_id' => $id]);
+        Log::info('generarFactura  ID:', ['order_id' => $id]);
         $order = Order::with('orderDetails')->findOrFail($id);
         $facturaExistente = Invoice::where('order_id', $order->id)->exists();
     

@@ -7,10 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Spatie\Permission\Traits\HasRoles;
 
-class Partner extends Model
+class Partner extends Authenticatable
 {
     use HasFactory;
+    use HasRoles;
+
+    protected $guard_name = 'partner';
 
     protected $fillable = [
         'nombre',

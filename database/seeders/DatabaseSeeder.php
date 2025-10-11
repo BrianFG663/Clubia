@@ -1,7 +1,6 @@
 <?php
 
 namespace Database\Seeders;
-
 use App\Models\MemberType;
 use App\Models\Payment_type;
 use App\Models\SaleDetail;
@@ -39,7 +38,7 @@ class DatabaseSeeder extends Seeder
         OrderSeeder::class,
         OrderDetailSeeder::class,
         InvoiceSeeder::class,  
-        PaymentInvoiceSeeder::class, 
+        PaymentInvoiceSeeder::class,
     ]);
     }
 }

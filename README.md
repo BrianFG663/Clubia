@@ -14,7 +14,7 @@ php artisan shield:generate --resource=SaleResource
 php artisan shield:generate --resource=SupplierResource
 
 
-Ejecutar seeder: php artisan db:seed    
+Ejecutar seeder: php artisan db:seed
 
 
 

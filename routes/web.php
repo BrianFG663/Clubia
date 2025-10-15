@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ParameterController;
 use App\Http\Controllers\PaymentController;
+use Illuminate\Support\Facades\Auth;
 
 //ventas
 Route::get('/buscar-productos', [SaleController::class, 'buscarProductoVenta'])->name('buscar.productos'); //ruta buscar productos
@@ -87,4 +88,25 @@ Route::get('/factura/{id}/pdf', [InvoiceConstroller::class, 'exportPdf'])->name(
 Route::post('/buscar/socio', [InvoiceConstroller::class, 'buscarSocio']);
 Route::post('/subactividad/buscar', [SubActividadController::class, 'buscarSubactvidad']);
 Route::post('/grupo-familiar/buscar', [PartnerController::class, 'buscarGrupo']);
+
+
+
+//rutas vista socios
+Route::get('/socio/login', function () {
+  return view('partner.login');
+})->name('login');
+Route::post('/validacion/login', [PartnerController::class, 'validacionLogin'])->name('partner.login');
+
+Route::middleware(['auth:partner'])->group(function () {
+  Route::get('/panel/socio', [PartnerController::class, 'panelSocio']);
+});
+
+Route::post('/logout/partner', function () {
+    Auth::guard('partner')->logout();
+    return redirect('/socio/login');
+})->name('partner.logout');
+
+Route::post('/socio/facturas/inpagas', [PartnerController::class, 'facturasInpagas']);
+//
+
 

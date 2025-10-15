@@ -45,6 +45,10 @@ return [
             'driver' => 'session',
             'provider' => 'partners',
         ],
+
+        'redirects' => [
+            'partner' => '/socio/login',
+        ],
     ],
 
     /*

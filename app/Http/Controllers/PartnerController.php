@@ -7,9 +7,101 @@ use App\Models\Partner;
 use App\Models\SubActivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class PartnerController extends Controller
 {
+
+    public function panelSocio()
+    {
+
+        $socioId = Auth::guard('partner')->id();
+
+        $partner = Partner::with([
+            'invoices',
+            'memberTypes',
+            'state',
+            'subActivities',
+            'responsable',
+            'familyMembers.invoices',
+            'responsable.familyMembers'
+        ])->find($socioId);
+
+        $facturasPagas = [];
+        $facturasInpagas = [];
+
+
+        foreach ($partner->invoices as $factura) {
+            if ($factura->estado_pago == 1) {
+                $facturasPagas[] = $factura;
+            } else {
+                $facturasInpagas[] = $factura;
+            }
+        }
+
+        foreach ($partner->familyMembers as $familiar) {
+            foreach ($familiar->invoices as $factura) {
+                    if ($factura->estado_pago == 1) {
+                        $facturasPagas[] = $factura;
+                    } else {
+                        $facturasInpagas[] = $factura;
+                    }
+                }
+        }
+
+        return view('partner.panel', compact('partner', 'facturasPagas', 'facturasInpagas'));
+    }
+
+    public function validacionLogin(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        if (Auth::guard('partner')->attempt($request->only('email', 'password'))) {
+            return redirect('/panel/socio');
+        }
+
+        return back()->withErrors([
+            'email' => 'Credenciales inválidas.',
+            'password' => 'Credenciales inválidas.',
+        ]);
+    }
+
+    public function facturasInpagas(Request $request)
+    {
+
+        $socio = Partner::find($request->socio);
+
+        if ($socio->jefe_grupo == 1) {
+
+            $partner = Partner::with([
+                'invoices' => function ($query) {
+                    $query->where('estado_pago', 0)
+                        ->with(['memberType', 'subActivity']);
+                },
+                'familyMembers.invoices' => function ($query) {
+                    $query->where('estado_pago', 0)
+                        ->with(['memberType', 'subActivity']);
+                }
+            ])->find($request->socio);
+
+
+            return response()->json(['mensaje' => true, 'jefe' => true, 'socio' => $partner]);
+        } else {
+            $partner = Partner::with([
+                'invoices' => function ($query) {
+                    $query->where('estado_pago', 0)
+                        ->with(['memberType', 'subActivity']);
+                }
+            ])->find($request->socio);
+
+            return response()->json(['mensaje' => true, 'jefe' => false, 'socio' => $partner]);
+        }
+    }
+
+
     public function detallesGrupoFamiliar(Request $request)
     {
         $jefe = Partner::with('familyMembers')->find($request->id);
@@ -23,38 +115,38 @@ class PartnerController extends Controller
 
     public function eliminarIntegrante(Request $request)
     {
-            Log::info('Llega a eliminarIntegrante', [
-                'url' => $request->fullUrl(),
-                'method' => $request->method(),
-                'body' => $request->all(), 
-                'id' => $request->id,
-            ]);
+        Log::info('Llega a eliminarIntegrante', [
+            'url' => $request->fullUrl(),
+            'method' => $request->method(),
+            'body' => $request->all(),
+            'id' => $request->id,
+        ]);
 
-            $integrante = Partner::find($request->id);
+        $integrante = Partner::find($request->id);
 
-            if (!$integrante) {
-                Log::warning('Integrante no encontrado', ['id' => $request->id]);
-                return response()->json(['mensaje' => false, 'error' => 'Integrante no existe']);
-            }
+        if (!$integrante) {
+            Log::warning('Integrante no encontrado', ['id' => $request->id]);
+            return response()->json(['mensaje' => false, 'error' => 'Integrante no existe']);
+        }
 
-            $responsableId = $integrante->responsable_id;
+        $responsableId = $integrante->responsable_id;
 
-            $tieneIntegrantes = Partner::where('responsable_id', $responsableId)
-                ->where('id', '<>', $integrante->id)
-                ->exists();
+        $tieneIntegrantes = Partner::where('responsable_id', $responsableId)
+            ->where('id', '<>', $integrante->id)
+            ->exists();
 
-            Partner::where('id', $responsableId)->update([
-                'jefe_grupo' => $tieneIntegrantes ? 1 : 0
-            ]);
+        Partner::where('id', $responsableId)->update([
+            'jefe_grupo' => $tieneIntegrantes ? 1 : 0
+        ]);
 
-            $integrante->responsable_id = null;
-            $integrante->save(); 
+        $integrante->responsable_id = null;
+        $integrante->save();
 
 
-            return response()->json([
-                'mensaje' => true,
-                'responsable' => $responsableId
-            ]);
+        return response()->json([
+            'mensaje' => true,
+            'responsable' => $responsableId
+        ]);
     }
 
 
@@ -68,9 +160,9 @@ class PartnerController extends Controller
             'responsable'
         ])->where('dni', $request->dni)->first();
 
-        if($integrante->jefe_grupo == 1){
+        if ($integrante->jefe_grupo == 1) {
 
-            return response()->json(['mensaje' =>true, 'jefe'=>true, 'integrante'=>$integrante]);
+            return response()->json(['mensaje' => true, 'jefe' => true, 'integrante' => $integrante]);
         }
 
         if ($integrante) {
@@ -79,9 +171,9 @@ class PartnerController extends Controller
                     'familyMembers',
                 ])->where('id', $integrante->responsable->id)->firstOrFail();
                 $familiares =  $jefe->familyMembers;
-                return response()->json(['mensaje' => true, 'responsable'=>true, 'integrante' => $integrante, 'familiares' => $familiares]);
+                return response()->json(['mensaje' => true, 'responsable' => true, 'integrante' => $integrante, 'familiares' => $familiares]);
             } else {
-                return response()->json(['mensaje' => true,'responsable'=>false ,'integrante' => $integrante, 'familiares' => []]);
+                return response()->json(['mensaje' => true, 'responsable' => false, 'integrante' => $integrante, 'familiares' => []]);
             }
         } else {
             return response()->json(['mensaje' => false]);
@@ -135,8 +227,8 @@ class PartnerController extends Controller
         $dni = $request->dni;
         $socioId = Partner::where('dni', $dni)->value('id');
 
-        if(!$socioId){
-            return response()->json(['socio' => false]);  
+        if (!$socioId) {
+            return response()->json(['socio' => false]);
         }
 
         $facturas = Invoice::with('partner')

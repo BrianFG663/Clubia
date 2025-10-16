@@ -97,7 +97,39 @@ class PartnerController extends Controller
                 }
             ])->find($request->socio);
 
-            return response()->json(['mensaje' => true, 'jefe' => false, 'socio' => $partner]);
+            return response()->json(['mensaje' => false, 'jefe' => false, 'socio' => $partner]);
+        }
+    }
+
+    public function facturasPagas(Request $request)
+    {
+
+        $socio = Partner::find($request->socio);
+
+        if ($socio->jefe_grupo == 1) {
+
+            $partner = Partner::with([
+                'invoices' => function ($query) {
+                    $query->where('estado_pago', 1)
+                        ->with(['memberType', 'subActivity']);
+                },
+                'familyMembers.invoices' => function ($query) {
+                    $query->where('estado_pago', 1)
+                        ->with(['memberType', 'subActivity']);
+                }
+            ])->find($request->socio);
+
+
+            return response()->json(['mensaje' => true, 'jefe' => true, 'socio' => $partner]);
+        } else {
+            $partner = Partner::with([
+                'invoices' => function ($query) {
+                    $query->where('estado_pago', 1)
+                        ->with(['memberType', 'subActivity']);
+                }
+            ])->find($request->socio);
+
+            return response()->json(['mensaje' => false, 'jefe' => false, 'socio' => $partner]);
         }
     }
 

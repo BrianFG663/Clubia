@@ -48,7 +48,7 @@
                     <div class="cantidad">
                         {{ count($facturasPagas) }}
                     </div>
-                    <i class="fa-regular fa-eye" title="Ver facturas"></i>
+                    <i class="fa-regular fa-eye" title="Ver facturas" onclick="facturasPagas({{ auth('partner')->user()->id }})"></i>
                 </div>
             </div>
         </div>

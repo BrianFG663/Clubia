@@ -15,6 +15,11 @@ use App\Http\Controllers\ParameterController;
 use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Auth;
 
+Route::get('/', function () {
+    return redirect('/admin');
+});
+
+
 //ventas
 Route::get('/buscar-productos', [SaleController::class, 'buscarProductoVenta'])->name('buscar.productos'); //ruta buscar productos
 Route::post('/venta-registrada', [SaleController::class, 'registrarVenta'])->name('registrar.venta'); //ruta registrar venta (controlador)
@@ -107,6 +112,7 @@ Route::post('/logout/partner', function () {
 })->name('partner.logout');
 
 Route::post('/socio/facturas/inpagas', [PartnerController::class, 'facturasInpagas']);
+Route::post('/socio/facturas/pagas', [PartnerController::class, 'facturasPagas']);
 //
 
 

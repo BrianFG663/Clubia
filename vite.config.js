@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
     server: {
-        https: false, // solo si tenés certificado local
+        https: true, // solo si tenés certificado local
     },
     plugins: [
         laravel({
@@ -24,6 +24,8 @@ export default defineConfig({
                 'resources/css/registroCajasDiarias.css',
                 'resources/css/sweet-alert.css',
                 'resources/css/socios-card.css',
+                'resources/css/panelSocios.css',
+                'resources/css/loginSocio.css',
                 'resources/js/app.js',
                 'resources/js/bootstrap.js',
                 'resources/js/cajaDiaria.js',
@@ -38,6 +40,7 @@ export default defineConfig({
                 'resources/js/registrar-ordenes.js',
                 'resources/js/registrar-ventas.js',
                 'resources/js/registroCajasDiarias.js',
+                'resources/js/PanelSocios.js',
             ],
             refresh: true,
         }),

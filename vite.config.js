@@ -26,6 +26,7 @@ export default defineConfig({
                 'resources/css/socios-card.css',
                 'resources/css/panelSocios.css',
                 'resources/css/loginSocio.css',
+                'resources/css/CambioContrasena.css',
                 'resources/js/app.js',
                 'resources/js/bootstrap.js',
                 'resources/js/cajaDiaria.js',

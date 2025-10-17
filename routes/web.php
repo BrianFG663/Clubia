@@ -6,10 +6,11 @@ use App\Http\Controllers\CashRecordDetailController;
 use App\Http\Controllers\InvoiceConstroller;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\SaleController;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Routing\Middleware;
 use App\Http\Controllers\SubActividadController;
 use App\Http\Controllers\SupplierController;
 use App\Models\Partner;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ParameterController;
 use App\Http\Controllers\PaymentController;
@@ -103,8 +104,9 @@ Route::get('/socio/login', function () {
 Route::post('/validacion/login', [PartnerController::class, 'validacionLogin'])->name('partner.login');
 
 Route::middleware(['auth:partner'])->group(function () {
-  Route::get('/panel/socio', [PartnerController::class, 'panelSocio']);
+    Route::get('/panel/socio', [PartnerController::class, 'panelSocio'])->name('partner.panel');
 });
+
 
 Route::post('/logout/partner', function () {
     Auth::guard('partner')->logout();
@@ -113,6 +115,13 @@ Route::post('/logout/partner', function () {
 
 Route::post('/socio/facturas/inpagas', [PartnerController::class, 'facturasInpagas']);
 Route::post('/socio/facturas/pagas', [PartnerController::class, 'facturasPagas']);
+
+Route::get('/partner/cambio/contrasena', function () {
+    return view('partner.cambioContrasena');
+})->name('partner.password.change');
+
+Route::post('/partner/contrasena/cambiada', [PartnerController::class, 'cambiarContrasena'])->name('partner.contrasena.cambiada');
+
 //
 
 

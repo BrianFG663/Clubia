@@ -8,6 +8,7 @@ use App\Models\SubActivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class PartnerController extends Controller
 {
@@ -132,6 +133,44 @@ class PartnerController extends Controller
             return response()->json(['mensaje' => false, 'jefe' => false, 'socio' => $partner]);
         }
     }
+
+    public function cambiarContrasena(Request $request){
+
+        $partnerId = Auth::guard('partner')->id();
+        $partner =Partner::find($partnerId);
+
+        if($request->contrasena !== $request->contrasenaConfirmar){
+            return back()->withErrors([
+                'contrasena' => 'Las contraseñas deben coincidir.',
+            ]);
+        }
+
+        if(Hash::check($request->contrasena, $partner->password)){
+            return back()->withErrors([
+                'contrasena' => 'La contrasena no puede ser la misma a la de antes.',
+            ]);
+        }
+
+        if(strlen($request->contrasena) < 5){
+            return back()->withErrors([
+                'contrasena' => 'Debe tener al menos 6 caracteres.',
+            ]);
+        }
+
+        if(!preg_match('/^[a-zA-Z0-9]+$/', $request->contrasena)){
+            return back()->withErrors([
+                'contrasena' => 'No se puede ingresar caracteres especiales.',
+            ]);
+        }
+        
+        $partner->password = Hash::make($request->contrasena);
+        $partner->password_changed = true;
+        $partner->save();
+
+        return redirect()->route('partner.panel');
+    }
+
+    
 
 
     public function detallesGrupoFamiliar(Request $request)

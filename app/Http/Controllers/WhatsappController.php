@@ -10,9 +10,13 @@ class WhatsAppController extends Controller
     {
         $phoneNumberId = config('services.whatsapp.phone_number_id'); 
         $accessToken = config('services.whatsapp.access_token');     
-        $to = '54344615672121'; // formato E.164 
+        $to = '54344615672121'; // fijo
         $templateName = 'mensualidad'; 
-        $languageCode = 'es_ES'; 
+        $languageCode = 'es'; 
+
+        $name = $request->input('name');
+        $amount = $request->input('amount');
+        $link = $request->input('link');
 
         $url = "https://graph.facebook.com/v17.0/{$phoneNumberId}/messages";
 
@@ -23,38 +27,28 @@ class WhatsAppController extends Controller
             "template" => [
                 "name" => $templateName,
                 "language" => ["code" => $languageCode],
-                // si tu plantilla tiene variables:
                 "components" => [
-                [
-                    "type" => "header",
-                    "parameters" => [
-                        [
-                            "type" => "text",
-                            "text" => "Brian" // reemplazá con el nombre de la persona ({{1}})
+                    [
+                        "type" => "header",
+                        "parameters" => [
+                            ["type" => "text", "text" => $name]
                         ]
-                    ]
-                ],
-                [
-                    "type" => "body",
-                    "parameters" => [
-                        [
-                            "type" => "text",
-                            "text" => "5000" // {{1}} -> monto a pagar
-                        ],
-                        [
-                            "type" => "text",
-                            "text" => "https://tulinkdepago.com/abc123" // {{2}} -> enlace de pago
+                    ],
+                    [
+                        "type" => "body",
+                        "parameters" => [
+                            ["type" => "text", "text" => $amount],
+                            ["type" => "text", "text" => $link]
                         ]
                     ]
                 ]
             ]
-        ]
         ];
 
-        $resp = Http::withToken($accessToken)
-                    ->post($url, $payload);
+        $resp = Http::withToken($accessToken)->post($url, $payload);
 
         return $resp->json();
     }
+
 }
 

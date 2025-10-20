@@ -125,7 +125,9 @@ Route::get('/partner/cambio/contrasena', function () {
 Route::post('/partner/contrasena/cambiada', [PartnerController::class, 'cambiarContrasena'])->name('partner.contrasena.cambiada');
 
 //Ruta WhatsApp API
-Route::post('/whatsapp/send-template', [WhatsappController ::class, 'sendTemplateMessage']);
+Route::post('/whatsapp/send-template', [WhatsappController::class, 'sendTemplate']);
 Route::post('/webhook/whatsapp', [WhatsAppWebhookController::class, 'handle']);
 Route::get('/webhook/whatsapp', [WhatsAppWebhookController::class, 'verify']);
 
+//Vista del testeo de la API
+Route::post('/whatsapp/send-template', [WhatsappController::class, 'sendTemplate'])->name('whatsapp.send');

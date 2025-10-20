@@ -14,7 +14,9 @@ use App\Models\Partner;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ParameterController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\WhatsappController;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\WhatsAppWebhookController;
 
 Route::get('/', function () {
     return redirect('/admin');
@@ -122,6 +124,8 @@ Route::get('/partner/cambio/contrasena', function () {
 
 Route::post('/partner/contrasena/cambiada', [PartnerController::class, 'cambiarContrasena'])->name('partner.contrasena.cambiada');
 
-//
-
+//Ruta WhatsApp API
+Route::post('/whatsapp/send-template', [WhatsappController ::class, 'sendTemplateMessage']);
+Route::post('/webhook/whatsapp', [WhatsAppWebhookController::class, 'handle']);
+Route::get('/webhook/whatsapp', [WhatsAppWebhookController::class, 'verify']);
 

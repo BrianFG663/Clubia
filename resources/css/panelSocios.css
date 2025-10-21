@@ -21,6 +21,7 @@ header {
     flex-direction: row;
     justify-content: left;
     align-items: center;
+    color: white;
 }
 
 .logo {
@@ -444,6 +445,13 @@ header > i:hover {
     font-weight: 100;
 }
 
+.boton-carnet{
+    position: relative;
+    right: 1rem;
+    background-color: transparent;
+    border: none;
+}
+
 /* Media Queries for Mobile Devices (≤ 600px) */
 @media screen and (max-width: 600px) {
     header {
@@ -572,6 +580,13 @@ header > i:hover {
         display: flex;
         justify-content: space-between;
         flex-direction: row;
+    }
+
+    .boton-carnet{
+        position: relative;
+        left: 6rem;
+        background-color: transparent;
+        border: none;
     }
 
     .th-inf{

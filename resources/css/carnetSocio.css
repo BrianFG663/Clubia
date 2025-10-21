@@ -1,0 +1,298 @@
+html {
+    padding: 0%;
+    margin: 0%;
+    background-color: black;
+    height: 100%;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    padding: 0%;
+    margin: 0%;
+    height: 100%;
+}
+
+header {
+    height: 9%;
+    padding: 0%;
+    margin: 0%;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.474);
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+    color: white;
+}
+
+.form-logout {
+    position: relative;
+    left: 78%;
+}
+
+.form-socio{
+    position: relative;
+    left: 77.5%;
+}
+
+button{
+    background-color: transparent;
+    border: none;
+}
+
+button > i {
+    color: #c28840;
+    font-weight: 100;
+    font-size: 3vh;
+    position: relative;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+header > i:hover {
+    color: white;
+}
+
+.logo {
+    height: 90%;
+    width: auto;
+    max-height: 90%;
+    margin-left: 0.6vw;
+    margin-right: 0.3vw;
+}
+
+.titulo {
+    color: #c28840;
+    font-size: 2vw;
+}
+
+.form-logout {
+    background-color: transparent;
+    border: none;
+}
+
+.carnet {
+    width: 70%;
+    height: 60%;
+    position: relative;
+    left: 15%;
+    top: 15%;
+    border: 2px solid #c28840;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    color: white;
+}
+
+.contenedor-imagen {
+    width: 30%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-right: 1px solid #c28840;
+    flex-direction: column;
+}
+
+.formulario {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 30%;
+    position: relative;
+    top: 5%;
+    width: 100%;
+    border-top: 1px solid #c28840;
+}
+
+label {
+    position: relative;
+    top: 8%;
+}
+
+.input {
+    position: relative;
+    top: 25%;
+    color: #c28840;
+    width: 90%;
+}
+
+input[type="file"]::-webkit-file-upload-button {
+    background-color: transparent;
+    border: 1px solid #c28840;
+    color: #c28840;
+    padding: 2%;
+    border-radius: 2px;
+    margin-right: 5%;
+    font-weight: 100;
+    cursor: pointer;
+    transition: 0.1s;
+}
+
+input[type="file"]::-webkit-file-upload-button:hover {
+    background-color: #c288402f;
+}
+
+.boton {
+    position: relative;
+    top: 37%;
+    padding: 3%;
+    background-color: transparent;
+    border: 1px solid #c28840;
+    color: #c28840;
+    transition: 0.1s;
+    cursor: pointer;
+}
+
+.boton:hover {
+    background-color: #c288402f;
+}
+
+.imagen-carnet {
+    border-radius: 200px;
+    width: 70%;
+    position: relative;
+    bottom: 3%;
+    height: auto;
+}
+
+.contenedor-inf {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.imagen-logo {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 40%;
+    opacity: 0.1;
+    height: auto;
+}
+
+.titulo-inf {
+    position: relative;
+    top: 2%;
+    width: 100%;
+    height: 15%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+}
+
+.tabla {
+    position: relative;
+    top: 7%;
+    width: 90%;
+    height: 70%;
+    border: 1px solid green;
+    border-collapse: collapse;
+}
+
+span {
+    color: #c28840;
+}
+
+td {
+    font-size: 1.4rem;
+    text-align: center;
+    border: 1px solid #c28840;
+}
+
+/* Media Queries for Mobile Devices (≤ 600px) */
+@media screen and (max-width: 600px) {
+    header {
+        display: none;
+    }
+
+    .carnet {
+        width: 150%;
+        height: 90vw;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%) rotate(90deg);
+        border-radius: 8px;
+        display: flex;
+        flex-direction: row;
+    }
+
+    .contenedor-imagen {
+        width: 30%;
+        height: 100%;
+        border-right: 1px solid #c28840;
+    }
+
+    .contenedor-inf {
+        width: 70%;
+        height: 100%;
+    }
+
+    .imagen-carnet {
+        width: 80%;
+        position: relative;
+        bottom: 8%;
+    }
+
+    .formulario {
+        height: 25%;
+        top: 2%;
+        width: 100%;
+        margin: 0 auto;
+        border-top: 1px solid #c28840;
+    }
+
+    label {
+        top: 5%;
+        font-size: 3vw;
+        position: relative;
+        top: 10%;
+    }
+
+    .input {
+        top: 10%;
+        width: 95%;
+        position: relative;
+        top: 40%;
+    }
+
+    input[type="file"]::-webkit-file-upload-button {
+        padding: 3%;
+        font-size: 3vw;
+    }
+
+    .boton {
+        top: 15%;
+        padding: 4%;
+        font-size: 3vw;
+        position: relative;
+        top: 70%;
+    }
+
+    .titulo-inf {
+        position: static;
+        height: 10%;
+        font-size: 1.5rem;
+        position: relative;
+    }
+
+    .tabla {
+        position: static;
+        width: 95%;
+        height: 65%;
+        margin: 2% auto;
+        position: relative;
+    }
+
+    td {
+        font-size: 1rem;
+    }
+
+    .imagen-logo {
+        width: 50%;
+        bottom: 2%;
+        right: 2%;
+    }
+}

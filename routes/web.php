@@ -122,6 +122,12 @@ Route::get('/partner/cambio/contrasena', function () {
 
 Route::post('/partner/contrasena/cambiada', [PartnerController::class, 'cambiarContrasena'])->name('partner.contrasena.cambiada');
 
+Route::post('/partner/cambio/imagen', [PartnerController::class, 'subirPerfil'])->name('partner.cambio.imagen');
+
+Route::get('/parner/carnet', function () {
+  return view('partner.carnetSocio');
+})->name('socio.carnet');
+
 //
 
 

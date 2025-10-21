@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     @vite(['resources/css/panelSocios.css', 'resources/js/PanelSocios.js'])
 </head>
 
@@ -15,10 +15,14 @@
     <header>
         <img src="{{ asset('images/logos/texturizado.png') }}" class="logo">
         <h1 class="titulo">CLUBIA</h1>
+        <form action="{{ route('socio.carnet') }}" method="get">
+            @csrf
+            <button class="boton-carnet"><i class="fa-solid fa-id-card"></i></button>
+        </form>
         <form method="POST" action="{{ route('partner.logout') }}">
             @csrf
             <button type="submit" class="form-logout"><i class="fa-solid fa-sign-out-alt"
-                title="Cerrar sesion"></i></button>
+            title="Cerrar sesion"></i></button>
         </form>
     </header>
 

@@ -42,12 +42,12 @@ class PartnerController extends Controller
 
         foreach ($partner->familyMembers as $familiar) {
             foreach ($familiar->invoices as $factura) {
-                    if ($factura->estado_pago == 1) {
-                        $facturasPagas[] = $factura;
-                    } else {
-                        $facturasInpagas[] = $factura;
-                    }
+                if ($factura->estado_pago == 1) {
+                    $facturasPagas[] = $factura;
+                } else {
+                    $facturasInpagas[] = $factura;
                 }
+            }
         }
 
         return view('partner.panel', compact('partner', 'facturasPagas', 'facturasInpagas'));
@@ -134,35 +134,36 @@ class PartnerController extends Controller
         }
     }
 
-    public function cambiarContrasena(Request $request){
+    public function cambiarContrasena(Request $request)
+    {
 
         $partnerId = Auth::guard('partner')->id();
-        $partner =Partner::find($partnerId);
+        $partner = Partner::find($partnerId);
 
-        if($request->contrasena !== $request->contrasenaConfirmar){
+        if ($request->contrasena !== $request->contrasenaConfirmar) {
             return back()->withErrors([
                 'contrasena' => 'Las contraseñas deben coincidir.',
             ]);
         }
 
-        if(Hash::check($request->contrasena, $partner->password)){
+        if (Hash::check($request->contrasena, $partner->password)) {
             return back()->withErrors([
                 'contrasena' => 'La contrasena no puede ser la misma a la de antes.',
             ]);
         }
 
-        if(strlen($request->contrasena) < 5){
+        if (strlen($request->contrasena) < 5) {
             return back()->withErrors([
                 'contrasena' => 'Debe tener al menos 6 caracteres.',
             ]);
         }
 
-        if(!preg_match('/^[a-zA-Z0-9]+$/', $request->contrasena)){
+        if (!preg_match('/^[a-zA-Z0-9]+$/', $request->contrasena)) {
             return back()->withErrors([
                 'contrasena' => 'No se puede ingresar caracteres especiales.',
             ]);
         }
-        
+
         $partner->password = Hash::make($request->contrasena);
         $partner->password_changed = true;
         $partner->save();
@@ -170,7 +171,29 @@ class PartnerController extends Controller
         return redirect()->route('partner.panel');
     }
 
-    
+
+    public function subirPerfil(Request $request)
+{
+    $request->validate([
+        'photo' => 'required|image|max:2048',
+    ]);
+
+    $partner = auth('partner')->user();
+
+    // Eliminar la imagen anterior si existe
+    if ($partner->hasMedia('profile')) {
+        $partner->clearMediaCollection('profile');
+    }
+
+    // Subir la nueva imagen
+    $partner->addMedia($request->file('photo'))
+    ->toMediaCollection('profile');
+
+    return back()->with('success', 'Foto actualizada correctamente.');
+}
+
+
+
 
 
     public function detallesGrupoFamiliar(Request $request)

@@ -92,3 +92,6 @@ Marcar:
 Clic en Aceptar
 Ingresá tu contraseña si te la pide
 Reiniciá la PC para verificar que se ejecuta automáticamente
+
+Ejecutar el worker  para la cola  de links:
+php artisan queue:work --queue=links

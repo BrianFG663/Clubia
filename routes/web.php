@@ -94,3 +94,11 @@ Route::post('/buscar/socio', [InvoiceConstroller::class, 'buscarSocio']);
 Route::post('/subactividad/buscar', [SubActividadController::class, 'buscarSubactvidad']);
 Route::post('/grupo-familiar/buscar', [PartnerController::class, 'buscarGrupo']);
 
+//Mercado pago 
+Route::post('/webhook-mp', [PaymentController::class, 'webhookMP']);
+
+Route::get('/success', function () {    return view('success');})->name('success');
+Route::get('/failure', function () {    return view('success'); });
+Route::get('/pending', function () {    return view('success'); });
+
+

@@ -29,6 +29,9 @@
     </header>
     <div class="carnet">
         <div class="contenedor-imagen">
+        @if (!$partner->getFirstMedia('profile'))
+            <img class="imagen-pendiente" src="{{ asset('images/html/cuenta.png') }}">
+        @endif
         @if ($partner->getFirstMedia('profile')?->checked === 'aprobado')
             <img class="imagen-carnet" src="{{ asset('storage/' . $partner->getFirstMedia('profile')->getPathRelativeToRoot('profile')) }}">
         @elseif ($partner->getFirstMedia('profile')?->checked === 'pendiente')

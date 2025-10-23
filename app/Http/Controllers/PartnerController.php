@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class PartnerController extends Controller
 {
@@ -173,26 +174,64 @@ class PartnerController extends Controller
 
 
     public function subirPerfil(Request $request)
-{
-    $request->validate([
-        'photo' => 'required|image|max:2048',
-    ]);
+    {
+        $request->validate([
+            'photo' => 'required|image|max:2048',
+        ]);
 
-    $partner = auth('partner')->user();
+        $partner = auth('partner')->user();
 
-    // Eliminar la imagen anterior si existe
-    if ($partner->hasMedia('profile')) {
-        $partner->clearMediaCollection('profile');
+        // Eliminar la imagen anterior si existe
+        
+        if ($partner->hasMedia('profile')) {
+            
+            $partner->clearMediaCollection('profile');
+        }
+
+        // Subir la nueva imagen
+        $partner->addMedia($request->file('photo'))
+            ->toMediaCollection('profile');
+
+        return back()->with('success', 'Foto actualizada correctamente.');
     }
 
-    // Subir la nueva imagen
-    $partner->addMedia($request->file('photo'))
-    ->toMediaCollection('profile');
+    public function traerPerfilSocios()
+    {
+        $socios = Partner::whereHas('media', function ($query) {
+            $query->where('checked', 'pendiente')
+                ->where('collection_name', 'profile');
+        })->with(['media' => function ($query) {
+            $query->where('checked', 'pendiente')
+                ->where('collection_name', 'profile');
+        }])->get();
 
-    return back()->with('success', 'Foto actualizada correctamente.');
-}
+
+        return response()->json(['socios' => $socios]);
+    }
+
+    public function aceptarFotoPerfil(Request $request)
+    {
+
+        Media::where('model_id', $request->id)
+            ->where('model_type', Partner::class)
+            ->where('collection_name', 'profile')
+            ->where('checked', 'pendiente')
+            ->update(['checked' => 'aprobado']);
 
 
+        return response()->json(['mensaje' => true]);
+    }
+
+    public function eliminarFotoPerfil(Request $request)
+    {
+        Media::where('model_id', $request->id)
+            ->where('model_type', Partner::class)
+            ->where('collection_name', 'profile')
+            ->where('checked', 'pendiente')
+            ->update(['checked' => 'rechazado']);
+
+        return response()->json(['mensaje' => true]);
+    }
 
 
 

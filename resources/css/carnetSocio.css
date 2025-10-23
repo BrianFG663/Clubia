@@ -155,6 +155,15 @@ input[type="file"]::-webkit-file-upload-button:hover {
     height: auto;
 }
 
+.imagen-pendiente{
+    border-radius: 200px;
+    width: 70%;
+    position: relative;
+    bottom: 3%;
+    height: auto;
+    opacity: 0.6;
+}
+
 .contenedor-inf {
     width: 70%;
     display: flex;
@@ -234,6 +243,18 @@ td {
         width: 80%;
         position: relative;
         bottom: 8%;
+    }
+
+    .imagen-pendiente{
+        width: 80%;
+        position: relative;
+        bottom: 8%;
+    }
+
+    .mesanje-foto{
+        border: 1px solid green;
+        font-size: 0.8rem;
+        text-align: center;
     }
 
     .formulario {

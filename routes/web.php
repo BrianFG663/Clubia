@@ -131,3 +131,12 @@ Route::get('/parner/carnet', function () {
 //
 
 
+//ruta moderacion de carnets
+
+Route::post('traer/socios/fotos', [PartnerController::class, 'traerPerfilSocios']);
+Route::post('aceptar/foto/socio', [PartnerController::class, 'aceptarFotoPerfil']);
+Route::delete('eliminar/foto/socio', [PartnerController::class, 'eliminarFotoPerfil']);
+
+//
+
+

@@ -29,11 +29,16 @@
     </header>
     <div class="carnet">
         <div class="contenedor-imagen">
-            @if ($partner->hasMedia('profile'))
-                <img class="imagen-carnet" src="{{ asset('storage/' . $partner->getFirstMedia('profile')->getPathRelativeToRoot('profile')) }}">
-            @else
-                <img class="imagen-carnet" src="{{ asset('images/html/cuenta.png') }}">
-            @endif
+        @if ($partner->getFirstMedia('profile')?->checked === 'aprobado')
+            <img class="imagen-carnet" src="{{ asset('storage/' . $partner->getFirstMedia('profile')->getPathRelativeToRoot('profile')) }}">
+        @elseif ($partner->getFirstMedia('profile')?->checked === 'pendiente')
+            <img class="imagen-pendiente" src="{{ asset('images/alertas/lupa.png') }}">
+            <span class="mesanje-foto">Foto pendiente de revision.</span>
+        @elseif ($partner->getFirstMedia('profile')?->checked === 'rechazado')
+            <img class="imagen-carnet" src="{{ asset('images/html/cuenta.png') }}">
+            <span class="mesanje-foto">Foto rechazada, por favor prueba con otra.</span>
+        @endif
+
             <form class="formulario" method="POST" action="{{ route('partner.cambio.imagen') }}" enctype="multipart/form-data">
                 @csrf
                 <label for="photo">Cambiar foto de perfil:</label>

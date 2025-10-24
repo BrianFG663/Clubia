@@ -7,11 +7,13 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as Middleware;
 class VerifyCsrfToken extends Middleware
 {
     /**
-     * Las rutas que deben ser excluidas de la verificación CSRF.
+     * Las rutas excluidas de verificación CSRF.
      *
      * @var array<int, string>
      */
     protected $except = [
-        '/webhook/whatsapp', // webhook GET y POST de WhatsApp
+        '/webhook/whatsapp',
+        '/whatsapp/send-template',
     ];
 }
+

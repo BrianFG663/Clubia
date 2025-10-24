@@ -15,6 +15,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web([
             CheckPasswordChanged::class,
         ]);
+        $middleware->validateCsrfTokens(except: [
+        'stripe/*',
+    ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

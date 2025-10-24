@@ -3,11 +3,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+
 
 class WhatsAppController extends Controller
 {
     public function sendTemplate(Request $request)
     {
+        Log::info('Solicitud recibida', $request->all());
         $phoneNumberId = config('services.whatsapp.phone_number_id'); 
         $accessToken = config('services.whatsapp.access_token');     
         $to = '54344615672121'; // fijo
@@ -49,6 +52,6 @@ class WhatsAppController extends Controller
 
         return $resp->json();
     }
-
+    
 }
 

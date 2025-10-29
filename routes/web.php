@@ -17,8 +17,9 @@ use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
-    return redirect('/admin');
-})->name('admin');
+    return redirect('/splash');
+});
+
 
 
 //ventas

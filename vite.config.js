@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
     server: {
-        https: true, // solo si tenés certificado local
+        https: false, // solo si tenés certificado local
     },
     plugins: [
         laravel({

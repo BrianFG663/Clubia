@@ -71,9 +71,9 @@ class PaymentLinkService
                 'auto_return' => 'approved',
                 'payer' => ['email' => $emailPayer],
                 'back_urls' => [
-                    'success' => 'https://ee80ce8eaef6.ngrok-free.app',
-                    'failure' => 'https://ee80ce8eaef6.ngrok-free.app',
-                    'pending' => 'https://ee80ce8eaef6.ngrok-free.app',
+                    'success' =>  'https://997879285599.ngrok-free.app/success',
+                    'failure' => ' https://997879285599.ngrok-free.app/failure',
+                    'pending' => ' https://997879285599.ngrok-free.app/pending',
                 ],
 
             ]);

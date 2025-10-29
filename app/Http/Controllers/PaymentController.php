@@ -56,7 +56,7 @@ class PaymentController extends Controller
 
             $institucionesProcesadas = array_values(array_unique($institucionesProcesadas));
 
-            // Actualizar caja diaria por institución
+            // Actualizar caja diaria 
             foreach ($institucionesProcesadas as $institutionId) {
                 $facturasPorInst = $facturas->filter(fn($f) => $f->institution_id == $institutionId);
                 $totalPorInst = $facturasPorInst->sum('monto_total');
@@ -83,7 +83,7 @@ class PaymentController extends Controller
 
             $this->actualizarEstadosYSubactividades($partnerId);
 
-            // Actualizar PaymentLink si existe (solo marcar como pagado)
+            // Actualizar paymentLink 
             $periodo = $facturas->first()->fecha_factura ?? null;
             if ($periodo) {
                 $paymentLink = PaymentLink::where('partner_id', $partnerId)
@@ -93,7 +93,7 @@ class PaymentController extends Controller
                     $paymentLink->estado = 'pagado';
                     $paymentLink->fecha_pago = now();
                     $paymentLink->save();
-                    Log::info("✅ Link de pago presencial marcado como pagado para socio {$partnerId} - periodo {$periodo}");
+                    Log::info("Link de pago presencial marcado como pagado para socio {$partnerId} - periodo {$periodo}");
                 }
             }
 
@@ -102,18 +102,15 @@ class PaymentController extends Controller
 
         } catch (\Throwable $e) {
             DB::rollBack();
-            Log::error("❌ Error al procesar pago presencial: " . $e->getMessage());
+            Log::error("Error al procesar pago presencial: " . $e->getMessage());
             return response()->json(['mensaje' => false, 'error' => $e->getMessage()]);
         }
     }
 
-    /**
-     * Webhook de Mercado Pago (pagos online)
-     */
     public function webhookMP(Request $request)
 {
     $data = $request->all();
-    Log::info('🔔 Webhook Mercado Pago recibido', $data);
+    Log::info( 'Webhook Mercado Pago recibido', $data);
 
     $paymentId = $data['data']['id'] ?? null;
     if (!$paymentId) {
@@ -128,7 +125,7 @@ class PaymentController extends Controller
 
     $preferenceId = $payment->preference_id ?? null;
     if (!$preferenceId) {
-        Log::warning("⚠️ Pago recibido sin preference_id");
+        Log::warning("Pago recibido sin preference_id");
         return response()->json(['mensaje' => 'Sin preference_id'], 400);
     }
 
@@ -137,7 +134,6 @@ class PaymentController extends Controller
         return response()->json(['mensaje' => 'Link no encontrado'], 404);
     }
 
-    // Marcar como pagado si está aprobado
     if ($payment->status === 'approved') {
         $paymentLink->update([
             'estado' => 'pagado',
@@ -151,7 +147,7 @@ class PaymentController extends Controller
         $this->actualizarEstadosYSubactividades($paymentLink->partner_id);
     }
 
-    Log::info("✅ Webhook procesado correctamente para socio {$paymentLink->partner_id}");
+    Log::info("Webhook procesado correctamente para socio {$paymentLink->partner_id}");
     return response()->json(['mensaje' => 'OK']);
 }
 

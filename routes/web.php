@@ -154,3 +154,5 @@ Route::post('/subir/logo', [UserController::class, 'subirLogo'])->name('imagen.g
 Route::get('/success', function () {    return view('success');})->name('success');
 Route::get('/failure', function () {    return view('success'); });
 Route::get('/pending', function () {    return view('success'); });
+
+Route::post('/webhook-mp', [PaymentController::class, 'webhookMP']);

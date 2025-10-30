@@ -14,7 +14,16 @@
 <body>
     <div class="contenedor">
         <div class="imagen-titulo">
-            <img src="{{asset('images/logos/texturizado.png')}}" class="logo">
+            @php
+                $ruta = 'imagenes/logo.png';
+                $logo = Illuminate\Support\Facades\Storage::disk('public')->exists($ruta)
+                    ? asset("storage/$ruta") . '?v=' . filemtime(public_path("storage/$ruta"))
+                    : null;
+            @endphp
+
+            @if ($logo)
+                <img src="{{ $logo }}" class="logo">
+            @endif
             <div class="titulo">Iniciar sesion</div>
         </div>
         <form method="POST" action="{{ route('partner.login') }}">

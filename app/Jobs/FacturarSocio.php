@@ -11,6 +11,8 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
+use App\Jobs\GenerarLinkSocio;
+
 
 class FacturarSocio implements ShouldQueue
 {
@@ -120,5 +122,11 @@ class FacturarSocio implements ShouldQueue
             }
              
         }
+        $periodo = $this->fechaFactura; // ya es "10-2025"
+        GenerarLinkSocio::dispatch($this->partnerId, $periodo);
+       
+
+Log::info("✅ Job de generación de link de pago despachado para socio {$this->partnerId}");
     }
+    
 }

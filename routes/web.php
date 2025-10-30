@@ -98,7 +98,6 @@ Route::post('/subactividad/buscar', [SubActividadController::class, 'buscarSubac
 Route::post('/grupo-familiar/buscar', [PartnerController::class, 'buscarGrupo']);
 
 
-
 //rutas vista socios
 Route::get('/socio/login', function () {
   return view('partner.login');
@@ -151,6 +150,7 @@ Route::get('/splash', function () {
 
 Route::post('/subir/logo', [UserController::class, 'subirLogo'])->name('imagen.guardar');
 
-//
-
-
+//MP
+Route::get('/success', function () {    return view('success');})->name('success');
+Route::get('/failure', function () {    return view('success'); });
+Route::get('/pending', function () {    return view('success'); });

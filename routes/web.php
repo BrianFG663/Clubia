@@ -149,3 +149,4 @@ Route::get('/splash', function () {
 Route::get('/success', function () {    return view('success');})->name('success');
 Route::get('/failure', function () {    return view('success'); });
 Route::get('/pending', function () {    return view('success'); });
+

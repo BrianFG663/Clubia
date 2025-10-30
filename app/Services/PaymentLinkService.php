@@ -15,7 +15,7 @@ class PaymentLinkService
     public function generarLinkSocio(Partner $titular, string $mes): ?PaymentLink
     {
         try {
-            Log::info("🔹 Generando link de pago para socio {$titular->id} - mes {$mes}");
+            Log::info("Generando link de pago para socio {$titular->id} - mes {$mes}");
 
             // Colección de IDs de socios a incluir
             $socios = collect([$titular->id]);
@@ -71,15 +71,15 @@ class PaymentLinkService
                 'auto_return' => 'approved',
                 'payer' => ['email' => $emailPayer],
                 'back_urls' => [
-                    'success' =>  'https://997879285599.ngrok-free.app/success',
-                    'failure' => ' https://997879285599.ngrok-free.app/failure',
-                    'pending' => ' https://997879285599.ngrok-free.app/pending',
+                    'success' =>  'https://fa849b187480.ngrok-free.app/success',
+                    'failure' =>  'https://fa849b187480.ngrok-free.app/failure',
+                    'pending' =>  'https://fa849b187480.ngrok-free.app/pending',
                 ],
 
             ]);
 
             Log::info('Preferencia raw', ['preferencia' => $preferencia]);
-            Log::info("✅ Preferencia creada para socio {$titular->id}", [
+            Log::info("Preferencia creada para socio {$titular->id}", [
                 'checkout_url' => $preferencia->init_point,
             ]);
 

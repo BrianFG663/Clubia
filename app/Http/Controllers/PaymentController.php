@@ -19,9 +19,7 @@ use MercadoPago\MercadoPagoConfig;
 
 class PaymentController extends Controller
 {
-    /**
-     * Pago presencial
-     */
+    
     public function pagarFacturas(Request $request)
     {
         $ids = $request->input('facturas'); 

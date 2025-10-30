@@ -5,7 +5,13 @@ body {
     position: relative;
     min-height: 100vh;
     overflow: hidden;
-    
+    height: 100%;
+}
+
+html{
+    height: 100%;
+    margin: 0;
+    padding: 0;
 }
 
 /* Imagen lateral izquierda */
@@ -33,7 +39,7 @@ body {
     opacity: 1;
     width: auto;
     height: auto;
-    font-size: 11rem;
+    font-size: 12rem;
     width: 50%;
     text-align: center;
     position:relative;
@@ -54,16 +60,39 @@ body {
 
 .botones-ingreso {
     color: aliceblue;
-    border: 1px solid aliceblue;
     width: 30%;
     position: relative;
     top: 8rem;
-    left: 61%;
+    left: 60.2%;
     display: flex;
     justify-content: space-around;
 }
 
 a{
     color: aliceblue;
+    background-color: #af7a3a;
+    padding: 1rem;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: 0.2s;
+    font-family: Arial, Helvetica, sans-serif;
 }
+
+a:hover{
+    background-color: #9e6f36;
+}
+
+.info{
+    color: aliceblue;
+    width: 60%;
+    position: relative;
+    top: 35%;
+    display: flex;
+    justify-content: space-around;
+    left: 40%;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1rem;
+    opacity: 50%;
+}
+
 

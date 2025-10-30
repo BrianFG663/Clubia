@@ -14,11 +14,13 @@ use App\Models\Partner;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ParameterController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
-    return redirect('/admin');
-})->name('admin');
+    return redirect('/splash');
+});
+
 
 
 //ventas
@@ -145,8 +147,7 @@ Route::get('/splash', function () {
 });
 
 
-//MP
-Route::get('/success', function () {    return view('success');})->name('success');
-Route::get('/failure', function () {    return view('success'); });
-Route::get('/pending', function () {    return view('success'); });
+//ruta personalizacion logo
+Route::post('/subir/logo', [UserController::class, 'subirLogo'])->name('imagen.guardar');
+
 

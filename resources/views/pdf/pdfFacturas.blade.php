@@ -9,8 +9,17 @@
 <body>
 
     <header>
-        <img src="{{ public_path('images/logos/logo-cce.png') }}" alt="Logo">
-        <div class="empresa">Club central entrerriano</div>
+        @php
+            $ruta = 'imagenes/logo.png';
+            $logo = Illuminate\Support\Facades\Storage::disk('public')->exists($ruta)
+                ? asset("storage/$ruta") . '?v=' . filemtime(public_path("storage/$ruta"))
+                : null;
+        @endphp
+
+        @if ($logo)
+            <img src="{{ $logo }}" alt="Logo actual">
+        @endif
+        <div class="empresa">{{ config('app.name') }}</div>
     </header>
 
     

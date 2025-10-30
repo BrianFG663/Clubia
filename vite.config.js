@@ -29,6 +29,8 @@ export default defineConfig({
                 'resources/css/CambioContrasena.css',
                 'resources/css/carnetSocio.css',
                 'resources/css/moderarFotos.css',
+                'resources/css/personalizarLogo.css',
+                'resources/css/splash.css',
                 'resources/js/app.js',
                 'resources/js/bootstrap.js',
                 'resources/js/cajaDiaria.js',

@@ -233,7 +233,7 @@ class InvoiceConstroller extends Controller
             }
 
                Log::info('Datos del dependiente y facturas', [
-                    'dependiente' => $dep->toArray(),   // todos los datos del dependiente
+                    'dependiente' => $dep->toArray(), 
                     'facturas'    => $depFacturas->toArray()
                 ]);
         }
@@ -307,8 +307,6 @@ class InvoiceConstroller extends Controller
             ->limit(20)
             ->get();
 
-
-
         if ($socios->isEmpty()) {
             return response()->json([
                 'success' => false,
@@ -352,10 +350,8 @@ class InvoiceConstroller extends Controller
     {
 
         $factura = Invoice::find($request->id);
-
         $factura->estado_pago = 1;
         $factura->save();
-
         return response()->json(['mensaje' => true]);
     }
 

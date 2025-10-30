@@ -13,16 +13,10 @@
 
 
         @php
-            $extensiones = ['png', 'jpg', 'jpeg', 'webp', 'gif'];
-            $logo = null;
-
-            foreach ($extensiones as $ext) {
-                $ruta = "imagenes/logo.$ext";
-                if (Illuminate\Support\Facades\Storage::disk('public')->exists($ruta)) {
-                    $logo = asset("storage/$ruta");
-                    break;
-                }
-            }
+            $ruta = 'imagenes/logo.png';
+            $logo = Illuminate\Support\Facades\Storage::disk('public')->exists($ruta)
+                ? asset("storage/$ruta") . '?v=' . filemtime(public_path("storage/$ruta"))
+                : null;
         @endphp
 
         @if ($logo)

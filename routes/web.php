@@ -18,8 +18,9 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
-    return redirect('/admin');
+    return redirect('/splash');
 });
+
 
 
 //ventas
@@ -140,6 +141,11 @@ Route::delete('eliminar/foto/socio', [PartnerController::class, 'eliminarFotoPer
 
 //
 
+//Ruta Splash Screen
+
+Route::get('/splash', function () {
+    return view('filament.pages.splash-screen');
+});
 
 //ruta personalizacion logo
 

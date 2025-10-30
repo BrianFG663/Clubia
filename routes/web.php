@@ -146,8 +146,11 @@ Route::get('/splash', function () {
     return view('filament.pages.splash-screen');
 });
 
-
 //ruta personalizacion logo
+
 Route::post('/subir/logo', [UserController::class, 'subirLogo'])->name('imagen.guardar');
 
-
+//MP
+Route::get('/success', function () {    return view('success');})->name('success');
+Route::get('/failure', function () {    return view('success'); });
+Route::get('/pending', function () {    return view('success'); });

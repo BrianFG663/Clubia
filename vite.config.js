@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
     server: {
-        https: true, // solo si tenés certificado local
+        https: false, // solo si tenés certificado local
     },
     plugins: [
         laravel({
@@ -29,6 +29,7 @@ export default defineConfig({
                 'resources/css/CambioContrasena.css',
                 'resources/css/carnetSocio.css',
                 'resources/css/moderarFotos.css',
+                'resources/css/personalizarLogo.css',
                 'resources/js/app.js',
                 'resources/js/bootstrap.js',
                 'resources/js/cajaDiaria.js',

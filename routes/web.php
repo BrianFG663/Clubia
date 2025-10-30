@@ -14,6 +14,7 @@ use App\Models\Partner;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ParameterController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
@@ -136,6 +137,13 @@ Route::get('/parner/carnet', function () {
 Route::post('traer/socios/fotos', [PartnerController::class, 'traerPerfilSocios']);
 Route::post('aceptar/foto/socio', [PartnerController::class, 'aceptarFotoPerfil']);
 Route::delete('eliminar/foto/socio', [PartnerController::class, 'eliminarFotoPerfil']);
+
+//
+
+
+//ruta personalizacion logo
+
+Route::post('/subir/logo', [UserController::class, 'subirLogo'])->name('imagen.guardar');
 
 //
 

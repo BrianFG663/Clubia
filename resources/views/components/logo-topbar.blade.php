@@ -23,7 +23,22 @@
 </style>
 
 <div class="custom-topbar-brand">
-    <img src="{{ asset('images/logos/texturizado.png') }}" alt="Logo" class="custom-topbar-logo">
+    @php
+            $extensiones = ['png', 'jpg', 'jpeg', 'webp', 'gif'];
+            $logo = null;
+
+            foreach ($extensiones as $ext) {
+                $ruta = "imagenes/logo.$ext";
+                if (Illuminate\Support\Facades\Storage::disk('public')->exists($ruta)) {
+                    $logo = asset("storage/$ruta");
+                    break;
+                }
+            }
+        @endphp
+
+        @if ($logo)
+            <img src="{{ $logo }}" alt="Logo actual" class="custom-topbar-logo">
+        @endif
     <span class="custom-topbar-name">
         {{ config('app.name') }}
     </span>

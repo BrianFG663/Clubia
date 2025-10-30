@@ -9,8 +9,23 @@
 <body>
 
     <header>
-        <img src="{{ public_path('images/logos/logo-cce.png') }}" alt="Logo">
-        <div class="empresa">Club central entrerriano</div>
+        @php
+            $extensiones = ['png', 'jpg', 'jpeg', 'webp', 'gif'];
+            $logo = null;
+
+            foreach ($extensiones as $ext) {
+                $ruta = "imagenes/logo.$ext";
+                if (Illuminate\Support\Facades\Storage::disk('public')->exists($ruta)) {
+                    $logo = public_path("storage/$ruta");
+                    break;
+                }
+            }
+        @endphp
+
+        @if ($logo)
+            <img src="{{ $logo }}" alt="Logo actual">
+        @endif
+        <div class="empresa">{{ config('app.name') }}</div>
     </header>
 
     

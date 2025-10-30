@@ -177,13 +177,10 @@ class PartnerController extends Controller
     public function subirPerfil(Request $request)
     {
 
-        try {
-            $request->validate([
-                'photo' => 'required|image|max:2048',
-            ]);
-        } catch (ValidationException $e) {
-            return back()->with('error', 'Formato de archivo no soportado, por favor seleccione una imagen.');
-        }
+    
+        $request->validate([
+            'photo' => 'required|image|max:2048',
+        ]);
         
 
         $partner = auth('partner')->user();

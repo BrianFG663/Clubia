@@ -13,8 +13,17 @@
 
 <body>
     <header>
-        <img src="{{ asset('images/logos/texturizado.png') }}" class="logo">
-        <h1 class="titulo">CLUBIA</h1>
+        @php
+                $ruta = 'imagenes/logo.png';
+                $logo = Illuminate\Support\Facades\Storage::disk('public')->exists($ruta)
+                    ? asset("storage/$ruta") . '?v=' . filemtime(public_path("storage/$ruta"))
+                    : null;
+            @endphp
+
+            @if ($logo)
+                <img src="{{ $logo }}" class="logo">
+            @endif
+        <h1 class="titulo">{{ config('app.name') }}</h1>
         <form action="{{ route('socio.carnet') }}" method="get">
             @csrf
             <button class="boton-carnet"><i class="fa-solid fa-id-card"></i></button>

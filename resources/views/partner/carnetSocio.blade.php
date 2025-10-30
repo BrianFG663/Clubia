@@ -16,8 +16,17 @@
 @endphp
 <body>
     <header>
-        <img src="{{ asset('images/logos/texturizado.png') }}" class="logo">
-        <h1 class="titulo">CLUBIA</h1>
+        @php
+            $ruta = 'imagenes/logo.png';
+            $logo = Illuminate\Support\Facades\Storage::disk('public')->exists($ruta)
+                ? asset("storage/$ruta") . '?v=' . filemtime(public_path("storage/$ruta"))
+                : null;
+        @endphp
+
+        @if ($logo)
+            <img src="{{ $logo }}" alt="Logo actual" class="logo">
+        @endif
+        <h1 class="titulo">{{ config('app.name') }}</h1>
         <form action="{{ route('partner.panel') }}" method="get" class="form-socio">
             @csrf
             <button class="boton-carnet" title="Mostrar carnet"><i class="fa-solid fa-house"></i></i></button>
@@ -70,7 +79,7 @@
                     </tr>
                 </tbody>
             </table>
-            <img src="{{ asset('images/logos/texturizado.png') }}"  class="imagen-logo">
+            <img src="{{ $logo }}" alt="Logo actual" class="imagen-logo">
         </div>
     </div>
 </body>

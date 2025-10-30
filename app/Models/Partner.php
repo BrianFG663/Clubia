@@ -92,4 +92,11 @@ class Partner extends Authenticatable implements HasMedia
     {
         return $this->hasMany(Invoice::class, 'client_id')->where('estado_pago', true);
     }
+
+    public function paymentLinks()
+    {
+        return $this->hasMany(PaymentLink::class);
+    }
+
+
 }

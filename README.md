@@ -2,9 +2,7 @@ Correr migraciones : php artisan migrate:fresh
 Generar roles y permisos : php artisan shield:install
 
 permisos super-admin
-php artisan shield:generate --resource=UserResource
 php artisan shield:generate --resource=PartnerResource
-php artisan shield:generate --resource=ActivityResource
 php artisan shield:generate --resource=InstitutionResource
 php artisan shield:generate --resource=SubActivityResource
 php artisan shield:generate --resource=MemberTypeResource
@@ -92,3 +90,6 @@ Marcar:
 Clic en Aceptar
 Ingresá tu contraseña si te la pide
 Reiniciá la PC para verificar que se ejecuta automáticamente
+
+Ejecutar el worker  para la cola  de links:
+php artisan queue:work --queue=links

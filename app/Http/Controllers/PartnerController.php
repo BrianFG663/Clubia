@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class PartnerController extends Controller
@@ -175,14 +176,19 @@ class PartnerController extends Controller
 
     public function subirPerfil(Request $request)
     {
-        $request->validate([
-            'photo' => 'required|image|max:2048',
-        ]);
+
+        try {
+            $request->validate([
+                'photo' => 'required|image|max:2048',
+            ]);
+        } catch (ValidationException $e) {
+            return back()->with('error', 'Formato de archivo no soportado, por favor seleccione una imagen.');
+        }
+        
 
         $partner = auth('partner')->user();
 
         // Eliminar la imagen anterior si existe
-        
         if ($partner->hasMedia('profile')) {
             
             $partner->clearMediaCollection('profile');

@@ -14,6 +14,7 @@ use App\Models\Partner;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ParameterController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
@@ -97,7 +98,6 @@ Route::post('/subactividad/buscar', [SubActividadController::class, 'buscarSubac
 Route::post('/grupo-familiar/buscar', [PartnerController::class, 'buscarGrupo']);
 
 
-
 //rutas vista socios
 Route::get('/socio/login', function () {
   return view('partner.login');
@@ -146,3 +146,13 @@ Route::get('/splash', function () {
     return view('filament.pages.splash-screen');
 });
 
+//ruta personalizacion logo
+
+Route::post('/subir/logo', [UserController::class, 'subirLogo'])->name('imagen.guardar');
+
+//MP
+Route::get('/success', function () {    return view('success');})->name('success');
+Route::get('/failure', function () {    return view('success'); });
+Route::get('/pending', function () {    return view('success'); });
+
+Route::post('/webhook-mp', [PaymentController::class, 'webhookMP']);

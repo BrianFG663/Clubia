@@ -18,7 +18,7 @@
 
 
         <div id="overlay" class="modal-overlay hidden"></div>
-        <div class="familiares" id="familiares">
+            <div class="familiares" id="familiares">
             <button id="cerrar-alerta"><i class="fa-solid fa-xmark" ></i></button>
             <div id="contenedor-informacion">
                 

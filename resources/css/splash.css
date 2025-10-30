@@ -1,0 +1,69 @@
+/* Fondo general con degradado */
+body {
+    margin: 0;
+    background: linear-gradient(to right, #030712, #111827);
+    position: relative;
+    min-height: 100vh;
+    overflow: hidden;
+    
+}
+
+/* Imagen lateral izquierda */
+.contenedor-imagen{
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 0;
+}
+
+.imagen{
+    height: auto;
+    width: 100%;
+    opacity: 30%;
+    position: relative;
+    right:40%;
+    z-index: 0;
+}
+
+.titulo{
+    color: #af7a3a;
+    opacity: 1;
+    width: auto;
+    height: auto;
+    font-size: 11rem;
+    width: 50%;
+    text-align: center;
+    position:relative;
+    left: 50%;
+    margin: 0;
+    top: 8rem;
+}
+
+.texto{
+    width: 70%;
+    position: relative;
+    top: 7rem;
+    font-size: 1.3rem;
+    left: 30%;
+    color: aliceblue;
+
+}
+
+.botones-ingreso {
+    color: aliceblue;
+    border: 1px solid aliceblue;
+    width: 30%;
+    position: relative;
+    top: 8rem;
+    left: 61%;
+    display: flex;
+    justify-content: space-around;
+}
+
+a{
+    color: aliceblue;
+}
+

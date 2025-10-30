@@ -3,14 +3,25 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Spatie\Permission\Traits\HasRoles;
+use Spatie\Image\Enums\Fit;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Partner extends Model
+class Partner extends Authenticatable implements HasMedia
 {
     use HasFactory;
+    use HasRoles;
+    use InteractsWithMedia;
+
+    
+
+    protected $guard_name = 'partner';
 
     protected $fillable = [
         'nombre',
@@ -26,6 +37,14 @@ class Partner extends Model
         'jefe_grupo',
         'responsable_id'
     ];
+
+    public function registerMediaConversions(?Media $media = null): void
+    {
+        $this->addMediaConversion('profile')
+            ->fit(Fit::Crop, 300, 300)
+            ->nonQueued();
+    }
+
 
     public function invoices(): HasMany
     {
@@ -55,8 +74,8 @@ class Partner extends Model
 
     public function responsable(): BelongsTo
     {
-        return $this->belongsTo(Partner::class, 'responsable_id'); 
-    }   
+        return $this->belongsTo(Partner::class, 'responsable_id');
+    }
 
     public function familyMembers(): HasMany
     {
@@ -78,5 +97,6 @@ class Partner extends Model
     {
         return $this->hasMany(PaymentLink::class);
     }
+
 
 }

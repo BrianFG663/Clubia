@@ -15,12 +15,10 @@ document.getElementById('actividad').addEventListener('change', function () {
     })
         .then((res) => res.json())
         .then((data) => {
-            if (data.mensaje == true) { //si es true al actividad tiene sub-actividades
+            if (data.mensaje == true) { 
                 const select = document.getElementById('sub-actividad');
-                // Limpiar opciones actuales
                 select.innerHTML = '';
 
-                // Opción por defecto
                 const defaultOption = document.createElement('option');
                 defaultOption.value = '';
                 defaultOption.textContent = '--Seleccione una sub-actividad--';
@@ -28,7 +26,6 @@ document.getElementById('actividad').addEventListener('change', function () {
                 defaultOption.selected = true;
                 select.appendChild(defaultOption);
 
-                // Agregar las opciones de subactividades
                 data.subActividades.forEach(sub => {
                     const option = document.createElement('option');
                     option.value = sub.id;
@@ -37,7 +34,7 @@ document.getElementById('actividad').addEventListener('change', function () {
                 });
             }
 
-            if (data.mensaje == false) { //si es false al actividad no tiene sub-actividades
+            if (data.mensaje == false) { 
                 const select = document.getElementById('sub-actividad');
                 // Limpiar opciones actuales
                 select.innerHTML = '';

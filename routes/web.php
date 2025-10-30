@@ -6,18 +6,19 @@ use App\Http\Controllers\CashRecordDetailController;
 use App\Http\Controllers\InvoiceConstroller;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\SaleController;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Routing\Middleware;
 use App\Http\Controllers\SubActividadController;
 use App\Http\Controllers\SupplierController;
 use App\Models\Partner;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ParameterController;
 use App\Http\Controllers\PaymentController;
+use Illuminate\Support\Facades\Auth;
 
-Route::redirect('/', '/admin'); //redireccionar al login
-
-
-Route::redirect('/admin', '/admin/inicio'); //ruta para el dashboard perzonalizado
+Route::get('/', function () {
+    return redirect('/admin');
+})->name('admin');
 
 
 //ventas
@@ -94,9 +95,53 @@ Route::post('/buscar/socio', [InvoiceConstroller::class, 'buscarSocio']);
 Route::post('/subactividad/buscar', [SubActividadController::class, 'buscarSubactvidad']);
 Route::post('/grupo-familiar/buscar', [PartnerController::class, 'buscarGrupo']);
 
-//MP
-Route::get('/success', function () {    return view('success');})->name('success');
-Route::get('/failure', function () {    return view('success'); });
-Route::get('/pending', function () {    return view('success'); });
+
+//rutas vista socios
+Route::get('/socio/login', function () {
+  return view('partner.login');
+})->name('login');
+Route::post('/validacion/login', [PartnerController::class, 'validacionLogin'])->name('partner.login');
+
+Route::middleware(['auth:partner'])->group(function () {
+    Route::get('/panel/socio', [PartnerController::class, 'panelSocio'])->name('partner.panel');
+});
+
+
+Route::post('/logout/partner', function () {
+    Auth::guard('partner')->logout();
+    return redirect('/socio/login');
+})->name('partner.logout');
+
+Route::post('/socio/facturas/inpagas', [PartnerController::class, 'facturasInpagas']);
+Route::post('/socio/facturas/pagas', [PartnerController::class, 'facturasPagas']);
+
+Route::get('/partner/cambio/contrasena', function () {
+    return view('partner.cambioContrasena');
+})->name('partner.password.change');
+
+Route::post('/partner/contrasena/cambiada', [PartnerController::class, 'cambiarContrasena'])->name('partner.contrasena.cambiada');
+
+Route::post('/partner/cambio/imagen', [PartnerController::class, 'subirPerfil'])->name('partner.cambio.imagen');
+
+Route::get('/parner/carnet', function () {
+  return view('partner.carnetSocio');
+})->name('socio.carnet');
+
+//
+
+
+//ruta moderacion de carnets
+
+Route::post('traer/socios/fotos', [PartnerController::class, 'traerPerfilSocios']);
+Route::post('aceptar/foto/socio', [PartnerController::class, 'aceptarFotoPerfil']);
+Route::delete('eliminar/foto/socio', [PartnerController::class, 'eliminarFotoPerfil']);
+
+//
+
+//Ruta Splash Screen
+
+Route::get('/splash', function () {
+    return view('filament.pages.splash-screen');
+});
 
 

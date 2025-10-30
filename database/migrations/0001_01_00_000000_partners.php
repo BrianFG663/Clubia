@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('nombre');
             $table->string('apellido');
             $table->string('dni')->unique();
+            $table->string('password');
             $table->string('email')->unique();
             $table->foreignId('state_id')->constrained()->onDelete('cascade');
             $table->date('fecha_nacimiento');

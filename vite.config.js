@@ -32,7 +32,6 @@ export default defineConfig({
                 'resources/css/personalizarLogo.css',
                 'resources/css/splash.css',
                 'resources/js/app.js',
-                'resources/js/personalizarLogo.js',
                 'resources/js/bootstrap.js',
                 'resources/js/cajaDiaria.js',
                 'resources/js/moderarFotos.js',

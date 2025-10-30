@@ -3,7 +3,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @vite('resources/css/personalizarLogo.css')
     @vite('resources/css/sweet-alert.css')
-    @vite('resources/js/personalizarLogo.js')
 
     <div class="contenedor">
         <form class="formulario" action="{{ route('imagen.guardar') }}" method="POST" enctype="multipart/form-data">

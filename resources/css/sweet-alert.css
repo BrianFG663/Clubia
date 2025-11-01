@@ -5,7 +5,7 @@
     background-color: #111827 !important; 
     color: #fff !important;              
     border-radius: 10px !important;       
-    border:1px solid #c28840 !important; 
+    border:1px solid #c24a50ff !important; 
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.5) !important;
 }
 
@@ -13,14 +13,14 @@
 .swal2-confirm {
     background-color: transparent !important; 
     color: white !important;
-    border:1px solid #c28840 !important;
+    border:1px solid #c24a50ff !important;
     padding: 8px 20px !important;
     font-weight: 100 !important;
     border-radius: 5px !important;
 }
 
 .swal2-confirm:hover {
-    background-color: #c288406b !important; 
+    background-color: rgba(194, 74, 80, 0.605) !important; 
 }
 
 .swal2-cancel {
@@ -38,7 +38,7 @@
 
 .swal2-input {
     background-color: transparent !important;
-    border: 1px solid #c28840 !important;
+    border: 1px solid #c24a50ff !important;
     color: #fff; 
     box-shadow: none !important;
     border-radius: 2px;

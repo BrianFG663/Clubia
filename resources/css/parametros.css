@@ -10,7 +10,7 @@
     width: 45%;
     flex-direction: column;
     background-color: #111827;
-    border: 1px solid #c28840;
+    border: 1px solid #c24a50ff;
     border-radius: 5px;
 }
 
@@ -34,7 +34,7 @@ select {
 }
 
 select:focus {
-    border: 1px solid #c28840;
+    border: 1px solid #c24a50ff;
     box-shadow: none;
     outline: none;
 }
@@ -88,7 +88,7 @@ select option {
 
 .btn {
     position: relative;
-    border: 1px solid #c28840;
+    border: 1px solid #c24a50ff;
     background-color: transparent;
     width: 45%;
     height: 9%;
@@ -100,5 +100,5 @@ select option {
 
 .btn:hover {
     cursor: pointer;
-    background-color: #c288406e;
+    background-color: rgba(211, 47, 47, 0.397);
 }

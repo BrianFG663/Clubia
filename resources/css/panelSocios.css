@@ -33,7 +33,7 @@ header {
 }
 
 .titulo {
-    color: #c28840;
+    color: #c24a50ff;
     font-size: 2vw;
 }
 
@@ -48,7 +48,7 @@ form {
 }
 
 button > i {
-    color: #c28840;
+    color: #c24a50ff;
     font-weight: 100;
     font-size: 3vh;
     position: relative;
@@ -162,19 +162,19 @@ header > i:hover {
 
 .cantidad {
     font-size: 3.5vw;
-    color: #c28840;
+    color: #c24a50ff;
 }
 
 .cuerpo-facturas > i {
     font-size: 2.2rem;
-    color: #c28840c9;
+    color: rgba(194, 74, 80, 0.589);
     margin-left: 0.8vw;
     transition: 0.3s;
     cursor: pointer;
 }
 
 .cuerpo-facturas > i:hover {
-    color: #c28840;
+    color: #c24a50ff;
 }
 
 .detalles {
@@ -205,7 +205,7 @@ header > i:hover {
 
 .th-inf {
     font-size: 1.5vw;
-    color: #c28840;
+    color: #c24a50ff;
 }
 
 .dos {
@@ -215,7 +215,7 @@ header > i:hover {
 
 .uno {
     font-size: 1.2vw;
-    color: #c28840;
+    color: #c24a50ff;
 }
 
 .actividades {
@@ -234,7 +234,7 @@ header > i:hover {
     left: 5%;
     height: 30%;
     width: 80%;
-    border: 1px solid #c28840;
+    border: 1px solid #c24a50ff;
     border-radius: 2px;
     padding: 5%;
     margin-bottom: 4%;
@@ -254,14 +254,14 @@ header > i:hover {
 
 .th-tipo {
     font-size: 1.5vw;
-    color: #c28840;
+    color: #c24a50ff;
 }
 
 .td-tipo {
     font-size: 1.5vw;
     border-radius: 3px;
-    border-left: 1px solid #c28840;
-    border-right: 1px solid #c28840;
+    border-left: 1px solid #c24a50ff;
+    border-right: 1px solid #c24a50ff;
 }
 
 .sub-actividades {
@@ -269,7 +269,7 @@ header > i:hover {
     left: 5%;
     height: 30%;
     width: 80%;
-    border: 1px solid #c28840;
+    border: 1px solid #c24a50ff;
     border-radius: 5px;
     padding: 5%;
     margin-bottom: 4%;
@@ -289,14 +289,14 @@ header > i:hover {
 
 .th-sub {
     font-size: 1.5vw;
-    color: #c28840;
+    color: #c24a50ff;
 }
 
 .td-sub {
     font-size: 1.5vw;
     border-radius: 3px;
-    border-left: 1px solid #c28840;
-    border-right: 1px solid #c28840;
+    border-left: 1px solid #c24a50ff;
+    border-right: 1px solid #c24a50ff;
 }
 
 .grupo {
@@ -313,7 +313,7 @@ header > i:hover {
     width: 70%;
     text-align: center;
     position: relative;
-    color: #c28840;
+    color: #c24a50ff;
 }
 
 .familiar {
@@ -321,7 +321,7 @@ header > i:hover {
     width: 90%;
     border-radius: 5px;
     height: 40%;
-    border: 1px solid #c28840;
+    border: 1px solid #c24a50ff;
     margin: 1%;
 }
 
@@ -357,7 +357,7 @@ header > i:hover {
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: #c2884062;
+    background-color: #c24a50ff;
     border-radius: 10px;
 }
 
@@ -370,7 +370,7 @@ header > i:hover {
     height: 50%;
     overflow-y: auto;
     background-color: #111827;
-    border: 1px solid #c28840cc;
+    border: 1px solid #c24a50ff;
     border-radius: 12px;
     padding-top: 1.5rem;
     padding-bottom: 1.5rem;
@@ -417,7 +417,7 @@ header > i:hover {
 }
 
 #cerrar-alerta:hover {
-    color: #c28840;
+    color: #c24a50ff;
 }
 
 .tabla {
@@ -426,7 +426,7 @@ header > i:hover {
     top: 3vh;
     margin: 3%;
     width: 80%;
-    border: 1px solid #c28840;
+    border: 1px solid #c24a50ff;
     border-collapse: collapse;
     table-layout: fixed;
 }
@@ -434,7 +434,7 @@ header > i:hover {
 .tabla-td {
     height: 4vh;
     text-align: center;
-    border: 1px solid #c28840;
+    border: 1px solid #c24a50ff;
 }
 
 .titulo-facturas-inpagas {
@@ -542,14 +542,14 @@ header > i:hover {
 
     .cuerpo-facturas > i {
     font-size: 1.7rem;
-    color: #c28840c9;
+    color: #c24a50ff;
     margin-left: 0.8vw;
     transition: 0.3s;
     cursor: pointer;
 }
 
 .cuerpo-facturas > i:hover {
-    color: #c28840;
+    color: #c24a50ff;
 }
 
     .cantidad{

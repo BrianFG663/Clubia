@@ -52,7 +52,7 @@ form {
 }
 
 .mail:focus, .password:focus {
-    border-color: #a06f33;
+    border-color: #c24a50ff;
     box-shadow: 0 0 1px rgba(194, 136, 64, 0.4);
 }
 
@@ -66,7 +66,7 @@ button {
     width: 75%;
     height: 13%;
     border-radius: 7px;
-    background-color: #AF7A3A;
+    background-color: #c24a50ff;
     color: white;
     font-weight: 600;
     font-size: 1.1vw;
@@ -98,12 +98,11 @@ button {
 }
 
 .titulo {
-    color: #a06f33;
+    color: #c24a50ff;
     font-size: 2vw;
     font-weight: 600;
 }
 
-/* Media Queries for Mobile Devices (≤ 600px) */
 @media screen and (max-width: 600px) {
     .contenedor {
         width: 90%;

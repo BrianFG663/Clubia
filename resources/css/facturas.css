@@ -4,7 +4,7 @@
     justify-content: space-around;
     height: 45vh;
     background-color: #111827;
-    border: 1px solid #c28840;
+    border: 1px solid #c24a50ff;
     border-radius: 5px;
 }
 
@@ -31,7 +31,7 @@
 #facturarBtn{
     position: relative;
     left: 78%;
-    border: 1px solid #c28840;
+    border: 1px solid #c24a50ff;
     background-color: transparent;
     width: 20%;
     height: 12%;
@@ -43,7 +43,7 @@
 
 #facturarBtn:hover{
     cursor: pointer;
-    background-color: #c288406e;
+    background-color: rgba(211, 47, 47, 0.397);
 }
 
 
@@ -64,7 +64,7 @@ select {
 }
 
 select:focus {
-    border: 1px solid #c28840;
+    border: 1px solid #c24a50ff;
     box-shadow: none;
     outline: none;
 }
@@ -98,7 +98,7 @@ h2{
     height: 25vh;
     border: 1px solid white;
     background-color: #111827;
-    border: 1px solid #c28840;
+    border: 1px solid #c24a50ff;
     border-radius: 5px;
 }
 
@@ -118,7 +118,7 @@ h2{
     position: relative;
     left: 77.5%;
     bottom: 5%;
-    border: 1px solid #c28840;
+    border: 1px solid #c24a50ff;
     background-color: transparent;
     width: 20%;
     height: 25%;
@@ -130,7 +130,7 @@ h2{
 
 .btn-busca-socio:hover{
     cursor: pointer;
-    background-color: #c288406e;
+    background-color: rgba(211, 47, 47, 0.397);
 }
 
 .dni{
@@ -158,7 +158,7 @@ h2{
     position: relative;
     top: 40%;
     background-color: #111827;
-    border: 1px solid #c28840;
+    border: 1px solid #c24a50ff;
     width: 90%;
     margin: auto;
     transform: translateY(-50%);
@@ -218,7 +218,7 @@ h2{
     position: relative;
     left: 79%;
     top: 2%;
-    border: 1px solid #c28840;
+    border: 1px solid #c24a50ff;
     background-color: transparent;
     width: 20%;
     height: 8%;
@@ -230,14 +230,14 @@ h2{
 
 .btn-facturacion-individual:hover{
     cursor: pointer;
-    background-color: #c288406e;
+    background-color: rgba(211, 47, 47, 0.397);
 }
 
 .chechboxs-sub-actividad{
     display: flex;
     flex-direction: column;
 
-    border: 1px solid #c28840;
+    border: 1px solid #c24a50ff;
     border-radius: 4px;
     height: 58%;
     background-color: #182032;
@@ -264,7 +264,7 @@ h2{
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    border: 1px solid #c28840;
+    border: 1px solid #c24a50ff;
     border-radius: 4px;
     height: 38%;
     background-color: #182032;
@@ -280,7 +280,7 @@ h2{
     flex-direction: column;
     justify-content: space-around;
     padding: 2%;
-    border: 1px solid #c28840;
+    border: 1px solid #c24a50ff;
     border-radius: 4px;
     background-color: #182032;
     width: 100%;
@@ -310,7 +310,7 @@ h2{
     flex-direction: column;
     justify-content: space-around;
     padding: 2%;
-    border: 1px solid #c28840;
+    border: 1px solid #c24a50ff;
     border-radius: 4px;
     background-color: #182032;
     width: 100%;
@@ -334,18 +334,18 @@ h2{
 }
 
 #cerrar-alerta:hover {
-    color: #c28840;
+    color: #c24a50ff;
 }
 
 table {
     border-collapse: collapse;
     width: 100%;
     background-color: transparent; /* Fondo transparente */
-    border: 1px solid #c28840; /* Borde exterior dorado */
+    border: 1px solid #c24a50ff; /* Borde exterior dorado */
 }
 
 th, td {
-    border: 1px solid #c28840; /* Bordes internos dorados */
+    border: 1px solid #c24a50ff; /* Bordes internos dorados */
     padding: 8px;
     font-size: 1.8vh;
     text-align: left;
@@ -430,7 +430,7 @@ input[type="checkbox"] {
 
 input[type="checkbox"]:focus {
   outline: none; /* quitamos el outline default */
-  box-shadow: 0 0 0 1px #c28840; /* agregamos un "halo" naranja */
+  box-shadow: 0 0 0 1px #c24a50ff; /* agregamos un "halo" naranja */
 }
 
 input[type="checkbox"]:hover {
@@ -438,11 +438,11 @@ input[type="checkbox"]:hover {
 }
 
 input[type="checkbox"]:checked {
-  background-color: #c288406e;
-  border-color: #c28840;
+  background-color: rgba(211, 47, 47, 0.397);
+  border-color: #c24a50ff;
 }
 
 input[type="checkbox"]:checked:hover {
-  background-color: #c2884080;
+  background-color: rgba(211, 47, 47, 0.397);
   border-color: #b27136;
 }

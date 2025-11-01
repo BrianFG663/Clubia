@@ -1,5 +1,5 @@
 .contenedor{
-    border: 1px solid #c28840;
+    border: 1px solid #c24a50ff;
     height: 75vh;
     overflow-y: auto;
 }
@@ -10,7 +10,7 @@
     position: relative;
     left: 15%;
     margin: 3%;
-    border: 2px solid #c28840;
+    border: 2px solid #c24a50ff;
     border-radius: 5px;
     display: flex;
     flex-direction: row;
@@ -23,7 +23,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border-right: 1px solid #c28840;
+    border-right: 1px solid #c24a50ff;
     flex-direction: column;
 }
 
@@ -35,7 +35,7 @@
     position: relative;
     top: 5%;
     width: 100%;
-    border-top: 1px solid #c28840;
+    border-top: 1px solid #c24a50ff;
 }
 
 .imagen-carnet {
@@ -80,7 +80,7 @@
 .botones-inf{
     position: relative;
     top: 10%;
-    border: 1px solid #c28840;
+    border: 1px solid #c24a50ff;
     width: 60%;
     height: 60%;
     text-align: center;

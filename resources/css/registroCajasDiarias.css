@@ -35,7 +35,7 @@ font-family: sans-serif;
 
 .tabla thead th {
     padding: 0.75rem 1rem;
-    color: #c28840 ;
+    color: #c24a50ff ;
     border-bottom: 0.0625rem solid #1c202a; /* 1px */
     text-align: center;
 }
@@ -74,7 +74,7 @@ font-family: sans-serif;
 }
 
 .btn:hover {
-    color: #c28840;
+    color: #c24a50ff;
     cursor: pointer;
 }
 
@@ -96,7 +96,7 @@ font-family: sans-serif;
     max-height: 70vh;
     overflow-y: auto;
     background-color: #111827; /* mismo fondo que tabla y contenedor */
-    border: 1px solid #c28840cc; /* borde dorado semitransparente */
+    border: 1px solid rgba(211, 47, 47, 0.397); /* borde dorado semitransparente */
     border-radius: 12px;
     padding-top: 0rem;
     padding-bottom: 1.5rem;
@@ -145,7 +145,7 @@ font-family: sans-serif;
 }
 
 #cerrar-alerta:hover {
-    color: #c28840;
+    color: #c24a50ff;
 }
 
 .titulo-informacion{
@@ -216,7 +216,7 @@ font-family: sans-serif;
 }
 
 .filtro-input:focus {
-    border-color: #c28840 !important;
+    border-color: #c24a50ff !important;
     outline: none;
     box-shadow: none;
     border: solid 2px;

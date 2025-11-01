@@ -18,7 +18,7 @@
     }
 
     .dark .custom-topbar-name {
-        color: #c28840;
+        color: #c24a50ff;
     }
 </style>
 

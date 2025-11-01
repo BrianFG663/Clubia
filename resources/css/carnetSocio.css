@@ -40,7 +40,7 @@ button{
 }
 
 button > i {
-    color: #c28840;
+    color: #c24a50ff;
     font-weight: 100;
     font-size: 3vh;
     position: relative;
@@ -61,7 +61,7 @@ header > i:hover {
 }
 
 .titulo {
-    color: #c28840;
+    color: #c24a50ff;
     font-size: 2vw;
 }
 
@@ -76,7 +76,7 @@ header > i:hover {
     position: relative;
     left: 15%;
     top: 15%;
-    border: 2px solid #c28840;
+    border: 2px solid #c24a50ff;
     border-radius: 5px;
     display: flex;
     flex-direction: row;
@@ -89,7 +89,7 @@ header > i:hover {
     display: flex;
     justify-content: center;
     align-items: center;
-    border-right: 1px solid #c28840;
+    border-right: 1px solid #c24a50ff;
     flex-direction: column;
 }
 
@@ -101,7 +101,7 @@ header > i:hover {
     position: relative;
     top: 5%;
     width: 100%;
-    border-top: 1px solid #c28840;
+    border-top: 1px solid #c24a50ff;
 }
 
 label {
@@ -112,14 +112,14 @@ label {
 .input {
     position: relative;
     top: 25%;
-    color: #c28840;
+    color: #c24a50ff;
     width: 90%;
 }
 
 input[type="file"]::-webkit-file-upload-button {
     background-color: transparent;
-    border: 1px solid #c28840;
-    color: #c28840;
+    border: 1px solid #c24a50ff;
+    color: #c24a50ff;
     padding: 2%;
     border-radius: 2px;
     margin-right: 5%;
@@ -129,7 +129,7 @@ input[type="file"]::-webkit-file-upload-button {
 }
 
 input[type="file"]::-webkit-file-upload-button:hover {
-    background-color: #c288402f;
+    background-color: rgba(194, 74, 80, 0.449);
 }
 
 .boton {
@@ -137,14 +137,14 @@ input[type="file"]::-webkit-file-upload-button:hover {
     top: 37%;
     padding: 3%;
     background-color: transparent;
-    border: 1px solid #c28840;
-    color: #c28840;
+    border: 1px solid #c24a50ff;
+    color: #c24a50ff;
     transition: 0.1s;
     cursor: pointer;
 }
 
 .boton:hover {
-    background-color: #c288402f;
+    background-color: rgba(194, 74, 80, 0.449);
 }
 
 .imagen-carnet {
@@ -202,13 +202,13 @@ input[type="file"]::-webkit-file-upload-button:hover {
 }
 
 span {
-    color: #c28840;
+    color: #c24a50ff;
 }
 
 td {
     font-size: 1.4rem;
     text-align: center;
-    border: 1px solid #c28840;
+    border: 1px solid #c24a50ff;
 }
 
 /* Media Queries for Mobile Devices (≤ 600px) */
@@ -231,7 +231,7 @@ td {
     .contenedor-imagen {
         width: 30%;
         height: 100%;
-        border-right: 1px solid #c28840;
+        border-right: 1px solid #c24a50ff;
     }
 
     .contenedor-inf {
@@ -262,7 +262,7 @@ td {
         top: 2%;
         width: 100%;
         margin: 0 auto;
-        border-top: 1px solid #c28840;
+        border-top: 1px solid #c24a50ff;
     }
 
     label {

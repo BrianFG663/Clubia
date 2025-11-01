@@ -34,7 +34,7 @@ class AdminPanelProvider extends PanelProvider
 
  
         FilamentAsset::register([
-            new Css('scrollbar', 'css/app/scrollbar.css'),
+            new Css('scrollbar', 'css/app/scrollbar.css?v=' . filemtime(public_path('css/app/scrollbar.css'))),
         ]);
 
         return $panel
@@ -59,7 +59,7 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->colors([
-            'primary' => Color::hex('#c28840'),
+            'primary' => Color::hex('#c24a50ff'),
             'success' => Color::Green,
             'danger'  => Color::Rose,
             'warning' => Color::Amber,

@@ -1,5 +1,5 @@
 .contenedor{
-    border: 1px solid #c28840;
+    border: 1px solid #c24a50ff;
     width: 80%;
     height: 70vh;
     position: relative;
@@ -26,8 +26,8 @@
 
 input[type="file"]::-webkit-file-upload-button {
     background-color: transparent;
-    border: 1px solid #c28840;
-    color: #c28840;
+    border: 1px solid #c24a50ff;
+    color: #c24a50ff;
     padding: 2%;
     border-radius: 3px;
     margin-right: 5%;
@@ -37,22 +37,22 @@ input[type="file"]::-webkit-file-upload-button {
 }
 
 input[type="file"]::-webkit-file-upload-button:hover {
-    background-color: #c288402f;
+    background-color: rgba(211, 47, 47, 0.397);
 }
 
 .boton {
     position: relative;
     padding: 2%;
     background-color: transparent;
-    border: 1px solid #c28840;
-    color: #c28840;
+    border: 1px solid #c24a50ff;
+    color: #c24a50ff;
     transition: 0.1s;
     border-radius: 3px;
     cursor: pointer;
 }
 
 .boton:hover {
-    background-color: #c288402f;
+    background-color: rgba(211, 47, 47, 0.397);
 }
 
 .contenedor-imagen{

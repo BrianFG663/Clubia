@@ -10,10 +10,18 @@
 
     <header>
         @php
-            $ruta = 'imagenes/logo.png';
-            $logo = Illuminate\Support\Facades\Storage::disk('public')->exists($ruta)
-                ? asset("storage/$ruta") . '?v=' . filemtime(public_path("storage/$ruta"))
-                : null;
+            use Illuminate\Support\Facades\Storage;
+
+            $extensiones = ['png', 'jpg', 'jpeg', 'webp', 'gif'];
+            $logo = null;
+
+            foreach ($extensiones as $ext) {
+                $ruta = "imagenes/logo.$ext";
+                if (Storage::disk('public')->exists($ruta)) {
+                    $logo = public_path("storage/$ruta");
+                    break;
+                }
+            }
         @endphp
 
         @if ($logo)
